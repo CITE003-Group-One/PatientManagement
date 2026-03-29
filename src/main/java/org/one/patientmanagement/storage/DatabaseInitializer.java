@@ -15,6 +15,7 @@ public class DatabaseInitializer {
     }
     
     public void init() {
+        // TODO INCLUDE DOCTOR SCHEDULES TABLE AND LINK IT TO DOCTORS
         createAccountsTable();
         createPatientsTable();
         createDoctorsTable();
@@ -69,6 +70,9 @@ public class DatabaseInitializer {
             CREATE TABLE IF NOT EXISTS appointments (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 block TEXT NOT NULL CHECK(block IN ('MORNING', 'AFTERNOON')),
+                status TEXT CHECK(status IN ('WITH_DOCTOR', 'WAITING', 'DONE')),
+                referred TEXT,
+                referred_description TEXT,
                 doctor_id INTEGER NOT NULL,
                 patient_id INTEGER NOT NULL,
                 queue_number TEXT NOT NULL,
@@ -87,7 +91,6 @@ public class DatabaseInitializer {
                 name TEXT NOT NULL,
                 doctor_id INTEGER,
                 patient_id INTEGER,
-                status TEXT CHECK(status IN ('WITH_DOCTOR', 'WAITING', 'DONE')),
                 created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (doctor_id) REFERENCES doctors(id),
                 FOREIGN KEY (patient_id) REFERENCES patients(id)
