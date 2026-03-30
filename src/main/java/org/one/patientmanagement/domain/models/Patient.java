@@ -3,6 +3,9 @@ package org.one.patientmanagement.domain.models;
 import java.time.LocalDate;
 import java.time.Period;
 
+/**
+ * Represents a patient.
+ */
 public record Patient(
         long id,
         Long accountId,

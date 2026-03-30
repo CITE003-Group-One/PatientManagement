@@ -14,5 +14,13 @@ public interface ConsultationService {
     
     List<Consultation> getConsultations(long patientId);
     
-    List<Consultation> getConsultations(long patientId, long doctorId, ConsultationType... types);
+    /**
+     *
+     * @param patientId can be null
+     * @param doctorId can be null
+     * @param types list of consultation types
+     * @return list of consultations
+     * @throws IllegalArgumentException if both {@code patientId} and {@code doctorId} are {@code null}
+     */
+    List<Consultation> getConsultations(long patientId, long doctorId, ConsultationType... types) throws IllegalArgumentException;
 }

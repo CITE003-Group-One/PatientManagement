@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import org.one.patientmanagement.domain.enums.AppointmentBlock;
 import org.one.patientmanagement.domain.enums.AppointmentStatus;
 
+/**
+ * Represents an appointment.
+ */
 public record Appointment(
         long id,
         AppointmentBlock block,

@@ -2,6 +2,9 @@ package org.one.patientmanagement.domain.models;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents a vitals of a patient.
+ */
 public record Vitals(
         long id,
         Integer systolicBp,

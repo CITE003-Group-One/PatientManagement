@@ -2,6 +2,9 @@ package org.one.patientmanagement.domain.models;
 
 import java.time.LocalDateTime;
 
+/**
+ * Represents the prescription of a patient.
+ */
 public record Prescription(
         long id,
         String medicationName,
