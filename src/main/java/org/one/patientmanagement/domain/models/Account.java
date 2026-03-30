@@ -10,7 +10,23 @@ import org.one.patientmanagement.domain.enums.Role;
  */
 public record Account(
         long id,
+        String user,
         String password,
         Role role,
         LocalDateTime createdAt
-) {}
+) {
+    public Account {
+        if (user == null || user.isBlank()) {
+            throw new IllegalArgumentException("user is required");
+        }
+        if (password == null || password.isBlank()) {
+            throw new IllegalArgumentException("password is required");
+        }
+        if (role == null) {
+            throw new IllegalArgumentException("role is required");
+        }
+        if (createdAt == null) {
+            throw new IllegalArgumentException("createdAt is required");
+        }
+    }
+}

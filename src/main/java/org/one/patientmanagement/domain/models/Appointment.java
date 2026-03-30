@@ -18,7 +18,42 @@ public record Appointment(
         String queueNumber,
         LocalDateTime createdAt
 ) {
+
+    public Appointment {
+        if (block == null) {
+            throw new IllegalArgumentException("block is required");
+        }
+
+        if (status == null) {
+            throw new IllegalArgumentException("status is required");
+        }
+
+        if (doctorId <= 0) {
+            throw new IllegalArgumentException("doctorId must be valid");
+        }
+
+        if (patientId <= 0) {
+            throw new IllegalArgumentException("patientId must be valid");
+        }
+
+        if (queueNumber == null || queueNumber.isBlank()) {
+            throw new IllegalArgumentException("queueNumber is required");
+        }
+
+        if (createdAt == null) {
+            throw new IllegalArgumentException("createdAt is required");
+        }
+
+        // business consistency rule
+        if ((referred == null || referred.isBlank()) &&
+            (referredDescription != null && !referredDescription.isBlank())) {
+            throw new IllegalArgumentException(
+                "referredDescription cannot exist without referred"
+            );
+        }
+    }
+
     public boolean isReferred() {
-        return referred == null || referred.isBlank();
+        return referred != null && !referred.isBlank();
     }
 }

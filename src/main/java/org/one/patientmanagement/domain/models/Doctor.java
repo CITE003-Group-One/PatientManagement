@@ -7,4 +7,13 @@ public record Doctor(
         long id,
         Long accountId,
         String name
-) {}
+) {
+    public Doctor {
+        if (accountId == null || accountId <= 0) {
+            throw new IllegalArgumentException("accountId is required");
+        }
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("name is required");
+        }
+    }
+}

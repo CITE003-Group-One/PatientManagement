@@ -15,4 +15,25 @@ public record Prescription(
         long doctorId,
         long patientId,
         LocalDateTime createdAt
-) {}
+) {
+    public Prescription {
+        if (medicationName == null || medicationName.isBlank()) {
+            throw new IllegalArgumentException("medicationName is required");
+        }
+        if (dosage == null || dosage.isBlank()) {
+            throw new IllegalArgumentException("dosage is required");
+        }
+        if (frequency == null || frequency.isBlank()) {
+            throw new IllegalArgumentException("frequency is required");
+        }
+        if (doctorId <= 0) {
+            throw new IllegalArgumentException("doctorId must be valid");
+        }
+        if (patientId <= 0) {
+            throw new IllegalArgumentException("patientId must be valid");
+        }
+        if (createdAt == null) {
+            throw new IllegalArgumentException("createdAt is required");
+        }
+    }
+}

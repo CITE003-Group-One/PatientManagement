@@ -14,4 +14,19 @@ public record Consultation(
         long doctorId,
         long patientId,
         LocalDateTime createdAt
-) {}
+) {
+    public Consultation {
+        if (type == null) {
+            throw new IllegalArgumentException("type is required");
+        }
+        if (doctorId <= 0) {
+            throw new IllegalArgumentException("doctorId must be valid");
+        }
+        if (patientId <= 0) {
+            throw new IllegalArgumentException("patientId must be valid");
+        }
+        if (createdAt == null) {
+            throw new IllegalArgumentException("createdAt is required");
+        }
+    }
+}
