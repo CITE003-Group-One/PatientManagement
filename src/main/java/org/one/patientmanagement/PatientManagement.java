@@ -13,9 +13,10 @@ import org.one.patientmanagement.ui.PresentationModule;
 public class PatientManagement {
 
     public static void main(String[] args) {
+    	System.out.println("Hello World!");
         EventQueue.invokeLater(() -> {
             try {
-                System.out.println("Hello World!");
+                
                 var injector = Guice.createInjector(
                         new DatabaseModule(),
                         new RepositoryModule(),
