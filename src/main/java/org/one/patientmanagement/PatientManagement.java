@@ -15,6 +15,7 @@ import org.one.patientmanagement.storage.DatabaseInitializer;
 import org.one.patientmanagement.storage.DatabaseModule;
 import org.one.patientmanagement.ui.MainView;
 import org.one.patientmanagement.ui.PresentationModule;
+import com.formdev.flatlaf.FlatLightLaf;
 
 public class PatientManagement {
 
@@ -22,6 +23,9 @@ public class PatientManagement {
         EventQueue.invokeLater(() -> {
             try {
                 System.out.println("Hello World!");
+                
+                FlatLightLaf.setup();
+                
                 var injector = Guice.createInjector(
                         new DatabaseModule()
 //                        new RepositoryModule(),
