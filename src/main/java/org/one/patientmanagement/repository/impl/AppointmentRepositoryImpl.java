@@ -124,3 +124,4 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
 		}
 		return list;
 	}
+}
