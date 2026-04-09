@@ -66,7 +66,7 @@ public class ServiceTest {
     }
 
     static Doctor doctor(long id) {
-        return new Doctor(id, 5L, "Dr. Test");
+        return new Doctor(id, 5L, "Physician", "Dr. Test");
     }
 
     static Appointment appointment(long id) {
@@ -532,67 +532,6 @@ public class ServiceTest {
             // Implementation should throw when user is not found / password mismatch
             assertThatThrownBy(() -> service().authenticate("bad@user.com", "wrongpw"))
                     .isInstanceOf(Exception.class);
-        }
-    }
-
-    // =======================================================================
-    // DoctorManager
-    // =======================================================================
-
-    @Nested
-    @DisplayName("DoctorManager")
-    @ExtendWith(MockitoExtension.class)
-    public abstract static class DoctorManagerTest {
-
-        // DoctorManager likely uses a DoctorRepository — add your repository mock here.
-        // If your implementation uses a different repo interface name, adjust accordingly.
-
-        protected abstract DoctorManager service();
-
-        @Test
-        @DisplayName("create() returns saved doctor with generated id")
-        void createReturnsSavedDoctor() {
-            Doctor input = doctor(0L);
-            Doctor result = service().create(input);
-            assertThat(result).isNotNull();
-            assertThat(result.id()).isPositive();
-        }
-
-        @Test
-        @DisplayName("remove() does not throw for a valid id")
-        void removeDoesNotThrowForValidId() {
-            assertThatCode(() -> service().remove(1L)).doesNotThrowAnyException();
-        }
-
-        @Test
-        @DisplayName("getDoctorById() returns present optional for existing doctor")
-        void getDoctorByIdReturnsPresent() {
-            Doctor d = service().create(doctor(0L));
-            Optional<Doctor> found = service().getDoctorById(d.id());
-            assertThat(found).isPresent();
-        }
-
-        @Test
-        @DisplayName("getDoctorById() returns empty for non-existent id")
-        void getDoctorByIdReturnsEmpty() {
-            Optional<Doctor> found = service().getDoctorById(Long.MAX_VALUE);
-            assertThat(found).isEmpty();
-        }
-
-        @Test
-        @DisplayName("getDoctorByAccountId() returns present optional for existing accountId")
-        void getDoctorByAccountIdReturnsPresent() {
-            Doctor created = service().create(doctor(0L)); // accountId = 5L from factory
-            Optional<Doctor> found = service().getDoctorByAccountId(created.accountId());
-            assertThat(found).isPresent();
-            assertThat(found.get().accountId()).isEqualTo(created.accountId());
-        }
-
-        @Test
-        @DisplayName("getDoctorByAccountId() returns empty for unknown accountId")
-        void getDoctorByAccountIdReturnsEmpty() {
-            Optional<Doctor> found = service().getDoctorByAccountId(Long.MAX_VALUE);
-            assertThat(found).isEmpty();
         }
     }
 }

@@ -15,7 +15,6 @@ public class DatabaseInitializer {
     }
 
     public void init() {
-        // TODO INCLUDE DOCTOR SCHEDULES TABLE AND LINK IT TO DOCTORS
         try (var conn = dataSource.getConnection(); var stmt = conn.createStatement()) {
             createAccountsTable(stmt);
             createPatientsTable(stmt);
@@ -66,6 +65,7 @@ public class DatabaseInitializer {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 account_id INTEGER UNIQUE,
                 name TEXT NOT NULL,
+                profession TEXT NOT NULL,
                 FOREIGN KEY (account_id) REFERENCES accounts(id)
             );
         """);

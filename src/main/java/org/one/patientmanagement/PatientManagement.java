@@ -16,6 +16,7 @@ import org.one.patientmanagement.storage.DatabaseModule;
 import org.one.patientmanagement.ui.MainView;
 import org.one.patientmanagement.ui.PresentationModule;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import java.awt.Font;
 import javax.swing.UIManager;
 import org.one.patientmanagement.ui.core.Theme;
@@ -28,13 +29,13 @@ public class PatientManagement {
                 System.out.println("Hello World!");
                 
                 Theme.setup();
-                FlatLightLaf.registerCustomDefaultsSource("themes");
-                FlatLightLaf.setup();
+                FlatMacLightLaf.registerCustomDefaultsSource("themes");
+                FlatMacLightLaf.setup();
                 
                 var injector = Guice.createInjector(
-                        new DatabaseModule()
-//                        new RepositoryModule(),
-//                        new ServiceModule(),
+                        new DatabaseModule(),
+                        new RepositoryModule(),
+                        new ServiceModule()
 //                        new PresentationModule()
                 );
 
@@ -42,12 +43,13 @@ public class PatientManagement {
                 injector.getInstance(DatabaseInitializer.class).init();
                 injector.getInstance(MainView.class).setVisible(true);
             } catch (Exception e) {
-                showErrorDialog(e);
+                e.printStackTrace();
+                showExceptionDialog(e, "Failed to start", JOptionPane.ERROR_MESSAGE);
             }
         });
     }
 
-    public static void showErrorDialog(Exception e) {
+    public static void showExceptionDialog(Exception e, String title, int type) {
         JLabel label = new JLabel("Error details:");
         label.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
 
@@ -70,8 +72,8 @@ public class PatientManagement {
         JOptionPane.showMessageDialog(
                 null,
                 panel,
-                "Failed to start",
-                JOptionPane.ERROR_MESSAGE
+                title,
+                type
         );
     }
 }

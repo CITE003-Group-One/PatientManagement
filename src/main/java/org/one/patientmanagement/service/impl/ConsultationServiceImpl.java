@@ -1,5 +1,6 @@
 package org.one.patientmanagement.service.impl;
 
+import com.google.inject.Inject;
 import org.one.patientmanagement.domain.enums.ConsultationType;
 import org.one.patientmanagement.domain.models.Consultation;
 import org.one.patientmanagement.repository.ConsultationRepository;
@@ -11,6 +12,7 @@ public class ConsultationServiceImpl implements ConsultationService {
 
     private final ConsultationRepository consultationRepository;
 
+    @Inject
     public ConsultationServiceImpl(ConsultationRepository consultationRepository) {
         this.consultationRepository = consultationRepository;
     }

@@ -10,5 +10,5 @@ public interface PatientRepository extends Repository<Patient> {
     
     List<Patient> findAll();
 
-	Optional<Patient> findByAccountId(long accountId);
+    Optional<Patient> findByAccountId(long accountId);
 }

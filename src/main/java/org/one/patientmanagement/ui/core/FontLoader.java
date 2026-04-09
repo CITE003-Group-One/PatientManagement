@@ -2,6 +2,7 @@ package org.one.patientmanagement.ui.core;
 
 import java.awt.Font;
 import java.io.InputStream;
+import javax.swing.JOptionPane;
 import org.one.patientmanagement.PatientManagement;
 
 public class FontLoader {
@@ -16,7 +17,7 @@ public class FontLoader {
             return font.deriveFont(size);
 
         } catch (Exception e) {
-            PatientManagement.showErrorDialog(e);
+            PatientManagement.showExceptionDialog(e, "Font not found", JOptionPane.WARNING_MESSAGE);
             return new Font("SansSerif", Font.PLAIN, (int) size);
         }
     }

@@ -64,7 +64,7 @@ public class RepositoryContractTest {
     }
 
     protected static Doctor makeDoctor(long accountId) {
-        return new Doctor(0L, accountId, "Dr. Test " + accountId);
+        return new Doctor(0L, accountId, "Physician", "Dr. Test " + accountId);
     }
 
     protected static Appointment makeAppointment(long doctorId, long patientId) {

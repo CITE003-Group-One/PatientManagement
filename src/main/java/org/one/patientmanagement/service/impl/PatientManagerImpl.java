@@ -1,5 +1,6 @@
 package org.one.patientmanagement.service.impl;
 
+import com.google.inject.Inject;
 import org.one.patientmanagement.repository.AttachmentRepository;
 import org.one.patientmanagement.repository.VitalsRepository;
 import org.one.patientmanagement.repository.PrescriptionRepository;
@@ -23,6 +24,7 @@ public class PatientManagerImpl implements PatientManager {
     private final VitalsRepository vitalsRepository;
     private final PrescriptionRepository prescriptionRepository;
 
+    @Inject
     public PatientManagerImpl(
             PatientRepository patientRepository,
             AttachmentRepository attachmentRepository,
