@@ -16,6 +16,10 @@ import org.one.patientmanagement.storage.DatabaseModule;
 import org.one.patientmanagement.ui.MainView;
 import org.one.patientmanagement.ui.PresentationModule;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import java.awt.Font;
+import javax.swing.UIManager;
+import org.one.patientmanagement.ui.core.Theme;
 
 public class PatientManagement {
 
@@ -24,25 +28,34 @@ public class PatientManagement {
             try {
                 System.out.println("Hello World!");
                 
-                FlatLightLaf.setup();
+                Theme.setup();
+                FlatMacLightLaf.registerCustomDefaultsSource("themes");
+                FlatMacLightLaf.setup();
                 
                 var injector = Guice.createInjector(
-                        new DatabaseModule()
-//                        new RepositoryModule(),
-//                        new ServiceModule(),
+                        new DatabaseModule(),
+                        new RepositoryModule(),
+                        new ServiceModule()
 //                        new PresentationModule()
                 );
 
                 // TODO: exception handling for the storage
                 injector.getInstance(DatabaseInitializer.class).init();
-                injector.getInstance(MainView.class).setVisible(true);
+                
+                if (args.length > 0)
+                    switch(args[0]) {
+                        case "doctor" -> new DoctorAppContext(injector).start();
+                        case "patient", "default" -> new PatientAppContext(injector).start();
+                    }
+                else new PatientAppContext(injector).start();
             } catch (Exception e) {
-                showErrorDialog(e);
+                e.printStackTrace();
+                showExceptionDialog(e, "Failed to start", JOptionPane.ERROR_MESSAGE);
             }
         });
     }
 
-    private static void showErrorDialog(Exception e) {
+    public static void showExceptionDialog(Exception e, String title, int type) {
         JLabel label = new JLabel("Error details:");
         label.setAlignmentX(java.awt.Component.LEFT_ALIGNMENT);
 
@@ -65,8 +78,8 @@ public class PatientManagement {
         JOptionPane.showMessageDialog(
                 null,
                 panel,
-                "Failed to start",
-                JOptionPane.ERROR_MESSAGE
+                title,
+                type
         );
     }
 }
