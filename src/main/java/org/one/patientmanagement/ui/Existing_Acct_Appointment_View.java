@@ -144,18 +144,14 @@ public class Existing_Acct_Appointment_View extends javax.swing.JPanel {
                         .addComponent(Patient_Age, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 88, Short.MAX_VALUE))
             .addGroup(Patients_ProfileLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(Patients_ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Patients_ProfileLayout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(Patient_Bday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(25, 25, 25)
                         .addComponent(Patient_Add, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(Patients_ProfileLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Profile_Note))
-                    .addGroup(Patients_ProfileLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(Profile)))
+                    .addComponent(Profile_Note)
+                    .addComponent(Profile))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Patients_ProfileLayout.setVerticalGroup(
@@ -432,7 +428,7 @@ public class Existing_Acct_Appointment_View extends javax.swing.JPanel {
                     .addComponent(Staff)
                     .addComponent(Service_Type)
                     .addComponent(Doctor, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(242, Short.MAX_VALUE))
+                .addContainerGap(235, Short.MAX_VALUE))
         );
         Appt_DoctorLayout.setVerticalGroup(
             Appt_DoctorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -490,7 +486,7 @@ public class Existing_Acct_Appointment_View extends javax.swing.JPanel {
             .addGroup(ScrollableLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(Appt_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(376, Short.MAX_VALUE))
         );
 
         add(Scrollable, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, 500, 470));

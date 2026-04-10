@@ -74,61 +74,30 @@ public class New_Acct_Appointment extends javax.swing.JPanel {
 
         Service_Panel.setOpaque(false);
         Service_Panel.setPreferredSize(new java.awt.Dimension(280, 350));
-        Service_Panel.setLayout(new java.awt.GridBagLayout());
+        Service_Panel.setLayout(new java.awt.GridLayout(4, 0));
 
         General_Button.setBackground(new java.awt.Color(114, 87, 98));
         General_Button.setText("General Checkup");
         General_Button.setPreferredSize(new java.awt.Dimension(530, 65));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 455;
-        gridBagConstraints.ipady = 42;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(15, 9, 0, 0);
-        Service_Panel.add(General_Button, gridBagConstraints);
+        Service_Panel.add(General_Button);
 
         Pedia_Button.setBackground(new java.awt.Color(250, 234, 238));
         Pedia_Button.setText("Pediatrics");
         Pedia_Button.setPreferredSize(new java.awt.Dimension(530, 65));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 455;
-        gridBagConstraints.ipady = 42;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(15, 9, 0, 0);
-        Service_Panel.add(Pedia_Button, gridBagConstraints);
-        Pedia_Button.getAccessibleContext().setAccessibleName("Pediatrics");
+        Service_Panel.add(Pedia_Button);
 
         Counseling_Button.setBackground(new java.awt.Color(250, 234, 238));
         Counseling_Button.setText("Counseling");
         Counseling_Button.setPreferredSize(new java.awt.Dimension(530, 65));
         Counseling_Button.addActionListener(this::Counseling_ButtonActionPerformed);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = 455;
-        gridBagConstraints.ipady = 42;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 35, 0, 0);
-        Service_Panel.add(Counseling_Button, gridBagConstraints);
+        Service_Panel.add(Counseling_Button);
 
         Phy_Med_Exam_Button.setBackground(new java.awt.Color(250, 234, 238));
         Phy_Med_Exam_Button.setText("Physical / Medical Examination");
         Phy_Med_Exam_Button.setPreferredSize(new java.awt.Dimension(530, 65));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.ipadx = 455;
-        gridBagConstraints.ipady = 42;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(18, 57, 64, 53);
-        Service_Panel.add(Phy_Med_Exam_Button, gridBagConstraints);
+        Service_Panel.add(Phy_Med_Exam_Button);
 
-        add(Service_Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 740, 390));
+        add(Service_Panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, 450, 240));
 
         Cancel_Continue_Button.setLayout(new java.awt.GridBagLayout());
 

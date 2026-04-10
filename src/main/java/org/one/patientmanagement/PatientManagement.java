@@ -13,7 +13,6 @@ import org.one.patientmanagement.repository.RepositoryModule;
 import org.one.patientmanagement.service.ServiceModule;
 import org.one.patientmanagement.storage.DatabaseInitializer;
 import org.one.patientmanagement.storage.DatabaseModule;
-import org.one.patientmanagement.ui.MainView;
 import org.one.patientmanagement.ui.PresentationModule;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;

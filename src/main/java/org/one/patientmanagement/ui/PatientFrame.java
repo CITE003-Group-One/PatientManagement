@@ -28,28 +28,12 @@ public class PatientFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        serviceSelectionView1 = new org.one.patientmanagement.ui.view.ServiceSelectionView();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("Patient");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(605, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(557, 557, 557))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(376, 376, 376)
-                .addComponent(jLabel1)
-                .addContainerGap(408, Short.MAX_VALUE))
-        );
+        setTitle("Patient View");
+        getContentPane().setLayout(new java.awt.GridLayout());
+        getContentPane().add(serviceSelectionView1);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -80,6 +64,6 @@ public class PatientFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private org.one.patientmanagement.ui.view.ServiceSelectionView serviceSelectionView1;
     // End of variables declaration//GEN-END:variables
 }

@@ -92,9 +92,7 @@ public class New_Acct_Scheduling extends javax.swing.JPanel {
         User_Bday = new javax.swing.JLabel();
         Bday_TextField = new javax.swing.JTextField();
         User_Sex = new javax.swing.JLabel();
-        Sex_List = new javax.swing.JComboBox<>();
         User_BloodType = new javax.swing.JLabel();
-        BloodType_List = new javax.swing.JComboBox<>();
         Continue_Button = new javax.swing.JButton();
         Cancel_button = new javax.swing.JButton();
         Back_button = new javax.swing.JButton();
@@ -339,7 +337,7 @@ public class New_Acct_Scheduling extends javax.swing.JPanel {
                 .addComponent(Both_queue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Both_Sched_Queue)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         Queue_colorLayout.setVerticalGroup(
             Queue_colorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -385,7 +383,7 @@ public class New_Acct_Scheduling extends javax.swing.JPanel {
                 .addGroup(Selecting_DayLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Selecting_DayLayout.createSequentialGroup()
                         .addComponent(Day_Panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 629, Short.MAX_VALUE))
                     .addComponent(Day_Queue_Nav, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -858,26 +856,11 @@ public class New_Acct_Scheduling extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
         Bday_Sex_Blood.add(User_Sex, gridBagConstraints);
 
-        Sex_List.setBackground(new java.awt.Color(250, 234, 238));
-        Sex_List.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
-        Sex_List.setSelectedItem(Male, Female);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        Bday_Sex_Blood.add(Sex_List, gridBagConstraints);
-
         User_BloodType.setText("Blood Type");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 4;
         Bday_Sex_Blood.add(User_BloodType, gridBagConstraints);
-
-        BloodType_List.setBackground(new java.awt.Color(250, 234, 238));
-        BloodType_List.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A Positive", "A Negative", "B Positive", "B Negative", "O Positive", "O Negative", "AB Positive", "AB Negative" }));
-        BloodType_List.setSelectedItem(O Positive);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 5;
-        Bday_Sex_Blood.add(BloodType_List, gridBagConstraints);
 
         Set_Profile.add(Bday_Sex_Blood, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 330, 150));
 
@@ -962,7 +945,6 @@ public class New_Acct_Scheduling extends javax.swing.JPanel {
     private javax.swing.JPanel Bday_Sex_Blood;
     private javax.swing.JTextField Bday_TextField;
     private javax.swing.JPanel Bilog;
-    private javax.swing.JComboBox<String> BloodType_List;
     private javax.swing.JPanel Both;
     private javax.swing.JLabel Both_Sched_Queue;
     private javax.swing.JPanel Both_queue;
@@ -1010,7 +992,6 @@ public class New_Acct_Scheduling extends javax.swing.JPanel {
     private javax.swing.JPanel Selecting_Day;
     private javax.swing.JPanel Set_Acct;
     private javax.swing.JPanel Set_Profile;
-    private javax.swing.JComboBox<String> Sex_List;
     private javax.swing.JButton Take_Photo;
     private javax.swing.JPanel Timezone;
     private javax.swing.JLabel User_Address;
