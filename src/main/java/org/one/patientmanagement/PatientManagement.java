@@ -35,7 +35,9 @@ public class PatientManagement {
 
                 // TODO: exception handling for the storage
                 injector.getInstance(DatabaseInitializer.class).init();
-                injector.getInstance(MainView.class).setVisible(true);
+                
+                // TODO: apply dependency injection
+                new MainView().setVisible(true);
             } catch (Exception e) {
                 showErrorDialog(e);
             }
