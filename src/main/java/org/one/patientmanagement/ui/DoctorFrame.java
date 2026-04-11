@@ -4,19 +4,41 @@
  */
 package org.one.patientmanagement.ui;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import org.one.patientmanagement.ui.controller.doctor.DashboardController;
+import org.one.patientmanagement.ui.controller.doctor.QueueController;
+import org.one.patientmanagement.ui.controller.navigation.doctor.DoctorNavigator;
+import org.one.patientmanagement.ui.controller.navigation.doctor.DoctorRoute;
+import org.one.patientmanagement.ui.view.DoctorView;
+
 /**
  *
  * @author KAROL JOHN
  */
 public class DoctorFrame extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DoctorFrame.class.getName());
 
     /**
      * Creates new form DoctorFrame
      */
-    public DoctorFrame() {
+    @Inject
+    public DoctorFrame(DoctorView view, DoctorNavigator navigator,
+            Provider<DashboardController> dashboardController,
+            Provider<QueueController> queueController
+    ) {
         initComponents();
+
+        navigator.register(DoctorRoute.DASHBOARD, dashboardController);
+        navigator.register(DoctorRoute.QUEUE, queueController);
+        
+        navigator.goTo(DoctorRoute.DASHBOARD); // first page
+
+        view.getNavigationSidebar().setNavigator(navigator);
+
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
+        getContentPane().add(view);
     }
 
     /**
@@ -29,45 +51,11 @@ public class DoctorFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1169, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 775, Short.MAX_VALUE)
-        );
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new DoctorFrame().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

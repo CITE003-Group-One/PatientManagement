@@ -1,60 +1,72 @@
 package org.one.patientmanagement.ui.controller.navigation;
 
+import com.google.inject.Provider;
 import java.awt.CardLayout;
+import java.awt.Component;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import org.one.patientmanagement.PatientManagement;
+import org.one.patientmanagement.ui.controller.AbstractController;
 
-public abstract class AbstractNavigator<R extends Enum> {
+public abstract class AbstractNavigator<
+        R extends Enum<R>,
+        C extends AbstractController<?, ?>
+> {
 
     private final CardLayout layout;
     private final JPanel container;
+    private final Map<R, Provider<? extends C>> registry = new HashMap<>();
 
     protected AbstractNavigator(CardLayout layout, JPanel container) {
         this.layout = layout;
         this.container = container;
     }
 
-    /**
-     * Navigate to a route
-     */
     public void goTo(R route) {
         String key = getRouteKey(route);
-        beforeNavigate(route);
-        layout.show(container, key);
-        afterNavigate(route);
+
+        boolean alreadyAdded = Arrays.stream(container.getComponents())
+                .anyMatch(c -> key.equals(c.getName()));
+
+        try {
+            if (!alreadyAdded) {
+                Provider<C> provider = (Provider<C>) registry.get(route);
+                if (provider == null) {
+                    throw new IllegalArgumentException("No controller registered for route: " + route);
+                }
+                
+                C controller = provider.get();
+                var panel = (Component) controller.getView();
+                
+                panel.setName(key);
+                container.add(panel, key);
+                
+                onControllerCreated(route, controller);
+            }
+            
+            beforeNavigate(route);
+            layout.show(container, key);
+            afterNavigate(route);
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            PatientManagement.showExceptionDialog(exception, "Invalid navigation", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
-    /**
-     * Convert route → CardLayout key
-     */
     protected String getRouteKey(R route) {
         return route.name();
     }
 
-    /**
-     * Hook: before navigation
-     */
     protected void beforeNavigate(R route) {}
-
-    /**
-     * Hook: after navigation
-     */
     protected void afterNavigate(R route) {}
 
-    /**
-     * Register a view
-     */
-    public void register(R route, JPanel panel) {
-        container.add(panel, getRouteKey(route));
-    }
+    protected void onControllerCreated(R route, C controller) {}
 
-    /**
-     * Optional accessors (protected for subclasses)
-     */
-    protected JPanel getContainer() {
-        return container;
-    }
-
-    protected CardLayout getLayout() {
-        return layout;
+    public void register(R route, Provider<? extends C> provider) {
+        registry.put(route, provider);
     }
 }

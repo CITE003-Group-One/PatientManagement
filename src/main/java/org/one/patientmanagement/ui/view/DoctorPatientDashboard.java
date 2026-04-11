@@ -4,17 +4,43 @@
  */
 package org.one.patientmanagement.ui.view;
 
+import org.one.patientmanagement.ui.controller.doctor.PatientDashboardController;
+import java.time.format.DateTimeFormatter;
+import org.one.patientmanagement.domain.enums.VitalsType;
+import org.one.patientmanagement.domain.models.Patient;
+import org.one.patientmanagement.domain.models.Vitals;
+import org.one.patientmanagement.ui.components.InfoBox;
+import org.one.patientmanagement.ui.controller.ControllerBound;
+
 /**
  *
  * @author KAROL JOHN
  */
-public class DoctorPatientDashboard extends javax.swing.JPanel {
+public class DoctorPatientDashboard extends javax.swing.JPanel implements ControllerBound<PatientDashboardController> {
+
+    private PatientDashboardController controller;
 
     /**
      * Creates new form DoctorPatientDashboard
      */
     public DoctorPatientDashboard() {
         initComponents();
+    }
+    
+    public void setData(Patient patient, Vitals vitals) {
+        basicInformationList.add(new InfoBox("First Name", patient.firstName()));
+        basicInformationList.add(new InfoBox("Last Name", patient.lastName()));
+        basicInformationList.add(new InfoBox("Address", patient.address()));
+        basicInformationList.add(new InfoBox("Birthday", patient.birthday().format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))));
+        basicInformationList.add(new InfoBox("Age", String.valueOf(patient.getAge()) + " y/o"));
+        basicInformationList.add(new InfoBox("Sex", patient.sex()));
+        basicInformationList.add(new InfoBox("Blood type", patient.bloodType()));
+        fullNameLabel.setText(patient.firstName() + " " + patient.lastName());
+        
+        vitalsCard1.setVitals(VitalsType.HEART_RATE, vitals);
+        vitalsCard2.setVitals(VitalsType.BLOOD_PRESSURE, vitals);
+        vitalsCard3.setVitals(VitalsType.TEMPERATURE, vitals);
+        vitalsCard4.setVitals(VitalsType.WEIGHT, vitals);
     }
 
     /**
@@ -52,7 +78,7 @@ public class DoctorPatientDashboard extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        fullNameLabel = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 0));
         jPanel17 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -61,7 +87,6 @@ public class DoctorPatientDashboard extends javax.swing.JPanel {
         jPanel15 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         contactsList = new javax.swing.JPanel();
-        topBar1 = new org.one.patientmanagement.ui.components.TopBar();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -229,10 +254,10 @@ public class DoctorPatientDashboard extends javax.swing.JPanel {
         jPanel12.setBackground(new java.awt.Color(255, 216, 231));
         jPanel12.setLayout(new java.awt.GridLayout());
 
-        jLabel4.setFont(new java.awt.Font("Manrope SemiBold", 0, 14)); // NOI18N
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Karol John Dela Cruz");
-        jPanel12.add(jLabel4);
+        fullNameLabel.setFont(new java.awt.Font("Manrope SemiBold", 0, 14)); // NOI18N
+        fullNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        fullNameLabel.setText("Karol John Dela Cruz");
+        jPanel12.add(fullNameLabel);
 
         jPanel11.add(jPanel12);
         jPanel11.add(filler1);
@@ -265,7 +290,6 @@ public class DoctorPatientDashboard extends javax.swing.JPanel {
         jSplitPane1.setLeftComponent(jPanel11);
 
         add(jSplitPane1, java.awt.BorderLayout.CENTER);
-        add(topBar1, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -277,9 +301,9 @@ public class DoctorPatientDashboard extends javax.swing.JPanel {
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
+    private javax.swing.JLabel fullNameLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
@@ -300,10 +324,14 @@ public class DoctorPatientDashboard extends javax.swing.JPanel {
     private javax.swing.JButton prescriptionAddBtn;
     private org.one.patientmanagement.ui.components.FillWidthPanel prescriptionList;
     private javax.swing.JPanel prescriptionPanel;
-    private org.one.patientmanagement.ui.components.TopBar topBar1;
     private org.one.patientmanagement.ui.components.VitalsCard vitalsCard1;
     private org.one.patientmanagement.ui.components.VitalsCard vitalsCard2;
     private org.one.patientmanagement.ui.components.VitalsCard vitalsCard3;
     private org.one.patientmanagement.ui.components.VitalsCard vitalsCard4;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setController(PatientDashboardController controller) {
+        this.controller = controller;
+    }
 }

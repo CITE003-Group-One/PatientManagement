@@ -37,7 +37,7 @@ public class PatientManagement {
                         new ServiceModule()
 //                        new PresentationModule()
                 );
-
+                
                 // TODO: exception handling for the storage
                 injector.getInstance(DatabaseInitializer.class).init();
                 

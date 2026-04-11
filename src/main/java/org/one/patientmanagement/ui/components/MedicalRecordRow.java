@@ -120,7 +120,7 @@ public class MedicalRecordRow extends javax.swing.JPanel {
         iconPanel.setMinimumSize(new java.awt.Dimension(35, 35));
         iconPanel.setName(""); // NOI18N
         iconPanel.setPreferredSize(new java.awt.Dimension(35, 35));
-        iconPanel.setLayout(new java.awt.GridLayout());
+        iconPanel.setLayout(new java.awt.GridLayout(1, 0));
 
         icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         icon.setText("Icon");

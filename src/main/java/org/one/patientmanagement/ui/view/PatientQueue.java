@@ -4,11 +4,14 @@
  */
 package org.one.patientmanagement.ui.view;
 
+import org.one.patientmanagement.ui.controller.ControllerBound;
+import org.one.patientmanagement.ui.controller.doctor.QueueController;
+
 /**
  *
  * @author KAROL JOHN
  */
-public class PatientQueue extends javax.swing.JPanel {
+public class PatientQueue extends javax.swing.JPanel implements ControllerBound<QueueController> {
 
     /**
      * Creates new form PatientQueue
@@ -27,11 +30,6 @@ public class PatientQueue extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jSplitPane1 = new javax.swing.JSplitPane();
-        navigationSidebar1 = new org.one.patientmanagement.ui.components.NavigationSidebar();
-        jPanel1 = new javax.swing.JPanel();
-        topBar1 = new org.one.patientmanagement.ui.components.TopBar();
-        jScrollPane1 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -47,16 +45,8 @@ public class PatientQueue extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
 
-        setLayout(new java.awt.GridLayout());
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
-        jSplitPane1.setDividerSize(0);
-        jSplitPane1.setEnabled(false);
-        jSplitPane1.setLeftComponent(navigationSidebar1);
-
-        jPanel1.setLayout(new java.awt.BorderLayout());
-        jPanel1.add(topBar1, java.awt.BorderLayout.PAGE_START);
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(40, 40, 40, 40));
         jPanel2.setLayout(new java.awt.BorderLayout(0, 20));
 
         jLabel1.setFont(new java.awt.Font("Poppins Medium", 0, 31)); // NOI18N
@@ -93,7 +83,7 @@ public class PatientQueue extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         jPanel3.add(jPanel4, gridBagConstraints);
 
-        divider.setBackground(new java.awt.Color(255, 51, 51));
+        divider.setBackground(new java.awt.Color(212, 194, 200));
         divider.setPreferredSize(new java.awt.Dimension(1, 100));
 
         javax.swing.GroupLayout dividerLayout = new javax.swing.GroupLayout(divider);
@@ -104,7 +94,7 @@ public class PatientQueue extends javax.swing.JPanel {
         );
         dividerLayout.setVerticalGroup(
             dividerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 706, Short.MAX_VALUE)
+            .addGap(0, 562, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -147,13 +137,7 @@ public class PatientQueue extends javax.swing.JPanel {
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
 
-        jScrollPane1.setViewportView(jPanel2);
-
-        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        jSplitPane1.setRightComponent(jPanel1);
-
-        add(jSplitPane1);
+        add(jPanel2);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -166,16 +150,16 @@ public class PatientQueue extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSplitPane jSplitPane1;
-    private org.one.patientmanagement.ui.components.NavigationSidebar navigationSidebar1;
-    private org.one.patientmanagement.ui.components.TopBar topBar1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setController(QueueController controller) {
+        // TODO: set controller
+    }
 }

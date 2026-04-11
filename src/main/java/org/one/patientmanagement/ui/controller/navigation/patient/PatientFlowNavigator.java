@@ -3,6 +3,7 @@ package org.one.patientmanagement.ui.controller.navigation.patient;
 import java.awt.CardLayout;
 import java.util.Stack;
 import javax.swing.JPanel;
+import org.one.patientmanagement.ui.controller.AbstractController;
 import org.one.patientmanagement.ui.controller.navigation.AbstractNavigator;
 import org.one.patientmanagement.ui.controller.navigation.flow.FlowState;
 import org.one.patientmanagement.ui.controller.navigation.flow.FlowStep;
@@ -12,7 +13,7 @@ import org.one.patientmanagement.ui.controller.navigation.flow.FlowStep;
  * @param <R> route
  * @param <S> arbitrary state model
  */
-public class PatientFlowNavigator<R extends Enum<R>, S> extends AbstractNavigator<R> {
+public class PatientFlowNavigator<R extends Enum<R>, S, C extends AbstractController<?, ?>> extends AbstractNavigator<R, C> {
 
     private final Stack<FlowStep<R,S>> history = new Stack<>();
     private final FlowState<S> state;

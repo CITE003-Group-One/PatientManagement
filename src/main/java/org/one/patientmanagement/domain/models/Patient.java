@@ -9,7 +9,8 @@ import java.time.Period;
 public record Patient(
         long id,
         Long accountId,
-        String name,
+        String firstName,
+        String lastName,
         String sex,
         LocalDate birthday,
         String bloodType,
@@ -20,9 +21,6 @@ public record Patient(
     public Patient {
         if (accountId == null || accountId <= 0) {
             throw new IllegalArgumentException("accountId is required");
-        }
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("name is required");
         }
         if (birthday == null) {
             throw new IllegalArgumentException("birthday is required");

@@ -29,7 +29,7 @@ public class PatientRepositoryImpl implements PatientRepository {
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setLong(1, patient.accountId());
-            stmt.setString(2, patient.name());
+//            stmt.setString(2, patient.name()); FIXME: implement first name, last name basis
             stmt.setString(3, patient.sex());
             stmt.setString(4, patient.birthday().toString());
             stmt.setString(5, patient.bloodType());
@@ -46,7 +46,9 @@ public class PatientRepositoryImpl implements PatientRepository {
                 return new Patient(
                     id,
                     patient.accountId(),
-                    patient.name(),
+//                    patient.name(), FIXME: implement first name, last name basis
+                        null,
+                        null,
                     patient.sex(),
                     patient.birthday(),
                     patient.bloodType(),
@@ -86,7 +88,7 @@ public class PatientRepositoryImpl implements PatientRepository {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, patient.accountId());
-            stmt.setString(2, patient.name());
+//            stmt.setString(2, patient.name()); FIXME: implement first name, last name basis
             stmt.setString(3, patient.sex());
             stmt.setString(4, patient.birthday().toString());
             stmt.setString(5, patient.bloodType());
@@ -147,7 +149,8 @@ public class PatientRepositoryImpl implements PatientRepository {
         return new Patient(
             rs.getLong("id"),
             rs.getLong("account_id"),
-            rs.getString("name"),
+//            rs.getString("name"), FIXME: implement first name, last name basis
+                null, null,
             rs.getString("sex"),
             java.time.LocalDate.parse(rs.getString("birthday")),
             rs.getString("blood_type"),

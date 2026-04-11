@@ -1,10 +1,9 @@
 package org.one.patientmanagement.ui.view;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import org.one.patientmanagement.ui.controller.ControllerBound;
+import org.one.patientmanagement.ui.controller.doctor.DashboardController;
 
-public class DoctorDashboard extends javax.swing.JPanel {
+public class DoctorDashboard extends javax.swing.JPanel implements ControllerBound<DashboardController> {
 
     public DoctorDashboard() {
         initComponents();
@@ -18,20 +17,19 @@ public class DoctorDashboard extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel2 = new javax.swing.JPanel();
+        fillWidthPanel1 = new org.one.patientmanagement.ui.components.FillWidthPanel();
         jPanel3 = new javax.swing.JPanel();
         doctorStatsCard2 = new org.one.patientmanagement.ui.components.DoctorStatsCard();
         doctorStatsCard3 = new org.one.patientmanagement.ui.components.DoctorStatsCard();
         doctorStatsCard4 = new org.one.patientmanagement.ui.components.DoctorStatsCard();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 40), new java.awt.Dimension(0, 40), new java.awt.Dimension(0, 40));
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 40), new java.awt.Dimension(0, 40), new java.awt.Dimension(0, 40));
         jPanel4 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         todaySchedule1 = new org.one.patientmanagement.ui.components.TodaySchedule();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 40), new java.awt.Dimension(0, 40), new java.awt.Dimension(0, 40));
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 40), new java.awt.Dimension(0, 40), new java.awt.Dimension(0, 40));
         scheduleOverviewPanel1 = new org.one.patientmanagement.ui.components.ScheduleOverviewPanel();
-        topBar2 = new org.one.patientmanagement.ui.components.TopBar();
-        navigationSidebar1 = new org.one.patientmanagement.ui.components.NavigationSidebar();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel2 = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(255, 248, 248));
         setMaximumSize(new java.awt.Dimension(1200, 800));
@@ -43,9 +41,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(40, 40, 40, 40));
-        jPanel2.setOpaque(false);
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
+        fillWidthPanel1.setLayout(new javax.swing.BoxLayout(fillWidthPanel1, javax.swing.BoxLayout.Y_AXIS));
 
         jPanel3.setMinimumSize(new java.awt.Dimension(0, 150));
         jPanel3.setName(""); // NOI18N
@@ -55,8 +51,8 @@ public class DoctorDashboard extends javax.swing.JPanel {
         jPanel3.add(doctorStatsCard3);
         jPanel3.add(doctorStatsCard4);
 
-        jPanel2.add(jPanel3);
-        jPanel2.add(filler1);
+        fillWidthPanel1.add(jPanel3);
+        fillWidthPanel1.add(filler2);
 
         jPanel4.setMaximumSize(new java.awt.Dimension(2147483647, 230));
         jPanel4.setMinimumSize(new java.awt.Dimension(299, 230));
@@ -85,17 +81,20 @@ public class DoctorDashboard extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         jPanel4.add(todaySchedule1, gridBagConstraints);
 
-        jPanel2.add(jPanel4);
-        jPanel2.add(filler2);
-        jPanel2.add(scheduleOverviewPanel1);
+        fillWidthPanel1.add(jPanel4);
+        fillWidthPanel1.add(filler1);
+        fillWidthPanel1.add(scheduleOverviewPanel1);
 
+        jPanel1.add(fillWidthPanel1, java.awt.BorderLayout.PAGE_START);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(40, 40, 40, 40));
+        jPanel2.setOpaque(false);
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
         jScrollPane1.setViewportView(jPanel2);
 
         jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-        jPanel1.add(topBar2, java.awt.BorderLayout.PAGE_START);
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
-        add(navigationSidebar1, java.awt.BorderLayout.WEST);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -103,6 +102,7 @@ public class DoctorDashboard extends javax.swing.JPanel {
     private org.one.patientmanagement.ui.components.DoctorStatsCard doctorStatsCard2;
     private org.one.patientmanagement.ui.components.DoctorStatsCard doctorStatsCard3;
     private org.one.patientmanagement.ui.components.DoctorStatsCard doctorStatsCard4;
+    private org.one.patientmanagement.ui.components.FillWidthPanel fillWidthPanel1;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.JLabel jLabel1;
@@ -111,9 +111,12 @@ public class DoctorDashboard extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private org.one.patientmanagement.ui.components.NavigationSidebar navigationSidebar1;
     private org.one.patientmanagement.ui.components.ScheduleOverviewPanel scheduleOverviewPanel1;
     private org.one.patientmanagement.ui.components.TodaySchedule todaySchedule1;
-    private org.one.patientmanagement.ui.components.TopBar topBar2;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setController(DashboardController controller) {
+        // TODO: set controller
+    }
 }

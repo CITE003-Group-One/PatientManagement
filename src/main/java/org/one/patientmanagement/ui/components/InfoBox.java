@@ -16,21 +16,18 @@ public class InfoBox extends javax.swing.JPanel {
     /**
      * Creates new form InfoBox
      */
-    public InfoBox() {
+    public InfoBox(String label, String value) {
         initComponents();
 
-        FontMetrics fm = value.getFontMetrics(value.getFont());
+        FontMetrics fm = this.value.getFontMetrics(this.value.getFont());
         int h = fm.getHeight() * 2 + 6;
 
-        value.setMaximumSize(new Dimension(200, h));
-        value.setMinimumSize(new Dimension(200, h));
-        value.setPreferredSize(new Dimension(200, h));
-    }
-
-    public void setData(String label, String value) {
+        this.value.setMaximumSize(new Dimension(200, h));
+        this.value.setMinimumSize(new Dimension(200, h));
+        this.value.setPreferredSize(new Dimension(200, h));
+        
         this.label.setText(label);
         this.value.setText("<html>" + value + "</html>");
-
     }
 
     /**
