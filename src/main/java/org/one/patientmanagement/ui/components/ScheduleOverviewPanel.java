@@ -40,7 +40,6 @@ public class ScheduleOverviewPanel extends JPanel {
         divider.setPreferredSize(new Dimension(1, 0));
         gbc.gridx = 1;
         gbc.weightx = 0; // Divider doesn't grow
-        gbc.insets = new Insets(50, 0, 50, 0); // Padding for the line
         add(divider, gbc);
 
         // 4. Add Afternoon Block (Right side)

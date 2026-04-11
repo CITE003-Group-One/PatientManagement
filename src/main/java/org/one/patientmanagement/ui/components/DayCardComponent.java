@@ -4,12 +4,15 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public class DayCardComponent extends JPanel {
+public final class DayCardComponent extends JPanel {
     private JLabel monthLbl, dateNumLbl, dayNameLbl;
     private boolean isSelected;
     
-    private final Color activeColor = Color.decode("#894A69"); 
-    private final Color inactiveColor = Color.decode("#F4E4E8"); 
+    private final Color secondaryColor = Color.decode("#894A69"); 
+    private final Color defaultLabelColor = Color.decode("#21191C");
+    private final Color todayCircleColor = Color.decode("#894a69");
+    private final Color defaultCardLabel = Color.decode("#F4E4E8"); 
+    private boolean isToday;
 
     public DayCardComponent(String month, String date, String day, boolean isSelected) {
         this.isSelected = isSelected;
@@ -20,7 +23,8 @@ public class DayCardComponent extends JPanel {
         this.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         setupUI(month, date, day);
-        setSelected(isSelected); 
+//        setSelected(isSelected); 
+        setToday(isSelected);
     }
 
     private void setupUI(String m, String d, String dy) {
@@ -32,25 +36,40 @@ public class DayCardComponent extends JPanel {
         dateNumLbl = new JLabel(d, SwingConstants.CENTER);
         dayNameLbl = new JLabel(dy, SwingConstants.CENTER);
 
-        // Standardized font sizes for 1200x800
-        monthLbl.setFont(new Font("Poppins", Font.PLAIN, 11));
-        dateNumLbl.setFont(new Font("Poppins", Font.BOLD, 22));
-        dayNameLbl.setFont(new Font("Poppins", Font.PLAIN, 11));
+        monthLbl.setFont(new Font("Manrope Medium", Font.PLAIN, 14));
+        dateNumLbl.setFont(new Font("Manrope Semibold", Font.PLAIN, 16));
+        dayNameLbl.setFont(new Font("Manrope Medium", Font.PLAIN, 14));
+        
+        colorAllLabel(defaultLabelColor);
 
         this.add(monthLbl);
         this.add(dateNumLbl);
         this.add(dayNameLbl);
     }
+    
+    public void setToday(boolean isToday) {
+        if (isToday) setSelected(false);
+        this.isToday = isToday;
+        
+        colorAllLabel(isToday ? secondaryColor : defaultLabelColor);
+        dateNumLbl.setForeground(isToday ? Color.WHITE : defaultLabelColor);
+        
+        repaint();
+    }
 
     public void setSelected(boolean selected) {
+        if (isSelected) setToday(false);
         this.isSelected = selected;
-        Color textColor = selected ? Color.WHITE : activeColor;
         
-        monthLbl.setForeground(textColor);
-        dateNumLbl.setForeground(textColor);
-        dayNameLbl.setForeground(textColor);
+        colorAllLabel(Color.WHITE);
         
-        repaint(); 
+        repaint();
+    }
+    
+    private void colorAllLabel(Color color) {
+        monthLbl.setForeground(color);
+        dateNumLbl.setForeground(color);
+        dayNameLbl.setForeground(color);
     }
 
     @Override
@@ -58,9 +77,26 @@ public class DayCardComponent extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
-        g2.setColor(isSelected ? activeColor : inactiveColor);
-        // Using 12px border-radius as requested
+        if (isToday) {
+            g2.setColor(Color.decode("#F1DEE4"));
+        } else if (isSelected) {
+            g2.setColor(Color.decode("#7F5539"));
+        }
+        else g2.setColor(defaultCardLabel);
+        
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), 12, 12);
+        
+        // Draw today circle behind the date label
+        if (isToday) {
+            // Calculate position of the middle row (dateNumLbl)
+            int rowHeight = getHeight() / 3;
+            int circleDiameter = 30;
+            int circleX = (getWidth() - circleDiameter) / 2;
+            int circleY = rowHeight + (rowHeight - circleDiameter) / 2; // vertically centered in middle row
+
+            g2.setColor(todayCircleColor);
+            g2.fillOval(circleX, circleY, circleDiameter, circleDiameter);
+        }
         
         g2.dispose();
     }

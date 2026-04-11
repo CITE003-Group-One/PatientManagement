@@ -2,10 +2,11 @@ package org.one.patientmanagement.ui.components;
 
 import java.awt.*;
 import javax.swing.*;
+import org.one.patientmanagement.domain.enums.Sex;
 
-public class PatientRow extends JPanel {
-    
-    public PatientRow() {
+public class PatientRecordRow extends JPanel {
+
+    public PatientRecordRow() {
         initComponents();
         applyFigmaStyles();
     }
@@ -15,6 +16,11 @@ public class PatientRow extends JPanel {
         name.setText(patientName);
         id.setText("ID: " + patientId);
         sex.setText(patientSex);
+        
+        switch(Sex.valueOf(patientSex)) {
+            case MALE -> setMale();
+            case FEMALE -> setFemale();
+        }
     }
 
     private void applyFigmaStyles() {
@@ -31,7 +37,22 @@ public class PatientRow extends JPanel {
 
         sex.setFont(new Font("Manrope", Font.PLAIN, 13));
         sex.setForeground(Color.decode("#21191C"));
+
     }
+
+    private void setMale() {
+        sexBadge.setBackground(Color.decode("#FFDBC7"));
+        sexText.setForeground(Color.decode("#643E24"));
+        repaint();
+    }
+
+    private void setFemale() {
+        sexBadge.setBackground(Color.decode("#B7F1BA"));
+        sexText.setForeground(Color.decode("#1B4D1E"));
+        repaint();
+    }
+    
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -46,7 +67,9 @@ public class PatientRow extends JPanel {
         name = new javax.swing.JLabel();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5));
         id = new javax.swing.JLabel();
-        statusBadgePanel1 = new org.one.patientmanagement.ui.components.StatusBadgePanel();
+        sexBadge = new javax.swing.JPanel();
+        sexText = new javax.swing.JLabel();
+        sex1 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(400, 50));
         setPreferredSize(new java.awt.Dimension(400, 50));
@@ -54,20 +77,19 @@ public class PatientRow extends JPanel {
 
         sex.setFont(new java.awt.Font("Manrope", 0, 13)); // NOI18N
         sex.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        sex.setText("Female");
-        sex.setMaximumSize(new java.awt.Dimension(50, 18));
-        sex.setMinimumSize(new java.awt.Dimension(50, 18));
-        sex.setPreferredSize(new java.awt.Dimension(50, 18));
+        sex.setText("01/12/2008");
+        sex.setMaximumSize(new java.awt.Dimension(100, 18));
+        sex.setMinimumSize(new java.awt.Dimension(100, 18));
+        sex.setPreferredSize(new java.awt.Dimension(100, 18));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
+        gridBagConstraints.weightx = 1.0;
         add(sex, gridBagConstraints);
 
         edit.setText("...");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         add(edit, gridBagConstraints);
@@ -114,11 +136,41 @@ public class PatientRow extends JPanel {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
         add(jPanel2, gridBagConstraints);
+
+        sexBadge.setMaximumSize(new java.awt.Dimension(60, 20));
+        sexBadge.setMinimumSize(new java.awt.Dimension(60, 20));
+        sexBadge.setPreferredSize(new java.awt.Dimension(60, 20));
+        sexBadge.setLayout(new java.awt.GridBagLayout());
+
+        sexText.setFont(new java.awt.Font("Manrope SemiBold", 0, 11)); // NOI18N
+        sexText.setText("Female");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.ipadx = 1;
+        gridBagConstraints.insets = new java.awt.Insets(0, 9, 0, 9);
+        sexBadge.add(sexText, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
-        add(statusBadgePanel1, gridBagConstraints);
+        add(sexBadge, gridBagConstraints);
+
+        sex1.setFont(new java.awt.Font("Manrope", 0, 13)); // NOI18N
+        sex1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sex1.setText("18 y/o");
+        sex1.setMaximumSize(new java.awt.Dimension(100, 18));
+        sex1.setMinimumSize(new java.awt.Dimension(100, 18));
+        sex1.setPreferredSize(new java.awt.Dimension(100, 18));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
+        add(sex1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -131,7 +183,9 @@ public class PatientRow extends JPanel {
     private javax.swing.JLabel name;
     private javax.swing.JLabel num;
     private javax.swing.JLabel sex;
-    private org.one.patientmanagement.ui.components.StatusBadgePanel statusBadgePanel1;
+    private javax.swing.JLabel sex1;
+    private javax.swing.JPanel sexBadge;
+    private javax.swing.JLabel sexText;
     // End of variables declaration//GEN-END:variables
 }
 

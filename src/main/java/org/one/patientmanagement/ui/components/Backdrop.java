@@ -82,7 +82,7 @@ public final class Backdrop extends javax.swing.JPanel {
         add(jLabel2, gridBagConstraints);
 
         badgePanel.setBackground(new java.awt.Color(255, 219, 199));
-        badgePanel.setLayout(new javax.swing.BoxLayout(badgePanel, javax.swing.BoxLayout.X_AXIS));
+        badgePanel.setLayout(new java.awt.GridBagLayout());
 
         jLabel1.setBackground(new java.awt.Color(255, 219, 199));
         jLabel1.setFont(new java.awt.Font("Poppins", 0, 31)); // NOI18N
@@ -94,7 +94,11 @@ public final class Backdrop extends javax.swing.JPanel {
         jLabel1.setMaximumSize(new java.awt.Dimension(500, 47));
         jLabel1.setMinimumSize(new java.awt.Dimension(500, 47));
         jLabel1.setPreferredSize(new java.awt.Dimension(300, 47));
-        badgePanel.add(jLabel1);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        badgePanel.add(jLabel1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

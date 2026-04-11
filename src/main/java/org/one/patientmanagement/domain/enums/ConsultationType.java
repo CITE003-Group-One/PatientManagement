@@ -2,5 +2,6 @@ package org.one.patientmanagement.domain.enums;
 
 public enum ConsultationType {
     GENERAL,
-    DIAGNOSIS
+    DIAGNOSIS,
+    REFERRAL
 }
