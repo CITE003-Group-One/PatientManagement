@@ -1,5 +1,6 @@
 package org.one.patientmanagement.repository;
 
+import java.time.DayOfWeek;
 import java.util.List;
 import javax.annotation.Nonnull;
 import org.one.patientmanagement.domain.enums.AppointmentBlock;
@@ -19,6 +20,8 @@ public interface AppointmentRepository extends Repository<Appointment> {
      * @throws IllegalArgumentException if both {@code patientId} and {@code doctorId} are {@code null}
      */
     List<Appointment> findAll(long patientId, long doctorId, @Nonnull AppointmentStatus... status) throws IllegalArgumentException;
+    
+    List<Appointment> findAllDay(long doctorId, DayOfWeek period, @Nonnull AppointmentStatus... status);
     
     List<Appointment> findByDoctor(long doctorId);
 

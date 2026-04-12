@@ -17,6 +17,9 @@ public class PatientSignUp extends javax.swing.JPanel {
         initComponents();
         
         submitButton.putClientProperty("FlatLaf.style", "arc: 999;");
+        
+        backdrop.setBadge("Start here");
+        backdrop.setHeading("<html><div style='width:400px;'><center>" + "Create your account" + "</center></div></html>");
     }
 
     /**
@@ -47,7 +50,7 @@ public class PatientSignUp extends javax.swing.JPanel {
         Existing_Email1 = new javax.swing.JLabel();
         jPasswordField1 = new javax.swing.JPasswordField();
         submitButton = new javax.swing.JButton();
-        backdrop2 = new org.one.patientmanagement.ui.components.Backdrop();
+        backdrop = new org.one.patientmanagement.ui.components.Backdrop();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -165,7 +168,7 @@ public class PatientSignUp extends javax.swing.JPanel {
         jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jSplitPane1.setRightComponent(jPanel1);
-        jSplitPane1.setLeftComponent(backdrop2);
+        jSplitPane1.setLeftComponent(backdrop);
 
         add(jSplitPane1);
     }// </editor-fold>//GEN-END:initComponents
@@ -189,7 +192,7 @@ public class PatientSignUp extends javax.swing.JPanel {
     private javax.swing.JLabel Existing_Email2;
     private javax.swing.JLabel Note;
     private javax.swing.JTextField Username_Field;
-    private org.one.patientmanagement.ui.components.Backdrop backdrop2;
+    private org.one.patientmanagement.ui.components.Backdrop backdrop;
     private javax.swing.JPanel formContainer;
     private javax.swing.JPanel formPanel;
     private javax.swing.JMenuItem jMenuItem1;

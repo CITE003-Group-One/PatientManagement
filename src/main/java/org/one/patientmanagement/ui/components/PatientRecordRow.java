@@ -11,12 +11,13 @@ public class PatientRecordRow extends JPanel {
         applyFigmaStyles();
     }
 
-    public void setPatientData(int number, String patientName, String patientId, String patientSex) {
-        num.setText(String.valueOf(number));
+    public void setPatientData(String patientName, String patientId, String patientSex, String patientBirthday) {
         name.setText(patientName);
         id.setText("ID: " + patientId);
-        sex.setText(patientSex);
+        sexText.setText(patientSex);
+        birthday.setText(patientBirthday);
         
+        // FIXME can fail parsing sex
         switch(Sex.valueOf(patientSex)) {
             case MALE -> setMale();
             case FEMALE -> setFemale();
@@ -35,8 +36,8 @@ public class PatientRecordRow extends JPanel {
         id.setFont(new Font("Manrope", Font.PLAIN, 11));
         id.setForeground(Color.decode("#504348"));
 
-        sex.setFont(new Font("Manrope", Font.PLAIN, 13));
-        sex.setForeground(Color.decode("#21191C"));
+        birthday.setFont(new Font("Manrope", Font.PLAIN, 13));
+        birthday.setForeground(Color.decode("#21191C"));
 
     }
 
@@ -59,7 +60,7 @@ public class PatientRecordRow extends JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        sex = new javax.swing.JLabel();
+        birthday = new javax.swing.JLabel();
         edit = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         num = new javax.swing.JLabel();
@@ -75,17 +76,17 @@ public class PatientRecordRow extends JPanel {
         setPreferredSize(new java.awt.Dimension(400, 50));
         setLayout(new java.awt.GridBagLayout());
 
-        sex.setFont(new java.awt.Font("Manrope", 0, 13)); // NOI18N
-        sex.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        sex.setText("01/12/2008");
-        sex.setMaximumSize(new java.awt.Dimension(100, 18));
-        sex.setMinimumSize(new java.awt.Dimension(100, 18));
-        sex.setPreferredSize(new java.awt.Dimension(100, 18));
+        birthday.setFont(new java.awt.Font("Manrope", 0, 13)); // NOI18N
+        birthday.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        birthday.setText("01/12/2008");
+        birthday.setMaximumSize(new java.awt.Dimension(100, 18));
+        birthday.setMinimumSize(new java.awt.Dimension(100, 18));
+        birthday.setPreferredSize(new java.awt.Dimension(100, 18));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.weightx = 1.0;
-        add(sex, gridBagConstraints);
+        add(birthday, gridBagConstraints);
 
         edit.setText("...");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -175,6 +176,7 @@ public class PatientRecordRow extends JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel birthday;
     private javax.swing.JButton edit;
     private javax.swing.Box.Filler filler2;
     private javax.swing.JLabel id;
@@ -182,7 +184,6 @@ public class PatientRecordRow extends JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel name;
     private javax.swing.JLabel num;
-    private javax.swing.JLabel sex;
     private javax.swing.JLabel sex1;
     private javax.swing.JPanel sexBadge;
     private javax.swing.JLabel sexText;

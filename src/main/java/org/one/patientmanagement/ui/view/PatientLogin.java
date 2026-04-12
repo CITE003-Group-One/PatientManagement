@@ -17,6 +17,9 @@ public class PatientLogin extends javax.swing.JPanel {
         initComponents();
         
         submitButton.putClientProperty("FlatLaf.style", "arc: 999;");
+        
+        backdrop.setBadge("Welcome Back");
+        backdrop.setHeading("<html><div style='width:400px;'><center>" + "Login your existing account" + "</center></div></html>");
     }
 
     /**
@@ -39,11 +42,9 @@ public class PatientLogin extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         Existing_Email = new javax.swing.JLabel();
         Username_Field = new javax.swing.JTextField();
-        jPanel4 = new javax.swing.JPanel();
-        Existing_Email1 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        pINField2 = new org.one.patientmanagement.ui.components.PINField();
         submitButton = new javax.swing.JButton();
-        backdrop2 = new org.one.patientmanagement.ui.components.Backdrop();
+        backdrop = new org.one.patientmanagement.ui.components.Backdrop();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -77,42 +78,27 @@ public class PatientLogin extends javax.swing.JPanel {
         Username_Field.setBackground(new java.awt.Color(255, 240, 244));
         Username_Field.setFont(new java.awt.Font("Manrope", 0, 16)); // NOI18N
         Username_Field.setText("Email / Phone Number");
+        Username_Field.setMinimumSize(new java.awt.Dimension(64, 30));
+        Username_Field.setName(""); // NOI18N
+        Username_Field.setPreferredSize(new java.awt.Dimension(177, 30));
         jPanel3.add(Username_Field, java.awt.BorderLayout.CENTER);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 284;
         gridBagConstraints.ipady = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(25, 0, 25, 0);
         formContainer.add(jPanel3, gridBagConstraints);
-
-        jPanel4.setOpaque(false);
-        jPanel4.setPreferredSize(new java.awt.Dimension(533, 68));
-        jPanel4.setLayout(new java.awt.BorderLayout(0, 10));
-
-        Existing_Email1.setFont(new java.awt.Font("Manrope SemiBold", 0, 20)); // NOI18N
-        Existing_Email1.setText("Create PIN");
-        Existing_Email1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel4.add(Existing_Email1, java.awt.BorderLayout.PAGE_START);
-
-        jPasswordField1.setBackground(new java.awt.Color(255, 240, 244));
-        jPasswordField1.setFont(new java.awt.Font("Manrope", 0, 16)); // NOI18N
-        jPasswordField1.setText("123456");
-        jPasswordField1.addActionListener(this::jPasswordField1ActionPerformed);
-        jPanel4.add(jPasswordField1, java.awt.BorderLayout.CENTER);
-
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 52;
-        gridBagConstraints.ipady = 26;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        formContainer.add(jPanel4, gridBagConstraints);
+        gridBagConstraints.ipady = 20;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
+        formContainer.add(pINField2, gridBagConstraints);
 
         formPanel.add(formContainer, java.awt.BorderLayout.CENTER);
 
@@ -133,14 +119,10 @@ public class PatientLogin extends javax.swing.JPanel {
         jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jSplitPane1.setRightComponent(jPanel1);
-        jSplitPane1.setLeftComponent(backdrop2);
+        jSplitPane1.setLeftComponent(backdrop);
 
         add(jSplitPane1);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         // TODO add your handling code here:
@@ -149,18 +131,16 @@ public class PatientLogin extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Existing_Email;
-    private javax.swing.JLabel Existing_Email1;
     private javax.swing.JTextField Username_Field;
-    private org.one.patientmanagement.ui.components.Backdrop backdrop2;
+    private org.one.patientmanagement.ui.components.Backdrop backdrop;
     private javax.swing.JPanel formContainer;
     private javax.swing.JPanel formPanel;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JSplitPane jSplitPane1;
+    private org.one.patientmanagement.ui.components.PINField pINField2;
     private org.one.patientmanagement.ui.components.StepProgress stepProgress1;
     private javax.swing.JButton submitButton;
     // End of variables declaration//GEN-END:variables

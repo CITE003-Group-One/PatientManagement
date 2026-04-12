@@ -47,6 +47,9 @@ public final class DoctorStatsCard extends javax.swing.JPanel {
         progressBarContainer.add(progressBar);
 
         add(progressBarContainer);
+        
+        repaint();
+        revalidate();
     }
 
     /**

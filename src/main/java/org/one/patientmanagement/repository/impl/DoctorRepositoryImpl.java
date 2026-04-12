@@ -11,7 +11,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.sql.DataSource;
+import org.one.patientmanagement.domain.models.Patient;
 
 public class DoctorRepositoryImpl implements DoctorRepository {
 
@@ -24,8 +26,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     @Override
     public Doctor save(Doctor doctor) {
         String sql = "INSERT INTO doctors (account_id, name, profession) VALUES (?, ?, ?)";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setLong(1, doctor.accountId());
             stmt.setString(2, doctor.name());
             stmt.setString(3, doctor.profession());
@@ -45,8 +46,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     @Override
     public void update(Doctor doctor) {
         String sql = "UPDATE doctors SET name = ?, profession = ? WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, doctor.name());
             stmt.setString(2, doctor.profession());
             stmt.setLong(3, doctor.id());
@@ -59,8 +59,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     @Override
     public void delete(long id) {
         String sql = "DELETE FROM doctors WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -71,8 +70,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     @Override
     public Optional<Doctor> findById(long id) {
         String sql = "SELECT id, account_id, name, profession FROM doctors WHERE id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 return rs.next() ? Optional.of(mapDoctor(rs)) : Optional.empty();
@@ -85,8 +83,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     @Override
     public Optional<Doctor> findByAccountId(long accountId) {
         String sql = "SELECT id, account_id, name, profession FROM doctors WHERE account_id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, accountId);
             try (ResultSet rs = stmt.executeQuery()) {
                 return rs.next() ? Optional.of(mapDoctor(rs)) : Optional.empty();
@@ -99,8 +96,7 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     @Override
     public List<Schedule> findSchedules(long doctorId) {
         String sql = "SELECT id, day, start, end, doctor_id FROM schedules WHERE doctor_id = ?";
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, doctorId);
             try (ResultSet rs = stmt.executeQuery()) {
                 List<Schedule> schedules = new ArrayList<>();
@@ -131,5 +127,32 @@ public class DoctorRepositoryImpl implements DoctorRepository {
                 LocalTime.parse(rs.getString("end")),
                 rs.getLong("doctor_id")
         );
+    }
+
+    @Override
+    public List<Doctor> findAllByIds(List<Long> ids) {
+        if (ids.isEmpty()) {
+            return List.of();
+        }
+
+        String placeholders = ids.stream().map(i -> "?").collect(Collectors.joining(", "));
+        String sql = "SELECT id, account_id, name, profession FROM doctors WHERE id IN (" + placeholders + ")";
+
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            for (int i = 0; i < ids.size(); i++) {
+                stmt.setLong(i + 1, ids.get(i));
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                List<Doctor> list = new ArrayList<>();
+                while (rs.next()) {
+                    list.add(mapDoctor(rs));
+                }
+                return list;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to find doctors by ids", e);
+        }
     }
 }

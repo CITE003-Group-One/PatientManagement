@@ -5,7 +5,9 @@
 package org.one.patientmanagement.ui.controller.doctor;
 
 import com.google.inject.Inject;
+import org.one.patientmanagement.domain.models.Schedule;
 import org.one.patientmanagement.ui.controller.AbstractController;
+import org.one.patientmanagement.ui.model.AppointmentListModel;
 import org.one.patientmanagement.ui.view.DoctorDashboard;
 
 /**
@@ -13,9 +15,20 @@ import org.one.patientmanagement.ui.view.DoctorDashboard;
  * @author KAROL JOHN
  */
 public class DashboardController extends AbstractController<DoctorDashboard, DashboardController> {
+
+    private final AppointmentListModel model;
+    private final Schedule schedule;
     
     @Inject // TODO: maybe opt to provider
-    public DashboardController(DoctorDashboard view) {
+    public DashboardController(AppointmentListModel model, DoctorDashboard view, Schedule schedule) {
         super(view);
+        this.model = model;
+        this.schedule = schedule;
+        
+        init();
+    }
+
+    private void init() {
+        view.getOverviewPanel().setListModel(model.getMorningItems(), model.getAfternoonItems(), schedule);
     }
 }

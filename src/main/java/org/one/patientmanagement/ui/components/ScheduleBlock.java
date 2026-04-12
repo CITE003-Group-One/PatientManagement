@@ -1,15 +1,16 @@
 package org.one.patientmanagement.ui.components;
 
 import java.awt.*;
-import java.util.Random;
 import javax.swing.*;
+import org.one.patientmanagement.domain.dto.QueueData;
+import org.one.patientmanagement.domain.enums.AppointmentBlock;
+import org.one.patientmanagement.domain.models.Schedule;
 
 public final class ScheduleBlock extends javax.swing.JPanel {
 
     public ScheduleBlock() {
         initComponents();
         applyStyles();
-        loadDummyData(20);
     }
 
     private void applyStyles() {
@@ -21,11 +22,11 @@ public final class ScheduleBlock extends javax.swing.JPanel {
         // Header Styling
         Font headerFont = new Font("Manrope", Font.PLAIN, 13);
         Color headerColor = Color.decode("#504348");
-        
+
         num.setFont(headerFont);
         num.setBackground(Color.decode("#FFF0F4")); // Color changed to #FFF0F4
         num.setForeground(headerColor);
-        
+
         Name.setFont(headerFont);
         Sex.setFont(headerFont);
         Status.setFont(headerFont);
@@ -47,35 +48,36 @@ public final class ScheduleBlock extends javax.swing.JPanel {
         dayTimeLabel.setText(timeRange);
     }
 
-    public void addPatientRow(PatientRow row) {
+    private void addQueueRow(PatientRow row) {
         jPanel1.add(row);
-        jPanel1.add(Box.createVerticalStrut(5)); 
+        jPanel1.add(Box.createVerticalStrut(5));
         jPanel1.revalidate();
         jPanel1.repaint();
     }
 
-    public void clearPatients() {
+    public void clearQueue() {
         jPanel1.removeAll();
         jPanel1.revalidate();
         jPanel1.repaint();
     }
 
-    public void loadDummyData(int count) {
-        clearPatients();
-        Random rand = new Random();
-        String[] names = {"Juan Dela Cruz", "Maria Santos", "Pedro Reyes", "Ana Lopez"};
-        String[] sexes = {"Male", "Female"};
-
-        for (int i = 1; i <= count; i++) {
-            PatientRow row = new PatientRow();
-            row.setPatientData(i, names[rand.nextInt(names.length)], 
-                String.valueOf(1000 + rand.nextInt(9000)), sexes[rand.nextInt(sexes.length)]);
-            addPatientRow(row);
+    public void loadQueue(java.util.List<QueueData> queues, AppointmentBlock block, Schedule schedule) {
+        var available = schedule.blocks().contains(block);
+        setEnabled(available); // TODO set proper enabled
+        if (!available) {
+            return;
         }
+
+        setBlockInfo(block == AppointmentBlock.MORNING ? "Morning" : "Afternoon", schedule.timeRange(block));
+        clearQueue();
+        
+        queues.forEach(q -> {
+            var row = new PatientRow();
+            row.setPatientData(q.queueNumber(), q.fullName(), q.schemedId(), q.sex());
+            addQueueRow(row);
+        });
     }
-    
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -208,5 +210,3 @@ public final class ScheduleBlock extends javax.swing.JPanel {
     private javax.swing.JLabel num;
     // End of variables declaration//GEN-END:variables
 }
-
-

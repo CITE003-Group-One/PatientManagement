@@ -298,7 +298,7 @@
             </Container>
           </SubComponents>
         </Container>
-        <Component class="org.one.patientmanagement.ui.components.Backdrop" name="backdrop2">
+        <Component class="org.one.patientmanagement.ui.components.Backdrop" name="backdrop">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
               <JSplitPaneConstraints position="left"/>

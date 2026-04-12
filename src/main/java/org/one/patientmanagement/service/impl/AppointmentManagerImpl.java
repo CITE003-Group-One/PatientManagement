@@ -1,6 +1,9 @@
 package org.one.patientmanagement.service.impl;
 
 import com.google.inject.Inject;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 
 import org.one.patientmanagement.domain.enums.AppointmentBlock;
@@ -65,4 +68,14 @@ public class AppointmentManagerImpl implements AppointmentManager {
 				.filter(a -> a.block() == block)
 				.noneMatch(a -> a.status() != AppointmentStatus.DONE);
 	}
+
+    @Override
+    public List<Appointment> getAppointmentsToday(long doctorId, AppointmentStatus... status) {
+        return repo.findAllDay(doctorId, LocalDateTime.now().getDayOfWeek(), status);
+    }
+
+    @Override
+    public List<Appointment> getAppointments(long doctorId, DayOfWeek day, AppointmentStatus... status) {
+        return repo.findAllDay(doctorId, day, status);
+    }
 }

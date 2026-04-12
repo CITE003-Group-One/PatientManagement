@@ -1,10 +1,13 @@
 package org.one.patientmanagement.ui.components;
 
 import java.awt.*;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import org.one.patientmanagement.domain.models.Schedule;
 
 public class TodaySchedule extends javax.swing.JPanel {
 
@@ -13,7 +16,6 @@ public class TodaySchedule extends javax.swing.JPanel {
     public TodaySchedule() {
         initComponents();
         setupLayout();
-        generateCalendar();
 
         this.putClientProperty("FlatLaf.style", "arc: 999;");
     }
@@ -26,7 +28,7 @@ public class TodaySchedule extends javax.swing.JPanel {
         this.setLayout(gbl);
     }
 
-    private void generateCalendar() {
+    public void generateCalendar(java.util.List<Schedule> schedules) {
         this.removeAll();
         LocalDate today = LocalDate.now();
         DateTimeFormatter monthFmt = DateTimeFormatter.ofPattern("MMM");
@@ -37,14 +39,25 @@ public class TodaySchedule extends javax.swing.JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.insets = new Insets(0, 7, 0, 7);
 
+        Set<DayOfWeek> availableDays = schedules.stream()
+                .map(Schedule::day)
+                .collect(java.util.stream.Collectors.toSet());
+
         for (int i = 0; i < 7; i++) {
+
             LocalDate targetDate = today.plusDays(i);
+
+            DayOfWeek dow = targetDate.getDayOfWeek();
+
+            boolean isAvailable = availableDays.contains(dow);
+            
             String m = targetDate.format(monthFmt).toUpperCase();
             String d = targetDate.format(dateFmt);
             String dy = targetDate.format(dayFmt).toUpperCase();
             boolean isInitial = (i == 0);
 
             DayCardComponent card = new DayCardComponent(m, d, dy, isInitial);
+            card.setEnabled(isAvailable);
             card.addMouseListener(new java.awt.event.MouseAdapter() {
                 @Override
                 public void mousePressed(java.awt.event.MouseEvent evt) {

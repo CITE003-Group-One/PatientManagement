@@ -10,6 +10,11 @@ import javax.swing.JPanel;
 import javax.swing.Scrollable;
 
 public class FillWidthPanel extends JPanel implements Scrollable {
+    
+    public FillWidthPanel() {
+        setOpaque(false);
+        setBackground(null);
+    }
 
     @Override
     public Dimension getPreferredScrollableViewportSize() {

@@ -7,6 +7,7 @@ package org.one.patientmanagement.ui;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.one.patientmanagement.ui.controller.doctor.DashboardController;
+import org.one.patientmanagement.ui.controller.doctor.PatientRecordsController;
 import org.one.patientmanagement.ui.controller.doctor.QueueController;
 import org.one.patientmanagement.ui.controller.navigation.doctor.DoctorNavigator;
 import org.one.patientmanagement.ui.controller.navigation.doctor.DoctorRoute;
@@ -26,12 +27,14 @@ public class DoctorFrame extends javax.swing.JFrame {
     @Inject
     public DoctorFrame(DoctorView view, DoctorNavigator navigator,
             Provider<DashboardController> dashboardController,
-            Provider<QueueController> queueController
+            Provider<QueueController> queueController,
+            Provider<PatientRecordsController> patientRecordsController
     ) {
         initComponents();
 
         navigator.register(DoctorRoute.DASHBOARD, dashboardController);
         navigator.register(DoctorRoute.QUEUE, queueController);
+        navigator.register(DoctorRoute.RECORDS, patientRecordsController);
         
         navigator.goTo(DoctorRoute.DASHBOARD); // first page
 
@@ -54,6 +57,7 @@ public class DoctorFrame extends javax.swing.JFrame {
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 

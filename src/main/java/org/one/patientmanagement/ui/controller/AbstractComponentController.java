@@ -14,9 +14,12 @@ public abstract class AbstractComponentController<
     public void attachTo(V view) {
         this.view = view;
         view.setController((C) this); // safe cast
+        onAttached();
     }
 
     public V getView() {
         return view;
     }
+    
+    public abstract void onAttached();
 }

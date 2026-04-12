@@ -10,8 +10,8 @@ public class PatientRow extends JPanel {
         applyFigmaStyles();
     }
 
-    public void setPatientData(int number, String patientName, String patientId, String patientSex) {
-        num.setText(String.valueOf(number));
+    public void setPatientData(String number, String patientName, String patientId, String patientSex) {
+        num.setText(number);
         name.setText(patientName);
         id.setText("ID: " + patientId);
         sex.setText(patientSex);

@@ -2,20 +2,15 @@ package org.one.patientmanagement.ui.components;
 
 import java.awt.*;
 import javax.swing.*;
+import org.one.patientmanagement.domain.enums.AppointmentStatus;
 
-public class StatusBadgePanel extends JPanel {
+public final class StatusBadgePanel extends JPanel {
 
     private final JLabel statusText = new JLabel();
 
-    public enum Status {
-        WAITING,
-        WITH_DOCTOR,
-        DONE
-    }
-
     public StatusBadgePanel() {
         initUI();
-        setStatus(Status.WAITING);
+        setStatus(AppointmentStatus.WAITING);
     }
 
     private void initUI() {
@@ -30,18 +25,12 @@ public class StatusBadgePanel extends JPanel {
     }
 
     // ✅ MAIN API
-    public void setStatus(Status status) {
+    public void setStatus(AppointmentStatus status) {
         switch (status) {
             case WAITING -> apply(
                 "Waiting",
                 "#FFDBC7",
                 "#643E24"
-            );
-
-            case WITH_DOCTOR -> apply(
-                "With Doctor",
-                "#C7E7FF",
-                "#002D4F"
             );
 
             case DONE -> apply(

@@ -19,4 +19,6 @@ public interface DoctorManager {
     Schedule removeSchedule(@Nonnull Schedule schedule);
     
     Schedule update(@Nonnull Schedule schedule);
+    
+    List<Doctor> getAllByIds(List<Long> ids);
 }

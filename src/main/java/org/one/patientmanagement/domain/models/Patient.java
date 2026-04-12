@@ -37,4 +37,12 @@ public record Patient(
     public int getAge() {
         return Period.between(birthday, LocalDate.now()).getYears();
     }
+    
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public String getSchemedId() {
+        return null; // TODO create a schemedId [year][month][position in table]
+    }
 }

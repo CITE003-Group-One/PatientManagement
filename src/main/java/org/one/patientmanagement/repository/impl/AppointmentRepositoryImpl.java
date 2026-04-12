@@ -2,10 +2,14 @@ package org.one.patientmanagement.repository.impl;
 
 import com.google.inject.Inject;
 import java.sql.*;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.sql.DataSource;
 
 import org.one.patientmanagement.domain.enums.AppointmentBlock;
@@ -84,6 +88,65 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         sql.append(" ORDER BY created_at DESC");
 
         return findByQuery(sql.toString(), null);
+    }
+
+    private LocalDate resolvePeriod(DayOfWeek period) {
+        LocalDate today = LocalDate.now();
+        int diff = period.getValue() - today.getDayOfWeek().getValue();
+        return today.plusDays(diff);
+    }
+
+    @Override
+    public List<Appointment> findAllDay(long doctorId, DayOfWeek day, AppointmentStatus... status) {
+        LocalDate date = resolvePeriod(day);
+        String start = date.atStartOfDay().format(formatter);
+        String end = date.atTime(23, 59, 59).format(formatter);
+
+        StringBuilder sql = new StringBuilder("""
+        SELECT * FROM appointments
+        WHERE doctor_id = ?
+        AND created_at >= ? AND created_at <= ?
+    """);
+
+        if (status.length > 0) {
+            String placeholders = Arrays.stream(status)
+                    .map(s -> "?")
+                    .collect(Collectors.joining(", "));
+            sql.append(" AND status IN (").append(placeholders).append(")");
+        }
+
+        sql.append(" ORDER BY queue_number ASC");
+
+        List<Appointment> list = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
+
+            stmt.setLong(1, doctorId);
+            stmt.setString(2, start);
+            stmt.setString(3, end);
+
+            for (int i = 0; i < status.length; i++) {
+                stmt.setString(4 + i, status[i].name());
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Appointment(
+                            rs.getLong("id"),
+                            AppointmentBlock.valueOf(rs.getString("block")),
+                            AppointmentStatus.valueOf(rs.getString("status")),
+                            rs.getString("referred"),
+                            rs.getString("referred_description"),
+                            rs.getLong("doctor_id"),
+                            rs.getLong("patient_id"),
+                            rs.getString("queue_number"),
+                            LocalDateTime.parse(rs.getString("created_at"), formatter)
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("DB Error: findAllDay failed", e);
+        }
+        return list;
     }
 
     @Override

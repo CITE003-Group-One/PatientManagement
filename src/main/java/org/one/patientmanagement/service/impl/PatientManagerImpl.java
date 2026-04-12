@@ -107,4 +107,9 @@ public class PatientManagerImpl implements PatientManager {
     public void deleteAttachment(@Nonnull Attachment attachment) {
         attachmentRepository.delete(attachment.id());
     }
+
+    @Override
+    public List<Patient> getAllByIds(List<Long> ids) {
+        return patientRepository.findAllByIds(ids);
+    }
 }

@@ -1,5 +1,7 @@
 package org.one.patientmanagement.service;
 
+import java.time.DayOfWeek;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
@@ -24,6 +26,10 @@ public interface AppointmentManager {
      * @throws IllegalArgumentException if both {@code patientId} and {@code doctorId} are {@code null}
      */
     List<Appointment> getAppointments(long patientId, long doctorId, AppointmentStatus... status) throws IllegalArgumentException;
+    
+    List<Appointment> getAppointmentsToday(long doctorId, AppointmentStatus... status);
+    
+    List<Appointment> getAppointments(long doctorId, DayOfWeek day, AppointmentStatus... status);
 
     Appointment update(@Nonnull Appointment appointment);
 

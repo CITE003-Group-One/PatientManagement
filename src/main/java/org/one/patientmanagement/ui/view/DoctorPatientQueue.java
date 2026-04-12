@@ -4,6 +4,17 @@
  */
 package org.one.patientmanagement.ui.view;
 
+import java.util.List;
+import javax.swing.Box;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import org.one.patientmanagement.domain.dto.QueueData;
+import org.one.patientmanagement.domain.enums.AppointmentBlock;
+import org.one.patientmanagement.domain.enums.AppointmentStatus;
+import org.one.patientmanagement.domain.models.Schedule;
+import org.one.patientmanagement.ui.components.DetailedPatientRow;
+import org.one.patientmanagement.ui.components.PatientRow;
+import org.one.patientmanagement.ui.components.QueueListContainer;
 import org.one.patientmanagement.ui.controller.ControllerBound;
 import org.one.patientmanagement.ui.controller.doctor.QueueController;
 
@@ -11,13 +22,66 @@ import org.one.patientmanagement.ui.controller.doctor.QueueController;
  *
  * @author KAROL JOHN
  */
-public class PatientQueue extends javax.swing.JPanel implements ControllerBound<QueueController> {
+public class DoctorPatientQueue extends javax.swing.JPanel implements ControllerBound<QueueController> {
+
+    private QueueController controller;
 
     /**
      * Creates new form PatientQueue
      */
-    public PatientQueue() {
+    public DoctorPatientQueue() {
         initComponents();
+    }
+
+    public void loadQueue(AppointmentBlock block, Schedule schedule, QueueData withDoctor) {
+        JPanel panel = block == AppointmentBlock.MORNING ? morningPanel : afternoonPanel;
+
+        var available = schedule.blocks().contains(block);
+        panel.setEnabled(available);
+        if (!available) {
+            return;
+        }
+
+        JPanel panelList = block == AppointmentBlock.MORNING ? morningList : afternoonList;
+        JLabel panelTime = block == AppointmentBlock.MORNING ? morningTime : afternoonTime;
+
+        panelTime.setText(schedule.timeRange(block));
+        clearQueue(panelList);
+
+        for (var status : AppointmentStatus.values()) {
+            if (withDoctor != null && status == AppointmentStatus.WITH_DOCTOR) {
+                var row = new QueueListContainer();
+                var queueRow = new DetailedPatientRow();
+                
+                row.replaceQueueBox(queueRow);
+                row.getStatusBadgePanel().setStatus(AppointmentStatus.WITH_DOCTOR);
+                
+                addQueueRow(row, panelList);
+            }
+
+            var row = new QueueListContainer();
+
+            row.getStatusBadgePanel().setStatus(status);
+            
+            final QueueController.QueueListController attachQueueListController = controller.attachQueueListController(row);
+            attachQueueListController.loadQueueList(status);
+            attachQueueListController.loadQueueInfo();
+            
+            addQueueRow(row, panelList);
+        }
+    }
+
+    private void addQueueRow(QueueListContainer row, JPanel panelList) {
+        panelList.add(row);
+        panelList.add(Box.createVerticalStrut(5));
+        panelList.revalidate();
+        panelList.repaint();
+    }
+
+    public void clearQueue(JPanel panelList) {
+        panelList.removeAll();
+        panelList.revalidate();
+        panelList.repaint();
     }
 
     /**
@@ -33,17 +97,17 @@ public class PatientQueue extends javax.swing.JPanel implements ControllerBound<
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
+        morningPanel = new javax.swing.JPanel();
         headerPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jPanel13 = new javax.swing.JPanel();
+        morningTime = new javax.swing.JLabel();
+        morningList = new javax.swing.JPanel();
         divider = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel14 = new javax.swing.JPanel();
+        afternoonPanel = new javax.swing.JPanel();
+        afternoonList = new javax.swing.JPanel();
         headerPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        afternoonTime = new javax.swing.JLabel();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -55,22 +119,22 @@ public class PatientQueue extends javax.swing.JPanel implements ControllerBound<
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
-        jPanel4.setLayout(new java.awt.BorderLayout(0, 25));
+        morningPanel.setLayout(new java.awt.BorderLayout(0, 25));
 
         headerPanel.setLayout(new java.awt.BorderLayout());
 
         jLabel2.setFont(new java.awt.Font("Poppins Medium", 0, 20)); // NOI18N
-        jLabel2.setText("jLabel2");
+        jLabel2.setText("Morning");
         headerPanel.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        jLabel3.setFont(new java.awt.Font("Manrope SemiBold", 0, 16)); // NOI18N
-        jLabel3.setText("jLabel2");
-        headerPanel.add(jLabel3, java.awt.BorderLayout.EAST);
+        morningTime.setFont(new java.awt.Font("Manrope SemiBold", 0, 16)); // NOI18N
+        morningTime.setText("jLabel2");
+        headerPanel.add(morningTime, java.awt.BorderLayout.EAST);
 
-        jPanel4.add(headerPanel, java.awt.BorderLayout.PAGE_START);
+        morningPanel.add(headerPanel, java.awt.BorderLayout.PAGE_START);
 
-        jPanel13.setLayout(new java.awt.GridLayout(3, 0, 0, 20));
-        jPanel4.add(jPanel13, java.awt.BorderLayout.CENTER);
+        morningList.setLayout(new java.awt.GridLayout(3, 0, 0, 20));
+        morningPanel.add(morningList, java.awt.BorderLayout.CENTER);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -81,7 +145,7 @@ public class PatientQueue extends javax.swing.JPanel implements ControllerBound<
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanel3.add(jPanel4, gridBagConstraints);
+        jPanel3.add(morningPanel, gridBagConstraints);
 
         divider.setBackground(new java.awt.Color(212, 194, 200));
         divider.setPreferredSize(new java.awt.Dimension(1, 100));
@@ -107,22 +171,22 @@ public class PatientQueue extends javax.swing.JPanel implements ControllerBound<
         gridBagConstraints.insets = new java.awt.Insets(0, 26, 0, 26);
         jPanel3.add(divider, gridBagConstraints);
 
-        jPanel6.setLayout(new java.awt.BorderLayout(0, 25));
+        afternoonPanel.setLayout(new java.awt.BorderLayout(0, 25));
 
-        jPanel14.setLayout(new java.awt.GridLayout(3, 0, 0, 20));
-        jPanel6.add(jPanel14, java.awt.BorderLayout.CENTER);
+        afternoonList.setLayout(new java.awt.GridLayout(3, 0, 0, 20));
+        afternoonPanel.add(afternoonList, java.awt.BorderLayout.CENTER);
 
         headerPanel2.setLayout(new java.awt.BorderLayout());
 
         jLabel6.setFont(new java.awt.Font("Poppins Medium", 0, 20)); // NOI18N
-        jLabel6.setText("jLabel2");
+        jLabel6.setText("Afternoon");
         headerPanel2.add(jLabel6, java.awt.BorderLayout.WEST);
 
-        jLabel7.setFont(new java.awt.Font("Manrope SemiBold", 0, 16)); // NOI18N
-        jLabel7.setText("jLabel2");
-        headerPanel2.add(jLabel7, java.awt.BorderLayout.EAST);
+        afternoonTime.setFont(new java.awt.Font("Manrope SemiBold", 0, 16)); // NOI18N
+        afternoonTime.setText("jLabel2");
+        headerPanel2.add(afternoonTime, java.awt.BorderLayout.EAST);
 
-        jPanel6.add(headerPanel2, java.awt.BorderLayout.PAGE_START);
+        afternoonPanel.add(headerPanel2, java.awt.BorderLayout.PAGE_START);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -133,7 +197,7 @@ public class PatientQueue extends javax.swing.JPanel implements ControllerBound<
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        jPanel3.add(jPanel6, gridBagConstraints);
+        jPanel3.add(afternoonPanel, gridBagConstraints);
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
 
@@ -142,24 +206,24 @@ public class PatientQueue extends javax.swing.JPanel implements ControllerBound<
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel afternoonList;
+    private javax.swing.JPanel afternoonPanel;
+    private javax.swing.JLabel afternoonTime;
     private javax.swing.JPanel divider;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JPanel headerPanel2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel13;
-    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel morningList;
+    private javax.swing.JPanel morningPanel;
+    private javax.swing.JLabel morningTime;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void setController(QueueController controller) {
-        // TODO: set controller
+        this.controller = controller;
     }
 }

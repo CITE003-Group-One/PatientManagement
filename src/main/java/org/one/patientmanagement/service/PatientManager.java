@@ -37,4 +37,6 @@ public interface PatientManager {
     Attachment addAttachment(@Nonnull Attachment attachment);
     
     void deleteAttachment(@Nonnull Attachment attachment);
+
+    public List<Patient> getAllByIds(List<Long> ids);
 }

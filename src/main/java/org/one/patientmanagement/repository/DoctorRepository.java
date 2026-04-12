@@ -12,4 +12,6 @@ public interface DoctorRepository extends Repository<Doctor> {
     Optional<Doctor> findByAccountId(long accountId);
     
     Optional<Doctor> findById(long id);
+    
+    public List<Doctor> findAllByIds(List<Long> ids);
 }

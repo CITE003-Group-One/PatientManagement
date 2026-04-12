@@ -6,10 +6,20 @@ package org.one.patientmanagement.ui.view;
 
 import org.one.patientmanagement.ui.controller.doctor.PatientDashboardController;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.swing.Box;
+import javax.swing.JPanel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import org.one.patientmanagement.domain.dto.ConsultationData;
+import org.one.patientmanagement.domain.dto.PrescriptionData;
 import org.one.patientmanagement.domain.enums.VitalsType;
 import org.one.patientmanagement.domain.models.Patient;
 import org.one.patientmanagement.domain.models.Vitals;
 import org.one.patientmanagement.ui.components.InfoBox;
+import org.one.patientmanagement.ui.components.MedicalRecordRow;
+import org.one.patientmanagement.ui.components.PrescriptionRow;
+import org.one.patientmanagement.ui.components.VitalsCard;
 import org.one.patientmanagement.ui.controller.ControllerBound;
 
 /**
@@ -25,9 +35,26 @@ public class DoctorPatientDashboard extends javax.swing.JPanel implements Contro
      */
     public DoctorPatientDashboard() {
         initComponents();
+
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                controller.onSearch(searchField.getText());
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                controller.onSearch(searchField.getText());
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                controller.onSearch(searchField.getText());
+            }
+        });
     }
-    
-    public void setData(Patient patient, Vitals vitals) {
+
+    public void setInfo(Patient patient, Vitals vitals) {
         basicInformationList.add(new InfoBox("First Name", patient.firstName()));
         basicInformationList.add(new InfoBox("Last Name", patient.lastName()));
         basicInformationList.add(new InfoBox("Address", patient.address()));
@@ -37,10 +64,56 @@ public class DoctorPatientDashboard extends javax.swing.JPanel implements Contro
         basicInformationList.add(new InfoBox("Blood type", patient.bloodType()));
         fullNameLabel.setText(patient.firstName() + " " + patient.lastName());
         
-        vitalsCard1.setVitals(VitalsType.HEART_RATE, vitals);
-        vitalsCard2.setVitals(VitalsType.BLOOD_PRESSURE, vitals);
-        vitalsCard3.setVitals(VitalsType.TEMPERATURE, vitals);
-        vitalsCard4.setVitals(VitalsType.WEIGHT, vitals);
+        setVitalsCard(vitalsCard1, VitalsType.HEART_RATE, vitals);
+        setVitalsCard(vitalsCard2, VitalsType.BLOOD_PRESSURE, vitals);
+        setVitalsCard(vitalsCard3, VitalsType.TEMPERATURE, vitals);
+        setVitalsCard(vitalsCard4, VitalsType.WEIGHT, vitals);
+        
+    }
+
+    public void setVitalsCard(VitalsCard vitalsCard, VitalsType type, Vitals vitals) {
+        vitalsCard.setVitals(type, vitals);
+        vitalsCard.setEditListener(e
+                -> controller.onVitalsEdit(type, v -> vitalsCard1.setVitals(type, v))
+        );
+    }
+
+    public void loadPrescription(List<PrescriptionData> prescriptions) {
+        clearRows(prescriptionList);
+        prescriptions.stream().forEach(p -> {
+            var row = new PrescriptionRow();
+
+            row.setPrescriptionData(p);
+            addRow(row, prescriptionList);
+        });
+    }
+
+    private void addRow(JPanel row, JPanel panelList) {
+        panelList.add(row);
+        panelList.add(Box.createVerticalStrut(5));
+        panelList.revalidate();
+        panelList.repaint();
+    }
+
+    public void clearRows(JPanel panelList) {
+        panelList.removeAll();
+        panelList.revalidate();
+        panelList.repaint();
+    }
+
+    public void loadConsultation(List<ConsultationData> consultations) {
+        clearRows(consultationList);
+        consultations.stream().forEach(c -> {
+            var row = new MedicalRecordRow();
+
+            row.setRecordData(c);
+            addRow(row, consultationList);
+        });
+    }
+
+    // TODO contemplate on attachments
+    public void loadAttachments() {
+
     }
 
     /**
@@ -72,9 +145,10 @@ public class DoctorPatientDashboard extends javax.swing.JPanel implements Contro
         jPanel10 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        medicalRecordAdd = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        fillWidthPanel2 = new org.one.patientmanagement.ui.components.FillWidthPanel();
-        jTextField1 = new javax.swing.JTextField();
+        consultationList = new org.one.patientmanagement.ui.components.FillWidthPanel();
+        searchField = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
@@ -143,6 +217,7 @@ public class DoctorPatientDashboard extends javax.swing.JPanel implements Contro
         prescriptionAddBtn.setBackground(new java.awt.Color(255, 216, 231));
         prescriptionAddBtn.setFont(new java.awt.Font("Manrope Medium", 0, 14)); // NOI18N
         prescriptionAddBtn.setText("Add");
+        prescriptionAddBtn.addActionListener(this::prescriptionAddBtnActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -183,10 +258,20 @@ public class DoctorPatientDashboard extends javax.swing.JPanel implements Contro
         gridBagConstraints.weightx = 1.0;
         jPanel3.add(jLabel1, gridBagConstraints);
 
+        medicalRecordAdd.setBackground(new java.awt.Color(255, 216, 231));
+        medicalRecordAdd.setFont(new java.awt.Font("Manrope Medium", 0, 14)); // NOI18N
+        medicalRecordAdd.setText("Add");
+        medicalRecordAdd.addActionListener(this::medicalRecordAddActionPerformed);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        jPanel3.add(medicalRecordAdd, gridBagConstraints);
+
         jScrollPane2.setBorder(null);
 
-        fillWidthPanel2.setLayout(new javax.swing.BoxLayout(fillWidthPanel2, javax.swing.BoxLayout.Y_AXIS));
-        jScrollPane2.setViewportView(fillWidthPanel2);
+        consultationList.setLayout(new javax.swing.BoxLayout(consultationList, javax.swing.BoxLayout.Y_AXIS));
+        jScrollPane2.setViewportView(consultationList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -198,8 +283,8 @@ public class DoctorPatientDashboard extends javax.swing.JPanel implements Contro
         gridBagConstraints.weighty = 1.0;
         jPanel3.add(jScrollPane2, gridBagConstraints);
 
-        jTextField1.setFont(new java.awt.Font("Manrope", 0, 16)); // NOI18N
-        jTextField1.setText("jTextField1");
+        searchField.setFont(new java.awt.Font("Manrope", 0, 16)); // NOI18N
+        searchField.setText("jTextField1");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -210,7 +295,7 @@ public class DoctorPatientDashboard extends javax.swing.JPanel implements Contro
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(21, 0, 21, 0);
-        jPanel3.add(jTextField1, gridBagConstraints);
+        jPanel3.add(searchField, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
@@ -252,7 +337,7 @@ public class DoctorPatientDashboard extends javax.swing.JPanel implements Contro
         jPanel11.setLayout(new javax.swing.BoxLayout(jPanel11, javax.swing.BoxLayout.Y_AXIS));
 
         jPanel12.setBackground(new java.awt.Color(255, 216, 231));
-        jPanel12.setLayout(new java.awt.GridLayout());
+        jPanel12.setLayout(new java.awt.GridLayout(1, 0));
 
         fullNameLabel.setFont(new java.awt.Font("Manrope SemiBold", 0, 14)); // NOI18N
         fullNameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -292,12 +377,20 @@ public class DoctorPatientDashboard extends javax.swing.JPanel implements Contro
         add(jSplitPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void prescriptionAddBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prescriptionAddBtnActionPerformed
+        controller.onPrescriptionAdd();
+    }//GEN-LAST:event_prescriptionAddBtnActionPerformed
+
+    private void medicalRecordAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_medicalRecordAddActionPerformed
+        controller.onMedicalRecordAdd();
+    }//GEN-LAST:event_medicalRecordAddActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel basicInformationList;
+    private org.one.patientmanagement.ui.components.FillWidthPanel consultationList;
     private javax.swing.JPanel contactsList;
     private org.one.patientmanagement.ui.components.FillWidthPanel fillWidthPanel1;
-    private org.one.patientmanagement.ui.components.FillWidthPanel fillWidthPanel2;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
@@ -320,10 +413,11 @@ public class DoctorPatientDashboard extends javax.swing.JPanel implements Contro
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton medicalRecordAdd;
     private javax.swing.JButton prescriptionAddBtn;
     private org.one.patientmanagement.ui.components.FillWidthPanel prescriptionList;
     private javax.swing.JPanel prescriptionPanel;
+    private javax.swing.JTextField searchField;
     private org.one.patientmanagement.ui.components.VitalsCard vitalsCard1;
     private org.one.patientmanagement.ui.components.VitalsCard vitalsCard2;
     private org.one.patientmanagement.ui.components.VitalsCard vitalsCard3;

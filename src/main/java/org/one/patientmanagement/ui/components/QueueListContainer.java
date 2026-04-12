@@ -4,24 +4,86 @@
  */
 package org.one.patientmanagement.ui.components;
 
-import javax.swing.BorderFactory;
+import java.util.List;
+import javax.swing.Box;
+import javax.swing.JPanel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import org.one.patientmanagement.domain.dto.QueueData;
+import org.one.patientmanagement.domain.enums.AppointmentStatus;
+import org.one.patientmanagement.ui.controller.ControllerBound;
+import org.one.patientmanagement.ui.controller.doctor.QueueController;
 
 /**
  *
  * @author KAROL JOHN
  */
-public class QueueListContainer extends javax.swing.JPanel {
+public class QueueListContainer extends javax.swing.JPanel implements ControllerBound<QueueController.QueueListController> {
+
+    private QueueController.QueueListController controller;
 
     /**
      * Creates new form QueueListContainer
      */
     public QueueListContainer() {
         initComponents();
-        
+
         jScrollPane1.setOpaque(false);
         jScrollPane1.getViewport().setOpaque(false);
         jScrollPane1.getViewport().setBackground(null);
         jScrollPane1.setBackground(null);
+        
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                controller.onSearch(searchField.getText());
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                controller.onSearch(searchField.getText());
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                controller.onSearch(searchField.getText());
+            }
+        });
+    }
+    
+    public void setInfo(AppointmentStatus status, int size) {
+        statusBadgePanel1.setStatus(status);
+        countLabel.setText(String.valueOf(size));
+    }
+
+    public void loadQueue(AppointmentStatus status, List<QueueData> queues) {
+        clearQueue();
+        queues.forEach(q -> {
+            var row = new DetailedPatientRow();
+            addQueueRow(row);
+        });
+    }
+    
+    public void replaceQueueBox(JPanel panel) {
+        remove(queueBox);
+        add(panel, java.awt.BorderLayout.CENTER);
+    }
+
+    private void addQueueRow(DetailedPatientRow row) {
+        queueListPanel.add(row);
+        queueListPanel.add(Box.createVerticalStrut(5));
+        queueListPanel.revalidate();
+        queueListPanel.repaint();
+    }
+
+    public void clearQueue() {
+        queueListPanel.removeAll();
+        queueListPanel.revalidate();
+        queueListPanel.repaint();
+    }
+    
+    public StatusBadgePanel getStatusBadgePanel() {
+        return statusBadgePanel1;
     }
 
     /**
@@ -36,10 +98,10 @@ public class QueueListContainer extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         statusBadgePanel1 = new org.one.patientmanagement.ui.components.StatusBadgePanel();
         countLabel = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        queueBox = new javax.swing.JPanel();
+        searchField = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
+        queueListPanel = new org.one.patientmanagement.ui.components.FillWidthPanel();
 
         setBackground(new java.awt.Color(250, 234, 238));
         setOpaque(false);
@@ -54,34 +116,38 @@ public class QueueListContainer extends javax.swing.JPanel {
 
         add(jPanel3, java.awt.BorderLayout.PAGE_START);
 
-        jPanel2.setBackground(new java.awt.Color(250, 234, 238));
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        jPanel2.setLayout(new java.awt.BorderLayout(0, 6));
+        queueBox.setBackground(new java.awt.Color(250, 234, 238));
+        queueBox.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        queueBox.setLayout(new java.awt.BorderLayout(0, 6));
 
-        jTextField1.setFont(new java.awt.Font("Manrope", 0, 13)); // NOI18N
-        jTextField1.setText("jTextField1");
-        jTextField1.setPreferredSize(new java.awt.Dimension(80, 35));
-        jPanel2.add(jTextField1, java.awt.BorderLayout.PAGE_START);
+        searchField.setFont(new java.awt.Font("Manrope", 0, 13)); // NOI18N
+        searchField.setText("jTextField1");
+        searchField.setPreferredSize(new java.awt.Dimension(80, 35));
+        queueBox.add(searchField, java.awt.BorderLayout.PAGE_START);
 
         jScrollPane1.setBorder(null);
 
-        jPanel1.setOpaque(false);
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
-        jScrollPane1.setViewportView(jPanel1);
+        queueListPanel.setLayout(new javax.swing.BoxLayout(queueListPanel, javax.swing.BoxLayout.Y_AXIS));
+        jScrollPane1.setViewportView(queueListPanel);
 
-        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        queueBox.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        add(jPanel2, java.awt.BorderLayout.CENTER);
+        add(queueBox, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel countLabel;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPanel queueBox;
+    private org.one.patientmanagement.ui.components.FillWidthPanel queueListPanel;
+    private javax.swing.JTextField searchField;
     private org.one.patientmanagement.ui.components.StatusBadgePanel statusBadgePanel1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setController(QueueController.QueueListController controller) {
+        this.controller = controller;
+    }
 }

@@ -49,7 +49,7 @@ public class NavigationSidebar extends JPanel {
 
         jButton1 = createNavButton("Dashboard", MaterialDesignH.HOME, DoctorRoute.DASHBOARD);
         jButton2 = createNavButton("Patient Queue", MaterialDesignA.ACCOUNT_CLOCK, DoctorRoute.QUEUE);
-        jButton3 = createNavButton("Patient Records", MaterialDesignF.FILE_ACCOUNT, DoctorRoute.DASHBOARD);
+        jButton3 = createNavButton("Patient Records", MaterialDesignF.FILE_ACCOUNT, DoctorRoute.RECORDS);
 
         navPanel.add(jButton1);
         navPanel.add(Box.createVerticalStrut(15));

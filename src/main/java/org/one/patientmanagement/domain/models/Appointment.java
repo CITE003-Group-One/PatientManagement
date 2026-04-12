@@ -52,6 +52,10 @@ public record Appointment(
             );
         }
     }
+    
+    public String getFormattedQueue() {
+        return block.getPrefix() + String.format("%02d", Integer.valueOf(queueNumber));
+    }
 
     public boolean isReferred() {
         return referred != null && !referred.isBlank();

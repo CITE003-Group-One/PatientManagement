@@ -39,6 +39,7 @@ public class PatientStartupView extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 248, 248));
+        setOpaque(false);
         setLayout(new java.awt.GridLayout(1, 0));
 
         jSplitPane1.setDividerSize(0);

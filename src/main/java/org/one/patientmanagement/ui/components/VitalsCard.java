@@ -4,6 +4,7 @@
  */
 package org.one.patientmanagement.ui.components;
 
+import java.awt.event.ActionListener;
 import org.one.patientmanagement.domain.enums.VitalsType;
 import org.one.patientmanagement.domain.models.Vitals;
 
@@ -40,6 +41,10 @@ public class VitalsCard extends javax.swing.JPanel {
         repaint();
         revalidate();
     }
+    
+    public void setEditListener(ActionListener l) {
+        editBtn.addActionListener(l);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,7 +59,7 @@ public class VitalsCard extends javax.swing.JPanel {
         titleLabel = new javax.swing.JLabel();
         valueLabel = new javax.swing.JLabel();
         icon = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        editBtn = new javax.swing.JButton();
         unitLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
 
@@ -91,12 +96,10 @@ public class VitalsCard extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(icon, gridBagConstraints);
 
-        jLabel5.setText("o");
+        editBtn.setText("0");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        add(jLabel5, gridBagConstraints);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        add(editBtn, gridBagConstraints);
 
         unitLabel.setFont(new java.awt.Font("Manrope Medium", 0, 16)); // NOI18N
         unitLabel.setText("bpm");
@@ -113,7 +116,7 @@ public class VitalsCard extends javax.swing.JPanel {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 109, Short.MAX_VALUE)
+            .addGap(0, 120, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,8 +135,8 @@ public class VitalsCard extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton editBtn;
     private javax.swing.JLabel icon;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JLabel unitLabel;

@@ -2,6 +2,9 @@ package org.one.patientmanagement.ui.components;
 
 import java.awt.*;
 import javax.swing.*;
+import org.one.patientmanagement.domain.dto.QueueData;
+import org.one.patientmanagement.domain.enums.AppointmentBlock;
+import org.one.patientmanagement.domain.models.Schedule;
 
 public class ScheduleOverviewPanel extends JPanel {
 
@@ -48,4 +51,10 @@ public class ScheduleOverviewPanel extends JPanel {
         gbc.insets = new Insets(10, 10, 10, 10);
         add(afternoonBlock, gbc);
     }
+    
+    public void setListModel(java.util.List<QueueData> morning, java.util.List<QueueData> afternoon, Schedule schedule) {
+        morningBlock.loadQueue(morning, AppointmentBlock.MORNING, schedule);
+        afternoonBlock.loadQueue(afternoon, AppointmentBlock.MORNING, schedule);
+    }
+    
 }

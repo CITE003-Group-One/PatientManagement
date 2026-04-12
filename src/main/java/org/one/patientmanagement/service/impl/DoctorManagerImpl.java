@@ -53,4 +53,9 @@ public class DoctorManagerImpl implements DoctorManager {
         scheduleRepository.update(schedule);
         return schedule;
     }
+
+    @Override
+    public List<Doctor> getAllByIds(List<Long> ids) {
+        return doctorRepository.findAllByIds(ids);
+    }
 }

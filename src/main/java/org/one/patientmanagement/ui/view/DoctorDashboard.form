@@ -71,11 +71,11 @@
                 <Property name="rows" type="int" value="1"/>
               </Layout>
               <SubComponents>
-                <Component class="org.one.patientmanagement.ui.components.DoctorStatsCard" name="doctorStatsCard2">
+                <Component class="org.one.patientmanagement.ui.components.DoctorStatsCard" name="statsCard1">
                 </Component>
-                <Component class="org.one.patientmanagement.ui.components.DoctorStatsCard" name="doctorStatsCard3">
+                <Component class="org.one.patientmanagement.ui.components.DoctorStatsCard" name="statsCard2">
                 </Component>
-                <Component class="org.one.patientmanagement.ui.components.DoctorStatsCard" name="doctorStatsCard4">
+                <Component class="org.one.patientmanagement.ui.components.DoctorStatsCard" name="statsCard3">
                 </Component>
               </SubComponents>
             </Container>
