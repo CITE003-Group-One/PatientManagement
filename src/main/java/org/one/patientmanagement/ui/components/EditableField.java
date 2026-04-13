@@ -15,6 +15,22 @@ public class EditableField extends javax.swing.JPanel {
      */
     public EditableField() {
         initComponents();
+        
+        jButton1.addActionListener(l -> {
+            jTextField1.setEditable(true);
+        });
+    }
+    
+    public void setLabel(String text) {
+        jLabel1.setText(text);
+    }
+    
+    public void removeMessage() {
+        jLabel2.remove(this);
+    }
+    
+    public String getText() {
+        return jTextField1.getText();
     }
 
     /**
@@ -38,11 +54,11 @@ public class EditableField extends javax.swing.JPanel {
         jLabel1.setText("Username");
         add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
+        jTextField1.setEditable(false);
         jTextField1.setFont(new java.awt.Font("Manrope", 0, 16)); // NOI18N
-        jTextField1.setText("jTextField1");
         add(jTextField1, java.awt.BorderLayout.CENTER);
 
-        jLabel2.setText("jLabel2");
+        jLabel2.setText("This is linked to your main contact.");
         add(jLabel2, java.awt.BorderLayout.PAGE_END);
 
         jButton1.setText("0");
@@ -56,4 +72,8 @@ public class EditableField extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
+
+    public void setText(String string) {
+        jTextField1.setText(string);
+    }
 }

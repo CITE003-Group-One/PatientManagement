@@ -26,32 +26,31 @@ public class TakePhoto extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        profilePicturePanel1 = new org.one.patientmanagement.ui.components.ProfilePicturePanel();
         jPanel1 = new javax.swing.JPanel();
+        profilePicturePanel2 = new org.one.patientmanagement.ui.components.ProfilePicturePanel();
         jButton1 = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout(20, 0));
 
-        javax.swing.GroupLayout profilePicturePanel1Layout = new javax.swing.GroupLayout(profilePicturePanel1);
-        profilePicturePanel1.setLayout(profilePicturePanel1Layout);
-        profilePicturePanel1Layout.setHorizontalGroup(
-            profilePicturePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 120, Short.MAX_VALUE)
-        );
-        profilePicturePanel1Layout.setVerticalGroup(
-            profilePicturePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 120, Short.MAX_VALUE)
-        );
-
-        add(profilePicturePanel1, java.awt.BorderLayout.WEST);
-
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+
+        javax.swing.GroupLayout profilePicturePanel2Layout = new javax.swing.GroupLayout(profilePicturePanel2);
+        profilePicturePanel2.setLayout(profilePicturePanel2Layout);
+        profilePicturePanel2Layout.setHorizontalGroup(
+            profilePicturePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 121, Short.MAX_VALUE)
+        );
+        profilePicturePanel2Layout.setVerticalGroup(
+            profilePicturePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 97, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(profilePicturePanel2);
 
         jButton1.setBackground(new java.awt.Color(255, 216, 231));
         jButton1.setFont(new java.awt.Font("Manrope SemiBold", 0, 16)); // NOI18N
         jButton1.setText("Take a photo");
         jButton1.setMaximumSize(new java.awt.Dimension(140, 50));
-        jButton1.setPreferredSize(new java.awt.Dimension(129, 29));
         jPanel1.add(jButton1);
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -61,6 +60,6 @@ public class TakePhoto extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
-    private org.one.patientmanagement.ui.components.ProfilePicturePanel profilePicturePanel1;
+    private org.one.patientmanagement.ui.components.ProfilePicturePanel profilePicturePanel2;
     // End of variables declaration//GEN-END:variables
 }

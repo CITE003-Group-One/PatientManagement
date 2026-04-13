@@ -4,17 +4,63 @@
  */
 package org.one.patientmanagement.ui.view;
 
+import java.util.List;
+import java.util.Map;
+import org.one.patientmanagement.domain.dto.ConsultationData;
+import org.one.patientmanagement.domain.models.Consultation;
+import org.one.patientmanagement.ui.components.ConsultationSummaryRow;
+import org.one.patientmanagement.ui.components.InfoBox;
+import org.one.patientmanagement.ui.controller.ControllerBound;
+import org.one.patientmanagement.ui.controller.patient.PatientDashboardController;
+
 /**
  *
  * @author KAROL JOHN
  */
-public class PatientDashboard extends javax.swing.JPanel {
+public class PatientDashboard extends javax.swing.JPanel implements ControllerBound<PatientDashboardController> {
+
+    private PatientDashboardController controller;
 
     /**
-     * Creates new form PatientDashboard
+     * Creates new form NewJPanel
      */
     public PatientDashboard() {
         initComponents();
+        
+        usernameField.setLabel("Username");
+        alternativeContactField.setLabel("Alternative Contact");
+        
+        stepProgress1.remmoveBack();
+    }
+    
+    public void loadFields(String username, String contact) {
+        usernameField.setText(username);
+        alternativeContactField.setText(contact);
+    }
+    
+    public void loadHistory(List<ConsultationData> consultations) {
+        consultations.stream().forEach(c -> {
+            var row = new ConsultationSummaryRow();
+            
+            row.setRecordData(c);
+            
+            addConsultationRow(row);
+        });
+    }
+    
+    public void loadInfoBox(Map<String, String> info) {
+        info.forEach((k,v) -> {
+            var row = new InfoBox(k, v);
+            addInfoBox(row);
+        });
+    }
+    
+    public void addInfoBox(InfoBox row) {
+        infoBoxPanel.add(row);
+    }
+    
+    private void addConsultationRow(ConsultationSummaryRow row) {
+        consultationList.add(row);
     }
 
     /**
@@ -27,28 +73,19 @@ public class PatientDashboard extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jPanel12 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        stepProgress1 = new org.one.patientmanagement.ui.components.StepProgress();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        fillWidthPanel1 = new org.one.patientmanagement.ui.components.FillWidthPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
+        takePhoto1 = new org.one.patientmanagement.ui.components.TakePhoto();
         infoBoxPanel = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
-        editableField1 = new org.one.patientmanagement.ui.components.EditableField();
+        usernameField = new org.one.patientmanagement.ui.components.EditableField();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20));
-        editableField2 = new org.one.patientmanagement.ui.components.EditableField();
+        alternativeContactField = new org.one.patientmanagement.ui.components.EditableField();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 30), new java.awt.Dimension(0, 30));
         jPanel8 = new javax.swing.JPanel();
         pINField2 = new org.one.patientmanagement.ui.components.PINField();
@@ -56,52 +93,16 @@ public class PatientDashboard extends javax.swing.JPanel {
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20));
         jPanel11 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        consultationList = new org.one.patientmanagement.ui.components.FillWidthPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        stepProgress1 = new org.one.patientmanagement.ui.components.StepProgress();
 
-        setLayout(new java.awt.BorderLayout());
-
-        jPanel12.setLayout(new java.awt.GridBagLayout());
-
-        jPanel1.setLayout(new java.awt.BorderLayout());
-        jPanel1.add(stepProgress1, java.awt.BorderLayout.PAGE_START);
-
-        jPanel5.setLayout(new java.awt.GridBagLayout());
-
-        jPanel3.setLayout(new java.awt.BorderLayout(0, 20));
-
-        jLabel1.setFont(new java.awt.Font("Poppins Medium", 0, 31)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Your appointment");
-        jPanel3.add(jLabel1, java.awt.BorderLayout.PAGE_START);
-
-        jScrollPane1.setBackground(null);
-        jScrollPane1.setBorder(null);
-        jScrollPane1.setOpaque(false);
-
-        fillWidthPanel1.setLayout(new javax.swing.BoxLayout(fillWidthPanel1, javax.swing.BoxLayout.Y_AXIS));
-        jScrollPane1.setViewportView(fillWidthPanel1);
-
-        jPanel3.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 100;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jPanel5.add(jPanel3, gridBagConstraints);
-
-        jPanel1.add(jPanel5, java.awt.BorderLayout.CENTER);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        jPanel12.add(jPanel1, gridBagConstraints);
+        setLayout(new java.awt.GridBagLayout());
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(40, 40, 40, 40));
         jPanel2.setLayout(new java.awt.GridLayout(2, 0, 10, 16));
@@ -115,40 +116,13 @@ public class PatientDashboard extends javax.swing.JPanel {
         jPanel7.add(jLabel3, java.awt.BorderLayout.PAGE_END);
 
         jPanel6.setOpaque(false);
-        jPanel6.setLayout(new java.awt.GridBagLayout());
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        takePhoto1.setPreferredSize(new java.awt.Dimension(269, 110));
+        jPanel6.add(takePhoto1, java.awt.BorderLayout.PAGE_START);
 
         infoBoxPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = 528;
-        gridBagConstraints.ipady = 267;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
-        jPanel6.add(infoBoxPanel, gridBagConstraints);
-
-        jButton1.setFont(new java.awt.Font("Manrope Medium", 0, 14)); // NOI18N
-        jButton1.setText("Take a photo");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 13;
-        gridBagConstraints.ipady = 11;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jPanel6.add(jButton1, gridBagConstraints);
-
-        jLabel4.setText("pic");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 29;
-        gridBagConstraints.ipady = 26;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        jPanel6.add(jLabel4, gridBagConstraints);
+        jPanel6.add(infoBoxPanel, java.awt.BorderLayout.CENTER);
 
         jPanel7.add(jPanel6, java.awt.BorderLayout.CENTER);
 
@@ -169,17 +143,17 @@ public class PatientDashboard extends javax.swing.JPanel {
         jPanel10.setOpaque(false);
         jPanel10.setLayout(new javax.swing.BoxLayout(jPanel10, javax.swing.BoxLayout.Y_AXIS));
 
-        editableField1.setMaximumSize(new java.awt.Dimension(2147483647, 100));
-        editableField1.setMinimumSize(new java.awt.Dimension(91, 100));
-        editableField1.setPreferredSize(new java.awt.Dimension(119, 100));
-        jPanel10.add(editableField1);
+        usernameField.setMaximumSize(new java.awt.Dimension(2147483647, 100));
+        usernameField.setMinimumSize(new java.awt.Dimension(91, 100));
+        usernameField.setPreferredSize(new java.awt.Dimension(119, 100));
+        jPanel10.add(usernameField);
         jPanel10.add(filler1);
 
-        editableField2.setMaximumSize(new java.awt.Dimension(2147483647, 100));
-        editableField2.setMinimumSize(new java.awt.Dimension(91, 100));
-        editableField2.setName(""); // NOI18N
-        editableField2.setPreferredSize(new java.awt.Dimension(119, 100));
-        jPanel10.add(editableField2);
+        alternativeContactField.setMaximumSize(new java.awt.Dimension(2147483647, 100));
+        alternativeContactField.setMinimumSize(new java.awt.Dimension(91, 100));
+        alternativeContactField.setName(""); // NOI18N
+        alternativeContactField.setPreferredSize(new java.awt.Dimension(119, 100));
+        jPanel10.add(alternativeContactField);
         jPanel10.add(filler2);
 
         jPanel8.setMaximumSize(new java.awt.Dimension(32767, 90));
@@ -198,7 +172,10 @@ public class PatientDashboard extends javax.swing.JPanel {
         jPanel11.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 5));
 
         jButton2.setFont(new java.awt.Font("Manrope SemiBold", 0, 14)); // NOI18N
-        jButton2.setText("Save New PIN");
+        jButton2.setText("Save");
+        jButton2.setActionCommand("Save");
+        jButton2.setPreferredSize(new java.awt.Dimension(125, 50));
+        jButton2.addActionListener(this::jButton2ActionPerformed);
         jPanel11.add(jButton2);
 
         jPanel10.add(jPanel11);
@@ -210,37 +187,105 @@ public class PatientDashboard extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipadx = -110;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.ipadx = 100;
+        gridBagConstraints.ipady = 18;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weighty = 1.0;
-        jPanel12.add(jPanel2, gridBagConstraints);
+        add(jPanel2, gridBagConstraints);
 
-        add(jPanel12, java.awt.BorderLayout.LINE_END);
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setOpaque(false);
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 40, 1));
+        jPanel3.setLayout(new java.awt.GridBagLayout());
+
+        jPanel4.setLayout(new java.awt.BorderLayout(0, 20));
+
+        javax.swing.GroupLayout consultationListLayout = new javax.swing.GroupLayout(consultationList);
+        consultationList.setLayout(consultationListLayout);
+        consultationListLayout.setHorizontalGroup(
+            consultationListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 498, Short.MAX_VALUE)
+        );
+        consultationListLayout.setVerticalGroup(
+            consultationListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(consultationList);
+
+        jPanel4.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jLabel1.setFont(new java.awt.Font("Poppins Medium", 0, 31)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Your Appointment");
+        jPanel4.add(jLabel1, java.awt.BorderLayout.PAGE_START);
+
+        jPanel5.setBackground(new java.awt.Color(153, 153, 153));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 504, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        jPanel4.add(jPanel5, java.awt.BorderLayout.PAGE_END);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.ipady = 540;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weighty = 1.0;
+        jPanel3.add(jPanel4, gridBagConstraints);
+
+        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+        jPanel1.add(stepProgress1, java.awt.BorderLayout.PAGE_START);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.ipadx = 321;
+        gridBagConstraints.ipady = 376;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        controller.onSave();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.one.patientmanagement.ui.components.EditableField editableField1;
-    private org.one.patientmanagement.ui.components.EditableField editableField2;
-    private org.one.patientmanagement.ui.components.FillWidthPanel fillWidthPanel1;
+    private org.one.patientmanagement.ui.components.EditableField alternativeContactField;
+    private org.one.patientmanagement.ui.components.FillWidthPanel consultationList;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.JPanel infoBoxPanel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -250,5 +295,12 @@ public class PatientDashboard extends javax.swing.JPanel {
     private org.one.patientmanagement.ui.components.PINField pINField1;
     private org.one.patientmanagement.ui.components.PINField pINField2;
     private org.one.patientmanagement.ui.components.StepProgress stepProgress1;
+    private org.one.patientmanagement.ui.components.TakePhoto takePhoto1;
+    private org.one.patientmanagement.ui.components.EditableField usernameField;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setController(PatientDashboardController controller) {
+        this.controller = controller;
+    }
 }

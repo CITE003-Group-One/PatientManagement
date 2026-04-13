@@ -6,6 +6,7 @@ package org.one.patientmanagement.ui.components;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import java.awt.Color;
+import java.awt.event.ActionListener;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 import org.kordamp.ikonli.swing.FontIcon;
 
@@ -26,6 +27,10 @@ public class BackBtn extends javax.swing.JPanel {
         jButton1.putClientProperty("FlatLaf.style", "arc: 99;"); 
         
         jButton1.setOpaque(false);
+    }
+    
+    public void setButtonListener(ActionListener l) {
+        jButton1.addActionListener(l);
     }
 
     /**

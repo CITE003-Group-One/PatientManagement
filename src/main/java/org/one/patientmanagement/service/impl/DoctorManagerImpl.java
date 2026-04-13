@@ -1,12 +1,15 @@
 package org.one.patientmanagement.service.impl;
 
 import com.google.inject.Inject;
+import java.time.DayOfWeek;
 import org.one.patientmanagement.domain.models.Doctor;
 import org.one.patientmanagement.domain.models.Schedule;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Nonnull;
+import org.one.patientmanagement.domain.dto.ScheduleOfDoctor;
 import org.one.patientmanagement.repository.DoctorRepository;
 import org.one.patientmanagement.repository.ScheduleRepository;
 import org.one.patientmanagement.service.DoctorManager;
@@ -57,5 +60,10 @@ public class DoctorManagerImpl implements DoctorManager {
     @Override
     public List<Doctor> getAllByIds(List<Long> ids) {
         return doctorRepository.findAllByIds(ids);
+    }
+
+    @Override
+    public Map<DayOfWeek, List<ScheduleOfDoctor>> getWeekScheduleOfDoctors() {
+        return doctorRepository.findWeekScheduleOfDoctors();
     }
 }

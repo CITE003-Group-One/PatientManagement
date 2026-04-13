@@ -2,19 +2,177 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package org.one.patientmanagement.ui;
+package org.one.patientmanagement.ui.view;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.one.patientmanagement.domain.dto.PatientInfo;
+import org.one.patientmanagement.domain.dto.ScheduleOfDoctor;
+import org.one.patientmanagement.domain.models.Patient;
+import org.one.patientmanagement.domain.models.Schedule;
+import org.one.patientmanagement.ui.components.DayOfWeekCard;
+import org.one.patientmanagement.ui.components.DoctorSelectionRow;
+import org.one.patientmanagement.ui.controller.ControllerBound;
+import org.one.patientmanagement.ui.controller.patient.PatientSetupController;
 
 /**
  *
  * @author Lei
  */
-public class PatientSetup extends javax.swing.JPanel {
+public class PatientSetup extends javax.swing.JPanel implements ControllerBound<PatientSetupController> {
+
+    private PatientSetupController controller;
 
     /**
      * Creates new form New_Acct_Scheduling
      */
     public PatientSetup() {
         initComponents();
+
+        todaySchedule.setDaySelectListener(e -> {
+            controller.onDaySelect(e);
+        });
+
+        morningCard.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                setSelectedBlockCard(morningCard);
+            }
+        });
+
+        afternoonCard.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                setSelectedBlockCard(afternoonCard);
+            }
+        });
+    }
+
+    public void loadSchedule(Map<DayOfWeek, List<ScheduleOfDoctor>> scheduleMap) {
+        todaySchedule.generateCalendar(scheduleMap);
+    }
+
+    public void setDate(String date) {
+        dateLabel.setText(date);
+    }
+
+    private final Map<ScheduleOfDoctor, DoctorSelectionRow> rowMap = new HashMap<>();
+    private DoctorSelectionRow selectedRow;
+
+    private DayOfWeekCard selectedBlockCard; // TODO apply one a time selecetion to block cards
+
+    public void loadDoctorSelection(List<ScheduleOfDoctor> weekScheduleOfDoctors) {
+        doctorsSelectionList.removeAll();
+        rowMap.clear();
+        selectedRow = null;
+
+        for (var sod : weekScheduleOfDoctors) {
+            var row = new DoctorSelectionRow();
+
+            row.setData(sod.doctor().name(), sod.doctor().profession());
+
+            row.addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override
+                public void mouseClicked(java.awt.event.MouseEvent e) {
+                    setSelectedRow(sod);
+                    controller.onDoctorSelect(sod);
+                }
+            });
+
+            rowMap.put(sod, row);
+            addDoctorSelectionRow(row);
+        }
+
+        doctorsSelectionList.revalidate();
+        doctorsSelectionList.repaint();
+    }
+
+    public void setBlock(Schedule schedule) {
+        morningCard.setEnabled(true);
+        afternoonCard.setEnabled(true);
+
+        var blocks = schedule.blocks();
+        // to populate the block cards
+    }
+
+    public void addDoctorSelectionRow(DoctorSelectionRow row) {
+        doctorsSelectionList.add(row);
+    }
+
+    public void setSelectedRow(ScheduleOfDoctor sod) {
+        DoctorSelectionRow newRow = rowMap.get(sod);
+        if (newRow == null) {
+            return;
+        }
+
+        if (selectedRow != null) {
+            selectedRow.setSelected(false);
+        }
+
+        selectedRow = newRow;
+        selectedRow.setSelected(true);
+
+        doctorsSelectionList.repaint();
+    }
+
+    private void setSelectedBlockCard(DayOfWeekCard card) {
+        if (selectedBlockCard == card) {
+            return;
+        }
+
+        if (selectedBlockCard != null) {
+            selectedBlockCard.setSelected(false);
+        }
+
+        selectedBlockCard = card;
+        selectedBlockCard.setSelected(true);
+
+        morningCard.repaint();
+        afternoonCard.repaint();
+    }
+
+    public boolean haveSelected() {
+        return selectedRow != null && selectedBlockCard != null;
+    }
+
+    public PatientInfo getPatientInfo() {
+
+        String firstName = firstNameField.getFieldText();
+        String lastName = lastNameField.getFieldText();
+        String sex = sexField.getFieldText();
+        String birthdayText = birthdayField.getFieldText();
+        String bloodType = bloodTypeField.getFieldText();
+        String mainContact = mainContactField.getFieldText();
+        String alternativeContact = alternativeContactField.getFieldText();
+        String address = addressField.getFieldText();
+
+        if (firstName == null
+                || lastName == null
+                || sex == null
+                || birthdayText == null
+                || bloodType == null
+                || mainContact == null
+                || alternativeContact == null
+                || address == null) {
+            return null;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+
+        return new PatientInfo(
+                firstName,
+                lastName,
+                sex,
+                LocalDate.parse(birthdayText, formatter),
+                bloodType,
+                mainContact,
+                alternativeContact,
+                address
+        );
     }
 
     /**
@@ -33,18 +191,18 @@ public class PatientSetup extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        fillWidthPanel1 = new org.one.patientmanagement.ui.components.FillWidthPanel();
+        doctorsSelectionList = new org.one.patientmanagement.ui.components.FillWidthPanel();
         jLabel2 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        dateLabel = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
-        todaySchedule1 = new org.one.patientmanagement.ui.components.TodaySchedule();
+        todaySchedule = new org.one.patientmanagement.ui.components.TodaySchedule();
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
-        dayOfWeekCard3 = new org.one.patientmanagement.ui.components.DayOfWeekCard();
-        dayOfWeekCard4 = new org.one.patientmanagement.ui.components.DayOfWeekCard();
+        blockPanel = new javax.swing.JPanel();
+        morningCard = new org.one.patientmanagement.ui.components.DayOfWeekCard();
+        afternoonCard = new org.one.patientmanagement.ui.components.DayOfWeekCard();
         jLabel6 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
@@ -52,28 +210,28 @@ public class PatientSetup extends javax.swing.JPanel {
         jPanel14 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20));
-        takePhoto1 = new org.one.patientmanagement.ui.components.TakePhoto();
+        takePhoto2 = new org.one.patientmanagement.ui.components.TakePhoto();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20));
-        textField2 = new org.one.patientmanagement.ui.components.TextField();
+        birthdayField = new org.one.patientmanagement.ui.components.TextField();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20));
         jPanel10 = new javax.swing.JPanel();
-        textField1 = new org.one.patientmanagement.ui.components.TextField();
-        textField3 = new org.one.patientmanagement.ui.components.TextField();
+        sexField = new org.one.patientmanagement.ui.components.TextField();
+        bloodTypeField = new org.one.patientmanagement.ui.components.TextField();
         jPanel13 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         fillWidthPanel2 = new org.one.patientmanagement.ui.components.FillWidthPanel();
-        textField4 = new org.one.patientmanagement.ui.components.TextField();
+        firstNameField = new org.one.patientmanagement.ui.components.TextField();
         filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20));
-        textField5 = new org.one.patientmanagement.ui.components.TextField();
+        lastNameField = new org.one.patientmanagement.ui.components.TextField();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20));
-        textField6 = new org.one.patientmanagement.ui.components.TextField();
+        addressField = new org.one.patientmanagement.ui.components.TextField();
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20));
-        textField7 = new org.one.patientmanagement.ui.components.TextField();
+        mainContactField = new org.one.patientmanagement.ui.components.TextField();
         filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20));
-        textField8 = new org.one.patientmanagement.ui.components.TextField();
+        alternativeContactField = new org.one.patientmanagement.ui.components.TextField();
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20));
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        continueBtn = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 248, 248));
         setMaximumSize(new java.awt.Dimension(1200, 800));
@@ -107,20 +265,11 @@ public class PatientSetup extends javax.swing.JPanel {
         jPanel3.setPreferredSize(new java.awt.Dimension(1250, 300));
         jPanel3.setLayout(new java.awt.BorderLayout(40, 0));
 
+        jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.GridBagLayout());
 
-        javax.swing.GroupLayout fillWidthPanel1Layout = new javax.swing.GroupLayout(fillWidthPanel1);
-        fillWidthPanel1.setLayout(fillWidthPanel1Layout);
-        fillWidthPanel1Layout.setHorizontalGroup(
-            fillWidthPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 242, Short.MAX_VALUE)
-        );
-        fillWidthPanel1Layout.setVerticalGroup(
-            fillWidthPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jScrollPane1.setViewportView(fillWidthPanel1);
+        doctorsSelectionList.setLayout(new javax.swing.BoxLayout(doctorsSelectionList, javax.swing.BoxLayout.Y_AXIS));
+        jScrollPane1.setViewportView(doctorsSelectionList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -138,16 +287,16 @@ public class PatientSetup extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 6, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 6, 25);
         jPanel6.add(jLabel2, gridBagConstraints);
 
         jPanel8.setBackground(new java.awt.Color(255, 219, 199));
         jPanel8.setLayout(new java.awt.GridLayout(1, 0));
 
-        jLabel3.setFont(new java.awt.Font("Manrope Medium", 0, 13)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("jLabel3");
-        jPanel8.add(jLabel3);
+        dateLabel.setFont(new java.awt.Font("Manrope Medium", 0, 13)); // NOI18N
+        dateLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        dateLabel.setText("jLabel3");
+        jPanel8.add(dateLabel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -161,7 +310,7 @@ public class PatientSetup extends javax.swing.JPanel {
         jPanel3.add(jPanel6, java.awt.BorderLayout.EAST);
 
         jPanel7.setLayout(new java.awt.BorderLayout(0, 10));
-        jPanel7.add(todaySchedule1, java.awt.BorderLayout.CENTER);
+        jPanel7.add(todaySchedule, java.awt.BorderLayout.CENTER);
 
         jLabel1.setFont(new java.awt.Font("Poppins Medium", 0, 25)); // NOI18N
         jLabel1.setText("Select a day");
@@ -188,12 +337,16 @@ public class PatientSetup extends javax.swing.JPanel {
         jLabel5.setText("<html>Avail on the time that you are able to walk into the clinic. Failure to attend the appointment before the desired time ends will have the entire appointment be discarded.</html>\n");
         jPanel4.add(jLabel5, java.awt.BorderLayout.PAGE_END);
 
-        jPanel9.setOpaque(false);
-        jPanel9.setLayout(new java.awt.GridLayout(1, 0, 16, 0));
-        jPanel9.add(dayOfWeekCard3);
-        jPanel9.add(dayOfWeekCard4);
+        blockPanel.setOpaque(false);
+        blockPanel.setLayout(new java.awt.GridLayout(1, 0, 16, 0));
 
-        jPanel4.add(jPanel9, java.awt.BorderLayout.CENTER);
+        morningCard.setEnabled(false);
+        blockPanel.add(morningCard);
+
+        afternoonCard.setEnabled(false);
+        blockPanel.add(afternoonCard);
+
+        jPanel4.add(blockPanel, java.awt.BorderLayout.CENTER);
 
         jLabel6.setFont(new java.awt.Font("Poppins Medium", 0, 25)); // NOI18N
         jLabel6.setText("Select a time of day");
@@ -220,7 +373,7 @@ public class PatientSetup extends javax.swing.JPanel {
 
         jPanel14.setMaximumSize(new java.awt.Dimension(32767, 39));
         jPanel14.setOpaque(false);
-        jPanel14.setLayout(new java.awt.GridLayout());
+        jPanel14.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel4.setFont(new java.awt.Font("Poppins Medium", 0, 25)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -230,17 +383,16 @@ public class PatientSetup extends javax.swing.JPanel {
         jPanel12.add(jPanel14);
         jPanel12.add(filler8);
 
-        takePhoto1.setMaximumSize(new java.awt.Dimension(2147483647, 120));
-        takePhoto1.setMinimumSize(new java.awt.Dimension(149, 120));
-        takePhoto1.setOpaque(false);
-        jPanel12.add(takePhoto1);
+        takePhoto2.setMinimumSize(new java.awt.Dimension(149, 100));
+        takePhoto2.setPreferredSize(new java.awt.Dimension(269, 100));
+        jPanel12.add(takePhoto2);
         jPanel12.add(filler1);
 
-        textField2.setMaximumSize(new java.awt.Dimension(2147483647, 75));
-        textField2.setMinimumSize(new java.awt.Dimension(64, 75));
-        textField2.setName(""); // NOI18N
-        textField2.setPreferredSize(new java.awt.Dimension(92, 75));
-        jPanel12.add(textField2);
+        birthdayField.setMaximumSize(new java.awt.Dimension(2147483647, 75));
+        birthdayField.setMinimumSize(new java.awt.Dimension(64, 75));
+        birthdayField.setName(""); // NOI18N
+        birthdayField.setPreferredSize(new java.awt.Dimension(92, 75));
+        jPanel12.add(birthdayField);
         jPanel12.add(filler2);
 
         jPanel10.setMaximumSize(new java.awt.Dimension(32767, 75));
@@ -248,8 +400,8 @@ public class PatientSetup extends javax.swing.JPanel {
         jPanel10.setName(""); // NOI18N
         jPanel10.setPreferredSize(new java.awt.Dimension(64, 75));
         jPanel10.setLayout(new java.awt.GridLayout(1, 0, 15, 0));
-        jPanel10.add(textField1);
-        jPanel10.add(textField3);
+        jPanel10.add(sexField);
+        jPanel10.add(bloodTypeField);
 
         jPanel12.add(jPanel10);
 
@@ -260,39 +412,39 @@ public class PatientSetup extends javax.swing.JPanel {
 
         fillWidthPanel2.setLayout(new javax.swing.BoxLayout(fillWidthPanel2, javax.swing.BoxLayout.Y_AXIS));
 
-        textField4.setMaximumSize(new java.awt.Dimension(2147483647, 75));
-        textField4.setMinimumSize(new java.awt.Dimension(64, 75));
-        textField4.setName(""); // NOI18N
-        textField4.setPreferredSize(new java.awt.Dimension(92, 75));
-        fillWidthPanel2.add(textField4);
+        firstNameField.setMaximumSize(new java.awt.Dimension(2147483647, 75));
+        firstNameField.setMinimumSize(new java.awt.Dimension(64, 75));
+        firstNameField.setName(""); // NOI18N
+        firstNameField.setPreferredSize(new java.awt.Dimension(92, 75));
+        fillWidthPanel2.add(firstNameField);
         fillWidthPanel2.add(filler3);
 
-        textField5.setMaximumSize(new java.awt.Dimension(2147483647, 75));
-        textField5.setMinimumSize(new java.awt.Dimension(64, 75));
-        textField5.setName(""); // NOI18N
-        textField5.setPreferredSize(new java.awt.Dimension(92, 75));
-        fillWidthPanel2.add(textField5);
+        lastNameField.setMaximumSize(new java.awt.Dimension(2147483647, 75));
+        lastNameField.setMinimumSize(new java.awt.Dimension(64, 75));
+        lastNameField.setName(""); // NOI18N
+        lastNameField.setPreferredSize(new java.awt.Dimension(92, 75));
+        fillWidthPanel2.add(lastNameField);
         fillWidthPanel2.add(filler4);
 
-        textField6.setMaximumSize(new java.awt.Dimension(2147483647, 75));
-        textField6.setMinimumSize(new java.awt.Dimension(64, 75));
-        textField6.setName(""); // NOI18N
-        textField6.setPreferredSize(new java.awt.Dimension(92, 75));
-        fillWidthPanel2.add(textField6);
+        addressField.setMaximumSize(new java.awt.Dimension(2147483647, 75));
+        addressField.setMinimumSize(new java.awt.Dimension(64, 75));
+        addressField.setName(""); // NOI18N
+        addressField.setPreferredSize(new java.awt.Dimension(92, 75));
+        fillWidthPanel2.add(addressField);
         fillWidthPanel2.add(filler5);
 
-        textField7.setMaximumSize(new java.awt.Dimension(2147483647, 75));
-        textField7.setMinimumSize(new java.awt.Dimension(64, 75));
-        textField7.setName(""); // NOI18N
-        textField7.setPreferredSize(new java.awt.Dimension(92, 75));
-        fillWidthPanel2.add(textField7);
+        mainContactField.setMaximumSize(new java.awt.Dimension(2147483647, 75));
+        mainContactField.setMinimumSize(new java.awt.Dimension(64, 75));
+        mainContactField.setName(""); // NOI18N
+        mainContactField.setPreferredSize(new java.awt.Dimension(92, 75));
+        fillWidthPanel2.add(mainContactField);
         fillWidthPanel2.add(filler6);
 
-        textField8.setMaximumSize(new java.awt.Dimension(2147483647, 75));
-        textField8.setMinimumSize(new java.awt.Dimension(64, 75));
-        textField8.setName(""); // NOI18N
-        textField8.setPreferredSize(new java.awt.Dimension(92, 75));
-        fillWidthPanel2.add(textField8);
+        alternativeContactField.setMaximumSize(new java.awt.Dimension(2147483647, 75));
+        alternativeContactField.setMinimumSize(new java.awt.Dimension(64, 75));
+        alternativeContactField.setName(""); // NOI18N
+        alternativeContactField.setPreferredSize(new java.awt.Dimension(92, 75));
+        fillWidthPanel2.add(alternativeContactField);
         fillWidthPanel2.add(filler7);
 
         jScrollPane3.setViewportView(fillWidthPanel2);
@@ -316,8 +468,9 @@ public class PatientSetup extends javax.swing.JPanel {
 
         jPanel1.setOpaque(false);
 
-        jButton1.setFont(new java.awt.Font("Manrope SemiBold", 0, 16)); // NOI18N
-        jButton1.setText("Continue");
+        continueBtn.setFont(new java.awt.Font("Manrope SemiBold", 0, 16)); // NOI18N
+        continueBtn.setText("Continue");
+        continueBtn.addActionListener(this::continueBtnActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -325,25 +478,35 @@ public class PatientSetup extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(976, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(continueBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(continueBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
         add(jPanel1, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void continueBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueBtnActionPerformed
+        controller.onComplete();
+    }//GEN-LAST:event_continueBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.one.patientmanagement.ui.components.DayOfWeekCard dayOfWeekCard3;
-    private org.one.patientmanagement.ui.components.DayOfWeekCard dayOfWeekCard4;
-    private org.one.patientmanagement.ui.components.FillWidthPanel fillWidthPanel1;
+    private org.one.patientmanagement.ui.components.TextField addressField;
+    private org.one.patientmanagement.ui.components.DayOfWeekCard afternoonCard;
+    private org.one.patientmanagement.ui.components.TextField alternativeContactField;
+    private org.one.patientmanagement.ui.components.TextField birthdayField;
+    private javax.swing.JPanel blockPanel;
+    private org.one.patientmanagement.ui.components.TextField bloodTypeField;
+    private javax.swing.JButton continueBtn;
+    private javax.swing.JLabel dateLabel;
+    private org.one.patientmanagement.ui.components.FillWidthPanel doctorsSelectionList;
     private org.one.patientmanagement.ui.components.FillWidthPanel fillWidthPanel2;
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
@@ -353,10 +516,9 @@ public class PatientSetup extends javax.swing.JPanel {
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
     private javax.swing.Box.Filler filler8;
-    private javax.swing.JButton jButton1;
+    private org.one.patientmanagement.ui.components.TextField firstNameField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -374,19 +536,21 @@ public class PatientSetup extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
+    private org.one.patientmanagement.ui.components.TextField lastNameField;
+    private org.one.patientmanagement.ui.components.TextField mainContactField;
+    private org.one.patientmanagement.ui.components.DayOfWeekCard morningCard;
+    private org.one.patientmanagement.ui.components.TextField sexField;
     private org.one.patientmanagement.ui.components.StepProgress stepProgress1;
-    private org.one.patientmanagement.ui.components.TakePhoto takePhoto1;
-    private org.one.patientmanagement.ui.components.TextField textField1;
-    private org.one.patientmanagement.ui.components.TextField textField2;
-    private org.one.patientmanagement.ui.components.TextField textField3;
-    private org.one.patientmanagement.ui.components.TextField textField4;
-    private org.one.patientmanagement.ui.components.TextField textField5;
-    private org.one.patientmanagement.ui.components.TextField textField6;
-    private org.one.patientmanagement.ui.components.TextField textField7;
-    private org.one.patientmanagement.ui.components.TextField textField8;
-    private org.one.patientmanagement.ui.components.TodaySchedule todaySchedule1;
+    private org.one.patientmanagement.ui.components.TakePhoto takePhoto2;
+    private org.one.patientmanagement.ui.components.TodaySchedule todaySchedule;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setController(PatientSetupController controller) {
+        this.controller = controller;
+        
+        controller.attachToStepProgressController(stepProgress1);
+    }
 }

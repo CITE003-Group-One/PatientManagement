@@ -38,6 +38,7 @@ public class DoctorAppContext {
     }
 
     public void start() {
+        System.out.println("Started as doctor");
         injector.getInstance(DoctorFrame.class).setVisible(true);
     }
 }

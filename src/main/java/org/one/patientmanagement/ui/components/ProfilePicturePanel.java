@@ -57,7 +57,7 @@ public class ProfilePicturePanel extends JPanel {
         int imgW = image.getWidth(this);
         int imgH = image.getHeight(this);
 
-        double scale = Math.max(
+        double scale = Math.min(
                 (double) width / imgW,
                 (double) height / imgH
         );

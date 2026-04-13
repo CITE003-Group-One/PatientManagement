@@ -16,7 +16,14 @@ public class TextField extends javax.swing.JPanel {
     public TextField() {
         initComponents();
     }
-
+    
+    public void setLabel(String name) {
+        jLabel1.setText(name);
+    }
+    
+    public String getFieldText() {
+        return jTextField1.getText();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

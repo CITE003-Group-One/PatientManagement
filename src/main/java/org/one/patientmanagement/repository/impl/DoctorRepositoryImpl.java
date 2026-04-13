@@ -1,5 +1,6 @@
 package org.one.patientmanagement.repository.impl;
 
+import com.google.inject.Inject;
 import org.one.patientmanagement.repository.DoctorRepository;
 
 import org.one.patientmanagement.domain.models.Doctor;
@@ -9,16 +10,19 @@ import java.sql.*;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.sql.DataSource;
-import org.one.patientmanagement.domain.models.Patient;
+import org.one.patientmanagement.domain.dto.ScheduleOfDoctor;
 
 public class DoctorRepositoryImpl implements DoctorRepository {
 
     private final DataSource dataSource;
 
+    @Inject
     public DoctorRepositoryImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -153,6 +157,29 @@ public class DoctorRepositoryImpl implements DoctorRepository {
             }
         } catch (SQLException e) {
             throw new RuntimeException("Failed to find doctors by ids", e);
+        }
+    }
+
+    @Override
+    public Map<DayOfWeek, List<ScheduleOfDoctor>> findWeekScheduleOfDoctors() {
+        String sql = """
+        SELECT s.id, s.day, s.start, s.end, s.doctor_id,
+               d.id as d_id, d.account_id, d.name, d.profession
+        FROM schedules s
+        JOIN doctors d ON s.doctor_id = d.id
+    """;
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+
+            Map<DayOfWeek, List<ScheduleOfDoctor>> map = new LinkedHashMap<>();
+            while (rs.next()) {
+                DayOfWeek day = DayOfWeek.valueOf(rs.getString("day"));
+                Doctor doctor = new Doctor(rs.getLong("d_id"), rs.getLong("account_id"), rs.getString("profession"), rs.getString("name"));
+                Schedule schedule = new Schedule(rs.getLong("id"), day, LocalTime.parse(rs.getString("start")), LocalTime.parse(rs.getString("end")), rs.getLong("doctor_id"));
+                map.computeIfAbsent(day, k -> new ArrayList<>()).add(new ScheduleOfDoctor(doctor, schedule));
+            }
+            return map;
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to fetch week schedule of doctors", e);
         }
     }
 }

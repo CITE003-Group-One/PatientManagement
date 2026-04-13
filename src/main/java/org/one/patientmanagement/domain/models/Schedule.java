@@ -30,7 +30,7 @@ public record Schedule(
 
     public List<AppointmentBlock> blocks() {
         LocalTime noon = LocalTime.NOON;
-        if (!start.isBefore(noon)) {
+        if (!start.isBefore(noon)) {    
             return List.of(AppointmentBlock.AFTERNOON);
         }
         if (!end.isAfter(noon)) {

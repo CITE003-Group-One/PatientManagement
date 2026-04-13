@@ -4,11 +4,16 @@
  */
 package org.one.patientmanagement.ui.view;
 
+import org.one.patientmanagement.ui.controller.ControllerBound;
+import org.one.patientmanagement.ui.controller.patient.PatientLoginController;
+
 /**
  *
  * @author Lei
  */
-public class PatientLogin extends javax.swing.JPanel {
+public class PatientLogin extends javax.swing.JPanel implements ControllerBound<PatientLoginController> {
+
+    private PatientLoginController controller;
 
     /**
      * Creates new form ExistingAcctLogin
@@ -144,4 +149,11 @@ public class PatientLogin extends javax.swing.JPanel {
     private org.one.patientmanagement.ui.components.StepProgress stepProgress1;
     private javax.swing.JButton submitButton;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setController(PatientLoginController controller) {
+        this.controller = controller;
+        
+        controller.attachToStepProgressController(stepProgress1);
+    }
 }

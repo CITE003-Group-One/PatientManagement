@@ -1,5 +1,6 @@
 package org.one.patientmanagement.repository.impl;
 
+import com.google.inject.Inject;
 import org.one.patientmanagement.repository.ScheduleRepository;
 
 import org.one.patientmanagement.domain.models.Schedule;
@@ -11,6 +12,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
     private final DataSource dataSource;
 
+    @Inject
     public ScheduleRepositoryImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }

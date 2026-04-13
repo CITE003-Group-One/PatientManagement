@@ -4,20 +4,84 @@
  */
 package org.one.patientmanagement.ui.view;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.plaf.basic.BasicButtonUI;
+import org.one.patientmanagement.ui.controller.ControllerBound;
+import org.one.patientmanagement.ui.controller.patient.PatientServiceSelectionController;
+import org.one.patientmanagement.ui.model.PatientViewModel;
+
 /**
  *
  * @author KAROL JOHN
  */
-public class ServiceSelectionView extends javax.swing.JPanel {
+public class ServiceSelectionView extends javax.swing.JPanel implements ControllerBound<PatientServiceSelectionController> {
+
+    private PatientServiceSelectionController controller;
+    private JComponent selectedButton;
+    private final Map<PatientViewModel.ServiceSelection, JButton> buttonMap = new HashMap<>();
 
     /**
      * Creates new form ServiceSelectionView
      */
     public ServiceSelectionView() {
         initComponents();
-        
+
         cancelButton.putClientProperty("FlatLaf.style", "arc: 999;");
         continueButton1.putClientProperty("FlatLaf.style", "arc: 999;");
+
+        for (var service : PatientViewModel.ServiceSelection.values()) {
+            var btn = new JButton();
+
+            btn.setContentAreaFilled(false);
+            btn.setOpaque(false);
+            btn.setBorderPainted(false);
+
+            btn.setFont(new java.awt.Font("Manrope Medium", 0, 20));
+            btn.setForeground(new java.awt.Color(114, 87, 98));
+            btn.setText(service.getName());
+            btn.setPreferredSize(new java.awt.Dimension(530, 65));
+
+            btn.setUI(new BasicButtonUI() {
+                @Override
+                public void paint(Graphics g, JComponent c) {
+                    Graphics2D g2 = (Graphics2D) g.create();
+
+                    if (c == selectedButton) {
+                        g2.setColor(Color.decode("#725762"));
+                    } else {
+                        g2.setColor(new java.awt.Color(250, 234, 238));
+                    }
+
+                    g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 10, 10);
+
+                    g2.dispose();
+                    super.paint(g, c);
+                }
+            });
+
+            btn.addActionListener(l -> {
+                controller.setServiceSelection(service);
+                setSelection(service);
+            });
+
+            buttonMap.put(service, btn);
+
+            selectionPanel.add(btn);
+        }
+    }
+
+    public void setSelection(PatientViewModel.ServiceSelection service) {
+        JButton btn = buttonMap.get(service);
+        if (btn != null) {
+            selectedButton = btn;
+            repaint();
+        }
     }
 
     /**
@@ -34,11 +98,11 @@ public class ServiceSelectionView extends javax.swing.JPanel {
         stepProgress1 = new org.one.patientmanagement.ui.components.StepProgress();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        General_Button1 = new javax.swing.JButton();
-        General_Button2 = new javax.swing.JButton();
-        General_Button3 = new javax.swing.JButton();
-        General_Button = new javax.swing.JButton();
+        selectionPanel = new javax.swing.JPanel();
+        generalSelection = new javax.swing.JButton();
+        pediatricsSelection = new javax.swing.JButton();
+        counselingSelection = new javax.swing.JButton();
+        examinationSelection = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         continueButton1 = new javax.swing.JButton();
 
@@ -61,45 +125,41 @@ public class ServiceSelectionView extends javax.swing.JPanel {
         gridBagConstraints.gridy = 0;
         jPanel1.add(jLabel1, gridBagConstraints);
 
-        jPanel2.setLayout(new java.awt.GridLayout(4, 0, 0, 10));
+        selectionPanel.setLayout(new java.awt.GridLayout(4, 0, 0, 10));
 
-        General_Button1.setBackground(new java.awt.Color(114, 87, 98));
-        General_Button1.setFont(new java.awt.Font("Manrope Medium", 0, 20)); // NOI18N
-        General_Button1.setForeground(new java.awt.Color(255, 255, 255));
-        General_Button1.setText("General Checkup");
-        General_Button1.setPreferredSize(new java.awt.Dimension(530, 65));
-        General_Button1.addActionListener(this::General_Button1ActionPerformed);
-        jPanel2.add(General_Button1);
+        generalSelection.setBackground(new java.awt.Color(114, 87, 98));
+        generalSelection.setFont(new java.awt.Font("Manrope Medium", 0, 20)); // NOI18N
+        generalSelection.setForeground(new java.awt.Color(255, 255, 255));
+        generalSelection.setText("General Checkup");
+        generalSelection.setPreferredSize(new java.awt.Dimension(530, 65));
+        selectionPanel.add(generalSelection);
 
-        General_Button2.setBackground(new java.awt.Color(250, 234, 238));
-        General_Button2.setFont(new java.awt.Font("Manrope Medium", 0, 20)); // NOI18N
-        General_Button2.setForeground(new java.awt.Color(114, 87, 98));
-        General_Button2.setText("Pediatrics");
-        General_Button2.setPreferredSize(new java.awt.Dimension(530, 65));
-        General_Button2.addActionListener(this::General_Button2ActionPerformed);
-        jPanel2.add(General_Button2);
+        pediatricsSelection.setBackground(new java.awt.Color(250, 234, 238));
+        pediatricsSelection.setFont(new java.awt.Font("Manrope Medium", 0, 20)); // NOI18N
+        pediatricsSelection.setForeground(new java.awt.Color(114, 87, 98));
+        pediatricsSelection.setText("Pediatrics");
+        pediatricsSelection.setPreferredSize(new java.awt.Dimension(530, 65));
+        selectionPanel.add(pediatricsSelection);
 
-        General_Button3.setBackground(new java.awt.Color(250, 234, 238));
-        General_Button3.setFont(new java.awt.Font("Manrope Medium", 0, 20)); // NOI18N
-        General_Button3.setForeground(new java.awt.Color(114, 87, 98));
-        General_Button3.setText("Conseling");
-        General_Button3.setPreferredSize(new java.awt.Dimension(530, 65));
-        General_Button3.addActionListener(this::General_Button3ActionPerformed);
-        jPanel2.add(General_Button3);
+        counselingSelection.setBackground(new java.awt.Color(250, 234, 238));
+        counselingSelection.setFont(new java.awt.Font("Manrope Medium", 0, 20)); // NOI18N
+        counselingSelection.setForeground(new java.awt.Color(114, 87, 98));
+        counselingSelection.setText("Conseling");
+        counselingSelection.setPreferredSize(new java.awt.Dimension(530, 65));
+        selectionPanel.add(counselingSelection);
 
-        General_Button.setBackground(new java.awt.Color(250, 234, 238));
-        General_Button.setFont(new java.awt.Font("Manrope Medium", 0, 20)); // NOI18N
-        General_Button.setForeground(new java.awt.Color(114, 87, 98));
-        General_Button.setText("Physical/Medical Examination");
-        General_Button.setPreferredSize(new java.awt.Dimension(530, 65));
-        General_Button.addActionListener(this::General_ButtonActionPerformed);
-        jPanel2.add(General_Button);
+        examinationSelection.setBackground(new java.awt.Color(250, 234, 238));
+        examinationSelection.setFont(new java.awt.Font("Manrope Medium", 0, 20)); // NOI18N
+        examinationSelection.setForeground(new java.awt.Color(114, 87, 98));
+        examinationSelection.setText("Physical/Medical Examination");
+        examinationSelection.setPreferredSize(new java.awt.Dimension(530, 65));
+        selectionPanel.add(examinationSelection);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(31, 0, 103, 0);
-        jPanel1.add(jPanel2, gridBagConstraints);
+        jPanel1.add(selectionPanel, gridBagConstraints);
 
         cancelButton.setBackground(new java.awt.Color(137, 74, 105));
         cancelButton.setFont(new java.awt.Font("Manrope SemiBold", 0, 16)); // NOI18N
@@ -137,22 +197,6 @@ public class ServiceSelectionView extends javax.swing.JPanel {
         add(jPanel3, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void General_Button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_General_Button3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_General_Button3ActionPerformed
-
-    private void General_Button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_General_Button2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_General_Button2ActionPerformed
-
-    private void General_Button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_General_Button1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_General_Button1ActionPerformed
-
-    private void General_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_General_ButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_General_ButtonActionPerformed
-
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cancelButtonActionPerformed
@@ -163,16 +207,23 @@ public class ServiceSelectionView extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton General_Button;
-    private javax.swing.JButton General_Button1;
-    private javax.swing.JButton General_Button2;
-    private javax.swing.JButton General_Button3;
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton continueButton1;
+    private javax.swing.JButton counselingSelection;
+    private javax.swing.JButton examinationSelection;
+    private javax.swing.JButton generalSelection;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton pediatricsSelection;
+    private javax.swing.JPanel selectionPanel;
     private org.one.patientmanagement.ui.components.StepProgress stepProgress1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setController(PatientServiceSelectionController controller) {
+        this.controller = controller;
+        
+        controller.attachToStepProgressController(stepProgress1);
+    }
 }

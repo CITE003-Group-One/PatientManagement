@@ -50,6 +50,8 @@ public final class DayCardComponent extends JPanel {
 
     @Override
     public void setEnabled(boolean enabled) {
+        
+        // TODO daycardcomponent change color when setenabled
         super.setEnabled(enabled);
 
         setCursor(enabled

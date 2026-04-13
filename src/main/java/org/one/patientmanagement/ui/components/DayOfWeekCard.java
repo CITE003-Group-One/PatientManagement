@@ -16,6 +16,11 @@ public class DayOfWeekCard extends javax.swing.JPanel {
     public DayOfWeekCard() {
         initComponents();
     }
+    
+    
+    
+    // TODO also override paintComponent for selection logic
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -92,4 +97,8 @@ public class DayOfWeekCard extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
+
+    public void setSelected(boolean b) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

@@ -5,8 +5,10 @@ import com.google.inject.Singleton;
 import org.one.patientmanagement.repository.impl.AppointmentRepositoryImpl;
 import org.one.patientmanagement.repository.impl.AttachmentRepositoryImpl;
 import org.one.patientmanagement.repository.impl.ConsultationRepositoryImpl;
+import org.one.patientmanagement.repository.impl.DoctorRepositoryImpl;
 import org.one.patientmanagement.repository.impl.PatientRepositoryImpl;
 import org.one.patientmanagement.repository.impl.PrescriptionRepositoryImpl;
+import org.one.patientmanagement.repository.impl.ScheduleRepositoryImpl;
 import org.one.patientmanagement.repository.impl.VitalsRepositoryImpl;
 
 public class RepositoryModule extends AbstractModule {
@@ -20,5 +22,7 @@ public class RepositoryModule extends AbstractModule {
         bind(PatientRepository.class).to(PatientRepositoryImpl.class).in(Singleton.class);
         bind(PrescriptionRepository.class).to(PrescriptionRepositoryImpl.class).in(Singleton.class);
         bind(VitalsRepository.class).to(VitalsRepositoryImpl.class).in(Singleton.class);
+        bind(ScheduleRepository.class).to(ScheduleRepositoryImpl.class).in(Singleton.class);
+        bind(DoctorRepository.class).to(DoctorRepositoryImpl.class).in(Singleton.class);
     }
 }

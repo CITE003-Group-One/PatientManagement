@@ -4,17 +4,30 @@
  */
 package org.one.patientmanagement.ui.view;
 
+import org.one.patientmanagement.ui.controller.ControllerBound;
+import org.one.patientmanagement.ui.controller.patient.PatientStartupController;
+
 /**
  *
  * @author KAROL JOHN
  */
-public class PatientStartupView extends javax.swing.JPanel {
+public class PatientStartupView extends javax.swing.JPanel implements ControllerBound<PatientStartupController> {
+
+    private PatientStartupController controller;
 
     /**
      * Creates new form PatientStartupView
      */
     public PatientStartupView() {
         initComponents();
+
+        patientStartupCard1.setInfo("Check in  with your appointment or records.", "Existing Patient");
+        patientStartupCard2.setInfo("First time here? Register your details.", "New Patient");
+        
+        patientStartupCard1.setButtonAction(l -> { controller.onExistingPatient(); });
+        patientStartupCard2.setButtonAction(l -> { controller.onNewPatient(); });
+        
+        stepProgress1.remmoveBack();
     }
 
     /**
@@ -105,4 +118,9 @@ public class PatientStartupView extends javax.swing.JPanel {
     private org.one.patientmanagement.ui.components.PatientStartupCard patientStartupCard2;
     private org.one.patientmanagement.ui.components.StepProgress stepProgress1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setController(PatientStartupController controller) {
+        this.controller = controller;
+    }
 }

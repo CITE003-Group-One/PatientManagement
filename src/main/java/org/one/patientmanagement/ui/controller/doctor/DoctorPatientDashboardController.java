@@ -28,7 +28,7 @@ import org.one.patientmanagement.ui.view.DoctorPatientDashboard;
  *
  * @author KAROL JOHN
  */
-public class PatientDashboardController extends AbstractComponentController<DoctorPatientDashboard, PatientDashboardController> {
+public class DoctorPatientDashboardController extends AbstractComponentController<DoctorPatientDashboard, DoctorPatientDashboardController> {
 
     private final Doctor doctor;
     private final PatientManager patientManager;
@@ -38,7 +38,7 @@ public class PatientDashboardController extends AbstractComponentController<Doct
     private List<ConsultationData> consultations;
 
     @Inject
-    public PatientDashboardController(Doctor doctor, PatientManager patientManager, ConsultationService consultationManager, DoctorManager doctorManager) {
+    public DoctorPatientDashboardController(Doctor doctor, PatientManager patientManager, ConsultationService consultationManager, DoctorManager doctorManager) {
         this.patientManager = patientManager;
         this.consultationManager = consultationManager;
         this.doctorManager = doctorManager;

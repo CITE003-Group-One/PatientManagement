@@ -4,7 +4,7 @@
  */
 package org.one.patientmanagement.ui.view;
 
-import org.one.patientmanagement.ui.controller.doctor.PatientDashboardController;
+import org.one.patientmanagement.ui.controller.doctor.DoctorPatientDashboardController;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.Box;
@@ -26,9 +26,9 @@ import org.one.patientmanagement.ui.controller.ControllerBound;
  *
  * @author KAROL JOHN
  */
-public class DoctorPatientDashboard extends javax.swing.JPanel implements ControllerBound<PatientDashboardController> {
+public class DoctorPatientDashboard extends javax.swing.JPanel implements ControllerBound<DoctorPatientDashboardController> {
 
-    private PatientDashboardController controller;
+    private DoctorPatientDashboardController controller;
 
     /**
      * Creates new form DoctorPatientDashboard
@@ -425,7 +425,7 @@ public class DoctorPatientDashboard extends javax.swing.JPanel implements Contro
     // End of variables declaration//GEN-END:variables
 
     @Override
-    public void setController(PatientDashboardController controller) {
+    public void setController(DoctorPatientDashboardController controller) {
         this.controller = controller;
     }
 }

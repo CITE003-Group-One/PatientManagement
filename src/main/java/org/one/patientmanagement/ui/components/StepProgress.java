@@ -4,13 +4,18 @@
  */
 package org.one.patientmanagement.ui.components;
 
+import java.awt.event.ActionListener;
 import java.util.List;
+import org.one.patientmanagement.ui.controller.ControllerBound;
+import org.one.patientmanagement.ui.controller.patient.StepProgressController;
 
 /**
  *
  * @author KAROL JOHN
  */
-public final class StepProgress extends javax.swing.JPanel {
+public final class StepProgress extends javax.swing.JPanel implements ControllerBound<StepProgressController> {
+
+    private StepProgressController controller;
 
     /**
      * Creates new form StepProgress
@@ -23,6 +28,8 @@ public final class StepProgress extends javax.swing.JPanel {
         jPanel3.putClientProperty("FlatLaf.style", "arc: 999;");
         
         setProgress(0);
+        
+        backBtn1.setButtonListener(l -> { controller.onBack(); });
     }
     
     public void remmoveBack() {
@@ -133,4 +140,9 @@ public final class StepProgress extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void setController(StepProgressController controller) {
+        this.controller = controller;
+    }
 }

@@ -48,9 +48,9 @@ public class QueueController extends AbstractController<DoctorPatientQueue, Queu
 
     @Inject // TODO: maybe opt to provider
     public QueueController(DoctorPatientQueue view, Schedule schedule, Provider<QueueListController> queueListControllerProvider) {
-        super(view);
-
         this.queueListControllerProvider = queueListControllerProvider;
+        
+        super(view);
     }
 
     public QueueListController attachQueueListController(QueueListContainer view) {

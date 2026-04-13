@@ -1,4 +1,4 @@
-package org.one.patientmanagement.ui.controller.navigation.flow;
+package org.one.patientmanagement.ui.controller.navigation.patient.flow;
 
 /**
  *
@@ -7,7 +7,7 @@ package org.one.patientmanagement.ui.controller.navigation.flow;
  * @param <S> arbitrary state model
  */
 public interface FlowStep<R extends Enum<R>, S> {
-
+    
     R getRoute();
 
     FlowStep<R, S> next(FlowState<S> state);

@@ -28,7 +28,7 @@ public class Test extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        patientSetup1 = new org.one.patientmanagement.ui.PatientSetup();
+        patientSetup1 = new org.one.patientmanagement.ui.view.PatientSetup();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1200, 800));
@@ -64,6 +64,6 @@ public class Test extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.one.patientmanagement.ui.PatientSetup patientSetup1;
+    private org.one.patientmanagement.ui.view.PatientSetup patientSetup1;
     // End of variables declaration//GEN-END:variables
 }

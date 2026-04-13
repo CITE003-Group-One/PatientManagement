@@ -4,19 +4,54 @@
  */
 package org.one.patientmanagement.ui;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import org.one.patientmanagement.ui.controller.navigation.patient.flow.PatientRoute;
+import org.one.patientmanagement.ui.controller.navigation.patient.PatientFlowNavigator;
+import org.one.patientmanagement.ui.controller.navigation.patient.flow.step.StartupStep;
+import org.one.patientmanagement.ui.controller.patient.PatientDashboardController;
+import org.one.patientmanagement.ui.controller.patient.PatientLoginController;
+import org.one.patientmanagement.ui.controller.patient.PatientServiceSelectionController;
+import org.one.patientmanagement.ui.controller.patient.PatientSetupController;
+import org.one.patientmanagement.ui.controller.patient.PatientSignupController;
+import org.one.patientmanagement.ui.controller.patient.PatientStartupController;
+import org.one.patientmanagement.ui.view.PatientView;
+
 /**
  *
  * @author KAROL JOHN
  */
 public class PatientFrame extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PatientFrame.class.getName());
 
     /**
      * Creates new form PatientFrame
      */
-    public PatientFrame() {
+    @Inject
+    public PatientFrame(
+            Provider<PatientDashboardController> patientDashboardControllerProvider,
+            Provider<PatientLoginController> patientLoginControllerProvider,
+            Provider<PatientServiceSelectionController> patientServiceSelectionControllerProvider,
+            Provider<PatientSignupController> patientSignupControllerProvider,
+            Provider<PatientSetupController> patientSetupControllerProvider,
+            Provider<PatientStartupController> patientStartupControllerProvider,
+            PatientView view,
+            PatientFlowNavigator navigator
+    ) {
         initComponents();
+
+        navigator.register(PatientRoute.STARTUP, patientStartupControllerProvider);
+        navigator.register(PatientRoute.LOGIN, patientLoginControllerProvider);
+        navigator.register(PatientRoute.SIGN_UP, patientSignupControllerProvider);
+        navigator.register(PatientRoute.SETUP, patientSetupControllerProvider);
+        navigator.register(PatientRoute.SELECTION, patientServiceSelectionControllerProvider);
+        navigator.register(PatientRoute.DASHBOARD, patientDashboardControllerProvider);
+        
+        navigator.start(new StartupStep());
+
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
+        getContentPane().add(view);
     }
 
     /**
@@ -28,42 +63,13 @@ public class PatientFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        serviceSelectionView1 = new org.one.patientmanagement.ui.view.ServiceSelectionView();
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Patient View");
-        getContentPane().setLayout(new java.awt.GridLayout());
-        getContentPane().add(serviceSelectionView1);
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new PatientFrame().setVisible(true));
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private org.one.patientmanagement.ui.view.ServiceSelectionView serviceSelectionView1;
     // End of variables declaration//GEN-END:variables
 }

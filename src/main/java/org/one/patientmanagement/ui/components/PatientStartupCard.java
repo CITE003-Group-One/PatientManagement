@@ -19,15 +19,12 @@ public class PatientStartupCard extends javax.swing.JPanel {
         initComponents();
         illustration.putClientProperty("FlatLaf.style", "arc: 8;");
     }
-    
-    public void setInfoText(String text) {
-        infoText.setText(text);
+
+    public void setInfo(String infoText, String buttonTitle) {
+        this.infoText.setText(infoText);
+        this.jButton1.setText(buttonTitle);
     }
-    
-    public void setButtonTitle(String text) {
-        jButton1.setText(text);
-    }
-    
+
     public void setButtonAction(ActionListener l) {
         jButton1.addActionListener(l);
     }
