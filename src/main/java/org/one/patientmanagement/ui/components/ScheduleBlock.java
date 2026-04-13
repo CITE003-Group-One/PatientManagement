@@ -2,11 +2,13 @@ package org.one.patientmanagement.ui.components;
 
 import java.awt.*;
 import javax.swing.*;
-import org.one.patientmanagement.domain.dto.QueueData;
+import org.one.patientmanagement.ui.core.dto.QueueData;
 import org.one.patientmanagement.domain.enums.AppointmentBlock;
 import org.one.patientmanagement.domain.models.Schedule;
 
 public final class ScheduleBlock extends javax.swing.JPanel {
+    
+    private ClickablePanel.ClickListenerObj<QueueData> clickListener;
 
     public ScheduleBlock() {
         initComponents();
@@ -74,8 +76,13 @@ public final class ScheduleBlock extends javax.swing.JPanel {
         queues.forEach(q -> {
             var row = new PatientRow();
             row.setPatientData(q.queueNumber(), q.fullName(), q.schemedId(), q.sex());
+            row.setClickListener(l -> { clickListener.onClick(q); });
             addQueueRow(row);
         });
+    }
+    
+    public void setRowClickListener(ClickablePanel.ClickListenerObj<QueueData> clickListener) {
+        this.clickListener = clickListener;
     }
 
     @SuppressWarnings("unchecked")

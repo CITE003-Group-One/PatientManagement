@@ -9,8 +9,9 @@ import javax.swing.Box;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.one.patientmanagement.domain.dto.QueueData;
+import org.one.patientmanagement.ui.core.dto.QueueData;
 import org.one.patientmanagement.domain.enums.AppointmentStatus;
+import org.one.patientmanagement.ui.components.ClickablePanel.ClickListenerObj;
 import org.one.patientmanagement.ui.controller.ControllerBound;
 import org.one.patientmanagement.ui.controller.doctor.QueueController;
 
@@ -21,6 +22,7 @@ import org.one.patientmanagement.ui.controller.doctor.QueueController;
 public class QueueListContainer extends javax.swing.JPanel implements ControllerBound<QueueController.QueueListController> {
 
     private QueueController.QueueListController controller;
+    private ClickListenerObj<QueueData> clickListener;
 
     /**
      * Creates new form QueueListContainer
@@ -60,8 +62,13 @@ public class QueueListContainer extends javax.swing.JPanel implements Controller
         clearQueue();
         queues.forEach(q -> {
             var row = new DetailedPatientRow();
+            row.setClickListener(l -> { clickListener.onClick(q); });
             addQueueRow(row);
         });
+    }
+    
+    public void setRowClickListener(ClickListenerObj<QueueData> clickListener) {
+        this.clickListener = clickListener;
     }
     
     public void replaceQueueBox(JPanel panel) {

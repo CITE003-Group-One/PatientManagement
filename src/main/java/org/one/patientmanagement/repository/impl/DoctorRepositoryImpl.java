@@ -8,15 +8,17 @@ import org.one.patientmanagement.domain.models.Schedule;
 
 import java.sql.*;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.sql.DataSource;
-import org.one.patientmanagement.domain.dto.ScheduleOfDoctor;
+import org.one.patientmanagement.ui.core.dto.ScheduleOfDoctor;
 
 public class DoctorRepositoryImpl implements DoctorRepository {
 
@@ -102,10 +104,19 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         String sql = "SELECT id, day, start, end, doctor_id FROM schedules WHERE doctor_id = ?";
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, doctorId);
+
+            Set<DayOfWeek> weekDays = LocalDate.now()
+                    .datesUntil(LocalDate.now().plusDays(7))
+                    .map(LocalDate::getDayOfWeek)
+                    .collect(Collectors.toSet());
+
             try (ResultSet rs = stmt.executeQuery()) {
                 List<Schedule> schedules = new ArrayList<>();
                 while (rs.next()) {
-                    schedules.add(mapSchedule(rs));
+                    Schedule s = mapSchedule(rs);
+                    if (weekDays.contains(s.day())) {
+                        schedules.add(s);
+                    }
                 }
                 return schedules;
             }
@@ -168,11 +179,20 @@ public class DoctorRepositoryImpl implements DoctorRepository {
         FROM schedules s
         JOIN doctors d ON s.doctor_id = d.id
     """;
+
+        List<DayOfWeek> weekDays = LocalDate.now()
+                .datesUntil(LocalDate.now().plusDays(7))
+                .map(LocalDate::getDayOfWeek)
+                .toList();
+
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
 
             Map<DayOfWeek, List<ScheduleOfDoctor>> map = new LinkedHashMap<>();
             while (rs.next()) {
                 DayOfWeek day = DayOfWeek.valueOf(rs.getString("day"));
+                if (!weekDays.contains(day)) {
+                    continue;
+                }
                 Doctor doctor = new Doctor(rs.getLong("d_id"), rs.getLong("account_id"), rs.getString("profession"), rs.getString("name"));
                 Schedule schedule = new Schedule(rs.getLong("id"), day, LocalTime.parse(rs.getString("start")), LocalTime.parse(rs.getString("end")), rs.getLong("doctor_id"));
                 map.computeIfAbsent(day, k -> new ArrayList<>()).add(new ScheduleOfDoctor(doctor, schedule));

@@ -8,13 +8,15 @@ import java.util.List;
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import org.one.patientmanagement.domain.dto.QueueData;
+import org.one.patientmanagement.ui.core.dto.QueueData;
 import org.one.patientmanagement.domain.enums.AppointmentBlock;
 import org.one.patientmanagement.domain.enums.AppointmentStatus;
 import org.one.patientmanagement.domain.models.Schedule;
+import org.one.patientmanagement.ui.components.ClickablePanel;
 import org.one.patientmanagement.ui.components.DetailedPatientRow;
 import org.one.patientmanagement.ui.components.PatientRow;
 import org.one.patientmanagement.ui.components.QueueListContainer;
+import org.one.patientmanagement.ui.components.TodaySchedule;
 import org.one.patientmanagement.ui.controller.ControllerBound;
 import org.one.patientmanagement.ui.controller.doctor.QueueController;
 
@@ -25,6 +27,7 @@ import org.one.patientmanagement.ui.controller.doctor.QueueController;
 public class DoctorPatientQueue extends javax.swing.JPanel implements ControllerBound<QueueController> {
 
     private QueueController controller;
+    private ClickablePanel.ClickListenerObj<QueueData> clickListener;
 
     /**
      * Creates new form PatientQueue
@@ -32,8 +35,16 @@ public class DoctorPatientQueue extends javax.swing.JPanel implements Controller
     public DoctorPatientQueue() {
         initComponents();
     }
+    
+    public void loadSchedules(List<Schedule> schedules) {
+        todaySchedule.generateCalendar(schedules);
+    }
+    
+    public void setDaySelectListener(TodaySchedule.DaySelectListener listener) {
+        todaySchedule.setDaySelectListener(listener);
+    }
 
-    public void loadQueue(AppointmentBlock block, Schedule schedule, QueueData withDoctor) {
+    public void loadQueue(AppointmentBlock block, Schedule schedule, QueueData withDoctor, List<QueueData> queues) {
         JPanel panel = block == AppointmentBlock.MORNING ? morningPanel : afternoonPanel;
 
         var available = schedule.blocks().contains(block);
@@ -53,6 +64,8 @@ public class DoctorPatientQueue extends javax.swing.JPanel implements Controller
                 var row = new QueueListContainer();
                 var queueRow = new DetailedPatientRow();
                 
+                queueRow.setClickListener(l -> { clickListener.onClick(withDoctor); });
+                
                 row.replaceQueueBox(queueRow);
                 row.getStatusBadgePanel().setStatus(AppointmentStatus.WITH_DOCTOR);
                 
@@ -64,11 +77,15 @@ public class DoctorPatientQueue extends javax.swing.JPanel implements Controller
             row.getStatusBadgePanel().setStatus(status);
             
             final QueueController.QueueListController attachQueueListController = controller.attachQueueListController(row);
-            attachQueueListController.loadQueueList(status);
+            attachQueueListController.loadQueueList(status, queues);
             attachQueueListController.loadQueueInfo();
             
             addQueueRow(row, panelList);
         }
+    }
+    
+    public void setRowClickListener(ClickablePanel.ClickListenerObj<QueueData> clickListener) {
+        this.clickListener = clickListener;
     }
 
     private void addQueueRow(QueueListContainer row, JPanel panelList) {
@@ -95,7 +112,11 @@ public class DoctorPatientQueue extends javax.swing.JPanel implements Controller
         java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel2 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20));
+        todaySchedule = new org.one.patientmanagement.ui.components.TodaySchedule();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20), new java.awt.Dimension(0, 20));
         jPanel3 = new javax.swing.JPanel();
         morningPanel = new javax.swing.JPanel();
         headerPanel = new javax.swing.JPanel();
@@ -111,11 +132,24 @@ public class DoctorPatientQueue extends javax.swing.JPanel implements Controller
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanel2.setLayout(new java.awt.BorderLayout(0, 20));
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.PAGE_AXIS));
+
+        jPanel1.setMaximumSize(new java.awt.Dimension(999999999, 47));
+        jPanel1.setPreferredSize(new java.awt.Dimension(892, 47));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel1.setFont(new java.awt.Font("Poppins Medium", 0, 31)); // NOI18N
         jLabel1.setText("Patient Queue");
-        jPanel2.add(jLabel1, java.awt.BorderLayout.PAGE_START);
+        jPanel1.add(jLabel1);
+
+        jPanel2.add(jPanel1);
+        jPanel2.add(filler1);
+
+        todaySchedule.setMaximumSize(new java.awt.Dimension(2147483647, 200));
+        todaySchedule.setMinimumSize(new java.awt.Dimension(0, 200));
+        todaySchedule.setPreferredSize(new java.awt.Dimension(850, 200));
+        jPanel2.add(todaySchedule);
+        jPanel2.add(filler2);
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
 
@@ -158,7 +192,7 @@ public class DoctorPatientQueue extends javax.swing.JPanel implements Controller
         );
         dividerLayout.setVerticalGroup(
             dividerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 562, Short.MAX_VALUE)
+            .addGap(0, 508, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -199,7 +233,7 @@ public class DoctorPatientQueue extends javax.swing.JPanel implements Controller
         gridBagConstraints.weighty = 1.0;
         jPanel3.add(afternoonPanel, gridBagConstraints);
 
-        jPanel2.add(jPanel3, java.awt.BorderLayout.CENTER);
+        jPanel2.add(jPanel3);
 
         add(jPanel2);
     }// </editor-fold>//GEN-END:initComponents
@@ -210,16 +244,20 @@ public class DoctorPatientQueue extends javax.swing.JPanel implements Controller
     private javax.swing.JPanel afternoonPanel;
     private javax.swing.JLabel afternoonTime;
     private javax.swing.JPanel divider;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.JPanel headerPanel;
     private javax.swing.JPanel headerPanel2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel morningList;
     private javax.swing.JPanel morningPanel;
     private javax.swing.JLabel morningTime;
+    private org.one.patientmanagement.ui.components.TodaySchedule todaySchedule;
     // End of variables declaration//GEN-END:variables
 
     @Override

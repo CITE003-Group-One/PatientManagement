@@ -8,7 +8,7 @@ package org.one.patientmanagement.ui.components;
  *
  * @author KAROL JOHN
  */
-public class DetailedPatientRow extends javax.swing.JPanel {
+public class DetailedPatientRow extends ClickablePanel {
 
     /**
      * Creates new form DetailedPatientRow

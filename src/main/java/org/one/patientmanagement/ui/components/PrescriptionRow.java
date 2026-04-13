@@ -5,7 +5,7 @@ import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.time.format.DateTimeFormatter;
-import org.one.patientmanagement.domain.dto.PrescriptionData;
+import org.one.patientmanagement.ui.core.dto.PrescriptionData;
 
 public final class PrescriptionRow extends javax.swing.JPanel {
 

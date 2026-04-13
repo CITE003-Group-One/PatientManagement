@@ -6,12 +6,13 @@ package org.one.patientmanagement.ui.controller.doctor;
 
 import com.google.inject.Inject;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import javax.swing.JOptionPane;
-import org.one.patientmanagement.domain.dto.ConsultationData;
-import org.one.patientmanagement.domain.dto.PrescriptionData;
+import org.one.patientmanagement.ui.core.dto.ConsultationData;
+import org.one.patientmanagement.ui.core.dto.PrescriptionData;
 import org.one.patientmanagement.domain.enums.VitalsType;
 import org.one.patientmanagement.domain.models.Consultation;
 import org.one.patientmanagement.domain.models.Doctor;
@@ -22,7 +23,12 @@ import org.one.patientmanagement.service.ConsultationService;
 import org.one.patientmanagement.service.DoctorManager;
 import org.one.patientmanagement.service.PatientManager;
 import org.one.patientmanagement.ui.controller.AbstractComponentController;
+import org.one.patientmanagement.ui.core.dto.ConsultationInput;
+import org.one.patientmanagement.ui.core.dto.VitalsData;
+import org.one.patientmanagement.ui.model.DoctorViewModel;
 import org.one.patientmanagement.ui.view.DoctorPatientDashboard;
+import org.one.patientmanagement.ui.view.dialog.MedicalRecordDialogs;
+import org.one.patientmanagement.ui.view.dialog.VitalsDialogs;
 
 /**
  *
@@ -38,11 +44,11 @@ public class DoctorPatientDashboardController extends AbstractComponentControlle
     private List<ConsultationData> consultations;
 
     @Inject
-    public DoctorPatientDashboardController(Doctor doctor, PatientManager patientManager, ConsultationService consultationManager, DoctorManager doctorManager) {
+    public DoctorPatientDashboardController(DoctorViewModel model, PatientManager patientManager, ConsultationService consultationManager, DoctorManager doctorManager) {
         this.patientManager = patientManager;
         this.consultationManager = consultationManager;
         this.doctorManager = doctorManager;
-        this.doctor = doctor;
+        this.doctor = model.getDoctor();
     }
 
     // Called from parent controller
@@ -54,19 +60,53 @@ public class DoctorPatientDashboardController extends AbstractComponentControlle
                 });
     }
 
-    public void onVitalsEdit(VitalsType type, Consumer<Vitals> setVitals) {
-        String vitalsName = switch (type) {
+    public void onVitalsEdit(VitalsType type, VitalsData vitalsData, Consumer<Vitals> setVitals) {
+        String label = switch (type) {
             case WEIGHT ->
-                "Weight in kg";
+                "Weight";
             case HEART_RATE ->
                 "Heart Rate";
             case BLOOD_PRESSURE ->
                 "Blood Pressure";
             case TEMPERATURE ->
-                "Temperature in celcius";
-            default -> throw new IllegalStateException("Unexpected value: " + (type));
+                "Temperature in celsius";
         };
-        
+
+        try {
+            if (type == VitalsType.BLOOD_PRESSURE) {
+                var input = VitalsDialogs.showInputDual(label,
+                        String.valueOf(vitalsData.getSystolicBp()),
+                        String.valueOf(vitalsData.getDiastolicBp()), view);
+                vitalsData.setSystolicBp(Integer.valueOf(input.getFirst()));
+                vitalsData.setDiastolicBp(Integer.valueOf(input.getSecond()));
+            } else {
+                var input = VitalsDialogs.showInputSingle(label, switch (type) {
+                    case WEIGHT ->
+                        String.valueOf(vitalsData.getWeight());
+                    case HEART_RATE ->
+                        String.valueOf(vitalsData.getHeartRate());
+                    case TEMPERATURE ->
+                        String.valueOf(vitalsData.getTemperature());
+                    default ->
+                        throw new AssertionError(type.name());
+                }, view);
+                switch (type) {
+                    case WEIGHT ->
+                        vitalsData.setWeight(Double.valueOf(input));
+                    case HEART_RATE ->
+                        vitalsData.setHeartRate(Integer.valueOf(input));
+                    case TEMPERATURE ->
+                        vitalsData.setTemperature(Double.valueOf(input));
+                    default ->
+                        throw new AssertionError(type.name());
+                }
+            }
+        } catch (NumberFormatException e) {
+            VitalsDialogs.showError(label, view);
+            return;
+        }
+
+        setVitals.accept(vitalsData.convert());
     }
 
     public void onSearch(String query) {
@@ -76,7 +116,6 @@ public class DoctorPatientDashboardController extends AbstractComponentControlle
                 .filter(c -> c.title() != null
                 && c.title().toLowerCase().contains(q))
                 .toList();
-
     }
 
     @Override
@@ -98,6 +137,7 @@ public class DoctorPatientDashboardController extends AbstractComponentControlle
                 .collect(Collectors.toMap(Doctor::id, d -> d));
 
         var prescriptionData = prescriptions.stream()
+                .sorted(Comparator.comparing(Prescription::createdAt).reversed())
                 .map(p -> {
                     var doctor = doctorMap.get(p.doctorId());
 
@@ -117,31 +157,51 @@ public class DoctorPatientDashboardController extends AbstractComponentControlle
                 })
                 .toList();
 
-        this.consultations = consultations.stream()
-                .map(c -> {
-                    var doctor = doctorMap.get(c.doctorId());
-
-                    return new ConsultationData(
-                            c.type(),
-                            c.title(),
-                            c.description(),
-                            doctor != null ? doctor.name() : "Unknown",
-                            c.createdAt()
-                    );
-                })
-                .toList();
-
+        this.consultations = mapConsultations(consultations);
         view.loadConsultation(this.consultations);
+
         view.loadPrescription(prescriptionData);
     }
 
-    // TODO show prescription add dialog
-    public void onPrescriptionAdd() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private ConsultationData toConsultationData(Consultation c, Map<Long, Doctor> doctorMap) {
+        var doc = doctorMap.get(c.doctorId());
+        return new ConsultationData(
+                c.type(),
+                c.title(),
+                c.description(),
+                doc != null ? doc.name() : "Unknown",
+                c.createdAt()
+        );
     }
+
+    private Map<Long, Doctor> buildDoctorMap(List<Long> ids) {
+        return doctorManager.getAllByIds(ids).stream()
+                .collect(Collectors.toMap(Doctor::id, d -> d));
+    }
+
+    private List<ConsultationData> mapConsultations(List<Consultation> consultations) {
+        var doctorMap = buildDoctorMap(
+                consultations.stream().map(Consultation::doctorId).distinct().toList()
+        );
+        return consultations.stream()
+                .sorted(Comparator.comparing(Consultation::createdAt).reversed())
+                .map(c -> toConsultationData(c, doctorMap))
+                .toList();
+    }
+
+    public void onPrescriptionAdd() {
     // TODO show prescription add dialog
+    }
+
     public void onMedicalRecordAdd() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ConsultationInput input = MedicalRecordDialogs.showConsultationInput(view);
+        if (input == null) {
+            return;
+        }
+
+        consultationManager.create(new Consultation(0L, input.type(), input.title(), input.description(), doctor.id(), patient.id(), LocalDateTime.now()));
+        this.consultations = mapConsultations(consultationManager.getConsultations(patient.id()));
+        view.loadConsultation(this.consultations);
     }
 
 }

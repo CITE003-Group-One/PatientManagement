@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.one.patientmanagement.domain.dto.ConsultationData;
+import org.one.patientmanagement.ui.core.dto.ConsultationData;
 import org.one.patientmanagement.domain.enums.ConsultationType;
 import org.one.patientmanagement.domain.models.Consultation;
 import org.one.patientmanagement.domain.models.Doctor;

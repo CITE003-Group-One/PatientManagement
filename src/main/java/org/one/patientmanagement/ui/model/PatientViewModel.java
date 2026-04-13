@@ -5,8 +5,8 @@
 package org.one.patientmanagement.ui.model;
 
 import com.google.inject.Singleton;
-import org.one.patientmanagement.domain.dto.AppointmentInfo;
-import org.one.patientmanagement.domain.dto.PatientInfo;
+import org.one.patientmanagement.ui.core.dto.AppointmentInfo;
+import org.one.patientmanagement.ui.core.dto.PatientInfo;
 import org.one.patientmanagement.domain.models.Account;
 import org.one.patientmanagement.domain.models.Patient;
 

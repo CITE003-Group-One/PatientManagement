@@ -7,4 +7,8 @@ package org.one.patientmanagement.ui.controller;
 public interface ControllerBound<C> {
    
    public void setController(C controller);
+   
+   default C getController() {
+       return null;
+   }
 }

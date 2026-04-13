@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.Box;
 import org.one.patientmanagement.domain.models.Patient;
+import org.one.patientmanagement.ui.components.ClickablePanel.ClickListenerObj;
 import org.one.patientmanagement.ui.components.PatientRecordRow;
 import org.one.patientmanagement.ui.controller.ControllerBound;
 import org.one.patientmanagement.ui.controller.doctor.PatientRecordsController;
@@ -18,6 +19,9 @@ import org.one.patientmanagement.ui.controller.doctor.PatientRecordsController;
  */
 public class DoctorPatientRecords extends javax.swing.JPanel implements ControllerBound<PatientRecordsController> {
 
+    private PatientRecordsController controller;
+    private ClickListenerObj<Patient> clickListener;
+
     /**
      * Creates new form PatientRecords
      */
@@ -27,17 +31,22 @@ public class DoctorPatientRecords extends javax.swing.JPanel implements Controll
 
     @Override
     public void setController(PatientRecordsController controller) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.controller = controller;
     }
     
     public void loadPatients(List<Patient> patients) {
         clearRows();
         patients.stream().forEach(p -> {
             var row = new PatientRecordRow();
+            row.setClickListener(l -> { clickListener.onClick(p); });
             
             row.setPatientData(p.getFullName(), p.getSchemedId(), p.sex(), p.birthday().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
             addRow(row);
         });
+    }
+    
+    public void setRowClickListener(ClickListenerObj<Patient> clickListener) {
+        this.clickListener = clickListener;
     }
     
     private void addRow(PatientRecordRow row) {

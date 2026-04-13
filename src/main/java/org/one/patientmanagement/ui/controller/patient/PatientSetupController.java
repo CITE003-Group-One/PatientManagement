@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import org.one.patientmanagement.domain.dto.ScheduleOfDoctor;
+import org.one.patientmanagement.ui.core.dto.ScheduleOfDoctor;
 import org.one.patientmanagement.domain.enums.AppointmentBlock;
 import org.one.patientmanagement.service.DoctorManager;
 import org.one.patientmanagement.ui.components.StepProgress;

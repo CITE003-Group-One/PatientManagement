@@ -31,7 +31,7 @@ public final class DoctorStatsCard extends javax.swing.JPanel {
         progressBar.setValue(Integer.parseInt(value));
     }
 
-    public void setProgressBar() {
+    public void setProgressBar(int value) {
         remove(subtitleLabel);
         
         progressBarContainer.setOpaque(false);
@@ -40,7 +40,7 @@ public final class DoctorStatsCard extends javax.swing.JPanel {
         progressBar.setBackground(new java.awt.Color(229, 214, 218));
         progressBar.setForeground(new java.awt.Color(114, 87, 98));
         progressBar.setToolTipText("");
-        progressBar.setValue(20);
+        progressBar.setValue(value);
         progressBar.setMaximumSize(new java.awt.Dimension(32767, 7));
         progressBar.setMinimumSize(new java.awt.Dimension(10, 7));
         progressBar.setPreferredSize(new java.awt.Dimension(146, 7));

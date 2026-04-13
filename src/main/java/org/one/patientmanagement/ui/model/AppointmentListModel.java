@@ -6,7 +6,7 @@ package org.one.patientmanagement.ui.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.one.patientmanagement.domain.dto.QueueData;
+import org.one.patientmanagement.ui.core.dto.QueueData;
 
 
 public class AppointmentListModel {

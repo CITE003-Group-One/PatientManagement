@@ -4,12 +4,17 @@
  */
 package org.one.patientmanagement.ui;
 
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import org.one.patientmanagement.ui.view.dialog.MedicalRecordDialogs;
+import org.one.patientmanagement.ui.view.dialog.VitalsDialogs;
+
 /**
  *
  * @author KAROL JOHN
  */
 public class Test extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Test.class.getName());
 
     /**
@@ -17,6 +22,8 @@ public class Test extends javax.swing.JFrame {
      */
     public Test() {
         initComponents();
+        
+        MedicalRecordDialogs.showConsultationInput(this);
     }
 
     /**

@@ -6,7 +6,7 @@ package org.one.patientmanagement.ui.view;
 
 import java.util.List;
 import java.util.Map;
-import org.one.patientmanagement.domain.dto.ConsultationData;
+import org.one.patientmanagement.ui.core.dto.ConsultationData;
 import org.one.patientmanagement.domain.models.Consultation;
 import org.one.patientmanagement.ui.components.ConsultationSummaryRow;
 import org.one.patientmanagement.ui.components.InfoBox;

@@ -4,7 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import org.one.patientmanagement.domain.enums.Sex;
 
-public class PatientRecordRow extends JPanel {
+public class PatientRecordRow extends ClickablePanel {
 
     public PatientRecordRow() {
         initComponents();

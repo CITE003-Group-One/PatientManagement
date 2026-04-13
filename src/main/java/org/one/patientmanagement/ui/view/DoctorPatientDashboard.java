@@ -11,8 +11,8 @@ import javax.swing.Box;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import org.one.patientmanagement.domain.dto.ConsultationData;
-import org.one.patientmanagement.domain.dto.PrescriptionData;
+import org.one.patientmanagement.ui.core.dto.ConsultationData;
+import org.one.patientmanagement.ui.core.dto.PrescriptionData;
 import org.one.patientmanagement.domain.enums.VitalsType;
 import org.one.patientmanagement.domain.models.Patient;
 import org.one.patientmanagement.domain.models.Vitals;
@@ -21,6 +21,7 @@ import org.one.patientmanagement.ui.components.MedicalRecordRow;
 import org.one.patientmanagement.ui.components.PrescriptionRow;
 import org.one.patientmanagement.ui.components.VitalsCard;
 import org.one.patientmanagement.ui.controller.ControllerBound;
+import org.one.patientmanagement.ui.core.dto.VitalsData;
 
 /**
  *
@@ -74,7 +75,7 @@ public class DoctorPatientDashboard extends javax.swing.JPanel implements Contro
     public void setVitalsCard(VitalsCard vitalsCard, VitalsType type, Vitals vitals) {
         vitalsCard.setVitals(type, vitals);
         vitalsCard.setEditListener(e
-                -> controller.onVitalsEdit(type, v -> vitalsCard1.setVitals(type, v))
+                -> controller.onVitalsEdit(type, new VitalsData(vitals), v -> vitalsCard1.setVitals(type, v))
         );
     }
 
@@ -427,5 +428,10 @@ public class DoctorPatientDashboard extends javax.swing.JPanel implements Contro
     @Override
     public void setController(DoctorPatientDashboardController controller) {
         this.controller = controller;
+    }
+    
+    @Override
+    public DoctorPatientDashboardController getController() {
+        return this.controller;
     }
 }

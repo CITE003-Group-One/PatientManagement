@@ -8,13 +8,14 @@ import java.util.Map;
 import java.util.Set;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import org.one.patientmanagement.domain.dto.ScheduleOfDoctor;
+import org.one.patientmanagement.ui.core.dto.ScheduleOfDoctor;
 import org.one.patientmanagement.domain.enums.AppointmentBlock;
 import org.one.patientmanagement.domain.models.Schedule;
 
 public class TodaySchedule extends javax.swing.JPanel {
 
     private DayCardComponent selectedHighlight;
+    private boolean isStatic;
 
     public TodaySchedule() {
         initComponents();
@@ -30,7 +31,11 @@ public class TodaySchedule extends javax.swing.JPanel {
         GridBagLayout gbl = new GridBagLayout();
         this.setLayout(gbl);
     }
-
+    
+    public void setStatic(boolean isStatic) {
+        this.isStatic = isStatic;
+    }
+    
     public void generateCalendar(java.util.List<Schedule> schedules) {
         this.removeAll();
         LocalDate today = LocalDate.now();
@@ -184,6 +189,7 @@ public class TodaySchedule extends javax.swing.JPanel {
     }
 
     private void handleCardSelection(DayCardComponent clickedCard, LocalDate date) {
+        if (isStatic) return;
         if (selectedHighlight != null) {
             selectedHighlight.setSelected(false);
         }

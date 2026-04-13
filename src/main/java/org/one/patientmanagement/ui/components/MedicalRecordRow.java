@@ -6,7 +6,7 @@ package org.one.patientmanagement.ui.components;
 
 import java.awt.Color;
 import java.time.format.DateTimeFormatter;
-import org.one.patientmanagement.domain.dto.ConsultationData;
+import org.one.patientmanagement.ui.core.dto.ConsultationData;
 
 /**
  *

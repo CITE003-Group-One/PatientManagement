@@ -3,7 +3,7 @@ package org.one.patientmanagement.ui.components;
 import java.awt.*;
 import javax.swing.*;
 
-public class PatientRow extends JPanel {
+public class PatientRow extends ClickablePanel {
     
     public PatientRow() {
         initComponents();

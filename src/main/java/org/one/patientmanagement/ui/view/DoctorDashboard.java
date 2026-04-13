@@ -12,6 +12,8 @@ public class DoctorDashboard extends javax.swing.JPanel implements ControllerBou
 
     public DoctorDashboard() {
         initComponents();
+        
+        todaySchedule1.setStatic(true);
     }
     
     
@@ -125,9 +127,10 @@ public class DoctorDashboard extends javax.swing.JPanel implements ControllerBou
     }
     
     public void setCards(int total, int completed, int remaining) {
-        statsCard1.setContent("Totalpatients", "Scheduled today", String.valueOf(total));
+        statsCard1.setContent("Total patients", "Scheduled today", String.valueOf(total));
         statsCard2.setContent("Patients completed", null, String.valueOf(completed));
-        statsCard2.setProgressBar();
+        int percent = (int) ((completed * 100.0) / total);
+        statsCard2.setProgressBar(percent);
         statsCard3.setContent("Remaining patients", "Pending, waiting patients", String.valueOf(completed));
     }
     
