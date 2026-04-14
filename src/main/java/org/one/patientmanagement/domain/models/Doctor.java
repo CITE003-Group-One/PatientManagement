@@ -5,7 +5,7 @@ package org.one.patientmanagement.domain.models;
  */
 public record Doctor(
         long id,
-        long accountId, // TODO use the Long wrapper
+        long accountId,
         String profession,
         String name
 ) {

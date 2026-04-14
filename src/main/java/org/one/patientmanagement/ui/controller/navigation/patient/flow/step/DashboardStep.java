@@ -23,6 +23,6 @@ public class DashboardStep implements FlowStep<PatientRoute, PatientViewModel> {
     @Override
     public FlowStep<PatientRoute, PatientViewModel> next(FlowState<PatientViewModel> state) {
         state.data().restart();
-        return new StartupStep();
+        return null;
     }
 }

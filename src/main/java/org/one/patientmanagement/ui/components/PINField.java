@@ -4,6 +4,13 @@
  */
 package org.one.patientmanagement.ui.components;
 
+import java.awt.Color;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.DocumentFilter.FilterBypass;
+
 /**
  *
  * @author KAROL JOHN
@@ -15,6 +22,61 @@ public class PINField extends javax.swing.JPanel {
      */
     public PINField() {
         initComponents();
+
+        putClientProperty("JPasswordField.showRevealButton", true);
+        
+        
+        ((AbstractDocument) jPasswordField1.getDocument()).setDocumentFilter(new DocumentFilter() {
+
+            private final int maxLength = 6;
+
+            private boolean isNumeric(String text) {
+                return text.matches("\\d+");
+            }
+
+            @Override
+            public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+                    throws BadLocationException {
+
+                if (string == null) {
+                    return;
+                }
+
+                if (isNumeric(string)
+                        && fb.getDocument().getLength() + string.length() <= maxLength) {
+
+                    super.insertString(fb, offset, string, attr);
+                }
+            }
+
+            @Override
+            public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+                    throws BadLocationException {
+
+                if (text == null) {
+                    return;
+                }
+
+                int currentLength = fb.getDocument().getLength();
+                int newLength = currentLength - length + text.length();
+
+                if (isNumeric(text) && newLength <= maxLength) {
+                    super.replace(fb, offset, length, text, attrs);
+                }
+            }
+        });
+    }
+    
+    public void setDark() {
+        jPasswordField1.setBackground(Color.decode("#FAEAEE"));
+    }
+    
+    public void setLabel(String text) {
+        jLabel1.setText(text);
+    }
+
+    public char[] getPassword() {
+        return jPasswordField1.getPassword();
     }
 
     /**
@@ -36,12 +98,11 @@ public class PINField extends javax.swing.JPanel {
         jLabel1.setText("Create PIN");
         add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
-        jPasswordField1.setBackground(new java.awt.Color(250, 234, 238));
+        jPasswordField1.setBackground(new java.awt.Color(255, 240, 244));
+        jPasswordField1.setColumns(20);
         jPasswordField1.setFont(new java.awt.Font("Manrope", 0, 16)); // NOI18N
-        jPasswordField1.setText("123456");
         jPasswordField1.setMaximumSize(new java.awt.Dimension(2147483647, 30));
         jPasswordField1.setMinimumSize(new java.awt.Dimension(64, 30));
-        jPasswordField1.setPreferredSize(new java.awt.Dimension(75, 30));
         add(jPasswordField1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 

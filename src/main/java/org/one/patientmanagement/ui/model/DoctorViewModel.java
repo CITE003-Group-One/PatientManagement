@@ -4,8 +4,10 @@
  */
 package org.one.patientmanagement.ui.model;
 
+import com.google.inject.Singleton;
 import org.one.patientmanagement.domain.models.Doctor;
 
+@Singleton
 public class DoctorViewModel {
     
     private Doctor doctor;

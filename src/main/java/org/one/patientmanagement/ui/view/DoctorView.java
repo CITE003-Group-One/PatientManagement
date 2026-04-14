@@ -7,6 +7,7 @@ package org.one.patientmanagement.ui.view;
 import java.awt.CardLayout;
 import javax.swing.JPanel;
 import org.one.patientmanagement.ui.components.NavigationSidebar;
+import org.one.patientmanagement.ui.model.DoctorViewModel;
 
 /**
  *
@@ -18,12 +19,14 @@ public class DoctorView extends javax.swing.JPanel {
      * Creates new form DoctorView
      */
     
-    public DoctorView() {
+    public DoctorView(DoctorViewModel model) {
         initComponents();
         
         jScrollPane1.getViewport().setOpaque(false);
         jScrollPane1.getViewport().setBackground(null);
         jScrollPane1.setBackground(null);
+        
+        topBar1.setGreeting(model.getDoctor().name());
     }
     
     public NavigationSidebar getNavigationSidebar() {

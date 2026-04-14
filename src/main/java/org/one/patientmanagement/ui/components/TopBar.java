@@ -29,7 +29,7 @@ public class TopBar extends javax.swing.JPanel {
     this.repaint();
 }
 
-    private void setGreeting(String doctorName) {
+    public void setGreeting(String doctorName) {
         int hour = LocalTime.now().getHour();
         String timeGreeting = (hour >= 5 && hour < 12) ? "Good Morning, " : 
                             (hour >= 12 && hour < 17) ? "Good Afternoon, " : "Good Evening, ";

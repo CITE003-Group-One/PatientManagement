@@ -13,10 +13,10 @@ import javax.swing.ImageIcon;
  *
  * @author KAROL JOHN
  */
-public final class Backdrop extends javax.swing.JPanel {
+public final class Backdrop extends ImagePanel {
 
     private Image backgroundImage;
-    
+
     private String badgeText;
 
     /**
@@ -25,32 +25,18 @@ public final class Backdrop extends javax.swing.JPanel {
     public Backdrop() {
         initComponents();
         setOpaque(false);
+        setCover(true);
+        setImage("/images/patient_backdrop.png");
         badgePanel.setOpaque(false);
         badgePanel.putClientProperty("FlatLaf.style", "arc: 999; background: #FFDBCF;");
     }
-    
-    public void setBackdrop(String path) {
-        backgroundImage = new ImageIcon(getClass().getResource(path)).getImage();
-        badgePanel.repaint();
-        repaint();
-    }
-    
+
     public void setBadge(String string) {
         jLabel1.setText(string);
     }
-    
+
     public void setHeading(String string) {
-        jLabel2.setText(string);
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        
-        if (backgroundImage == null) return;
-
-        // Draw image scaled to panel size
-        g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        jLabel2.setText("<html><div style='width:400px;'><center>" + string + "</center></div></html>");
     }
 
     /**

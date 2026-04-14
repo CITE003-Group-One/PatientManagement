@@ -4,6 +4,8 @@
  */
 package org.one.patientmanagement.ui.view;
 
+import java.util.Arrays;
+import javax.swing.JOptionPane;
 import org.one.patientmanagement.ui.controller.ControllerBound;
 import org.one.patientmanagement.ui.controller.patient.PatientSignupController;
 
@@ -20,11 +22,16 @@ public class PatientSignUp extends javax.swing.JPanel implements ControllerBound
      */
     public PatientSignUp() {
         initComponents();
-        
+
         submitButton.putClientProperty("FlatLaf.style", "arc: 999;");
-        
+
         backdrop.setBadge("Start here");
-        backdrop.setHeading("<html><div style='width:400px;'><center>" + "Create your account" + "</center></div></html>");
+        backdrop.setHeading("Create your account");
+        
+        pINField1.setLabel("Create PIN");
+        pINField2.setLabel("Confirm PIN");
+        
+        formPanel.putClientProperty("FlatLaf.style", "arc: 50;");
     }
 
     /**
@@ -48,12 +55,8 @@ public class PatientSignUp extends javax.swing.JPanel implements ControllerBound
         Existing_Email = new javax.swing.JLabel();
         Username_Field = new javax.swing.JTextField();
         Note = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        Existing_Email2 = new javax.swing.JLabel();
-        jPasswordField2 = new javax.swing.JPasswordField();
-        jPanel4 = new javax.swing.JPanel();
-        Existing_Email1 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        pINField2 = new org.one.patientmanagement.ui.components.PINField();
+        pINField1 = new org.one.patientmanagement.ui.components.PINField();
         submitButton = new javax.swing.JButton();
         backdrop = new org.one.patientmanagement.ui.components.Backdrop();
 
@@ -62,6 +65,7 @@ public class PatientSignUp extends javax.swing.JPanel implements ControllerBound
         setBackground(new java.awt.Color(255, 248, 248));
         setLayout(new java.awt.GridLayout(1, 0));
 
+        jSplitPane1.setDividerSize(0);
         jSplitPane1.setEnabled(false);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -88,7 +92,6 @@ public class PatientSignUp extends javax.swing.JPanel implements ControllerBound
 
         Username_Field.setBackground(new java.awt.Color(255, 240, 244));
         Username_Field.setFont(new java.awt.Font("Manrope", 0, 16)); // NOI18N
-        Username_Field.setText("Email / Phone Number");
         jPanel3.add(Username_Field, java.awt.BorderLayout.CENTER);
 
         Note.setFont(new java.awt.Font("Manrope", 0, 10)); // NOI18N
@@ -106,53 +109,25 @@ public class PatientSignUp extends javax.swing.JPanel implements ControllerBound
         gridBagConstraints.insets = new java.awt.Insets(25, 0, 25, 0);
         formContainer.add(jPanel3, gridBagConstraints);
 
-        jPanel5.setOpaque(false);
-        jPanel5.setPreferredSize(new java.awt.Dimension(533, 68));
-        jPanel5.setLayout(new java.awt.BorderLayout(0, 10));
-
-        Existing_Email2.setFont(new java.awt.Font("Manrope SemiBold", 0, 20)); // NOI18N
-        Existing_Email2.setText("Confirm PIN");
-        Existing_Email2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel5.add(Existing_Email2, java.awt.BorderLayout.PAGE_START);
-
-        jPasswordField2.setBackground(new java.awt.Color(255, 240, 244));
-        jPasswordField2.setFont(new java.awt.Font("Manrope", 0, 16)); // NOI18N
-        jPasswordField2.setText("123456");
-        jPasswordField2.addActionListener(this::jPasswordField2ActionPerformed);
-        jPanel5.add(jPasswordField2, java.awt.BorderLayout.CENTER);
-
+        pINField2.setMinimumSize(new java.awt.Dimension(102, 85));
+        pINField2.setPreferredSize(new java.awt.Dimension(298, 85));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 48;
-        gridBagConstraints.ipady = 26;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        formContainer.add(jPanel5, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        formContainer.add(pINField2, gridBagConstraints);
 
-        jPanel4.setOpaque(false);
-        jPanel4.setPreferredSize(new java.awt.Dimension(533, 68));
-        jPanel4.setLayout(new java.awt.BorderLayout(0, 10));
-
-        Existing_Email1.setFont(new java.awt.Font("Manrope SemiBold", 0, 20)); // NOI18N
-        Existing_Email1.setText("Create PIN");
-        Existing_Email1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        jPanel4.add(Existing_Email1, java.awt.BorderLayout.PAGE_START);
-
-        jPasswordField1.setBackground(new java.awt.Color(255, 240, 244));
-        jPasswordField1.setFont(new java.awt.Font("Manrope", 0, 16)); // NOI18N
-        jPasswordField1.setText("123456");
-        jPasswordField1.addActionListener(this::jPasswordField1ActionPerformed);
-        jPanel4.add(jPasswordField1, java.awt.BorderLayout.CENTER);
-
+        pINField1.setMinimumSize(new java.awt.Dimension(102, 85));
+        pINField1.setPreferredSize(new java.awt.Dimension(298, 85));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.ipadx = 52;
-        gridBagConstraints.ipady = 26;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        formContainer.add(jPanel4, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 6);
+        formContainer.add(pINField1, gridBagConstraints);
 
         formPanel.add(formContainer, java.awt.BorderLayout.CENTER);
 
@@ -178,23 +153,45 @@ public class PatientSignUp extends javax.swing.JPanel implements ControllerBound
         add(jSplitPane1);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
-
-    private void jPasswordField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField2ActionPerformed
-
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        // TODO add your handling code here:
+        char[] pin = pINField1.getPassword();
+        char[] confirmPin = pINField2.getPassword();
+
+        // check if they match
+        if (!Arrays.equals(pin, confirmPin)) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "PINs do not match.",
+                    "Sign Up Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        if (pin.length == 0) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "PIN cannot be empty.",
+                    "Sign Up Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        // proceed
+        controller.onSignUp(
+                Username_Field.getText(),
+                new String(pin)
+        );
+
+        // clear sensitive data
+        Arrays.fill(pin, '\0');
+        Arrays.fill(confirmPin, '\0');
     }//GEN-LAST:event_submitButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Existing_Email;
-    private javax.swing.JLabel Existing_Email1;
-    private javax.swing.JLabel Existing_Email2;
     private javax.swing.JLabel Note;
     private javax.swing.JTextField Username_Field;
     private org.one.patientmanagement.ui.components.Backdrop backdrop;
@@ -204,11 +201,9 @@ public class PatientSignUp extends javax.swing.JPanel implements ControllerBound
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JSplitPane jSplitPane1;
+    private org.one.patientmanagement.ui.components.PINField pINField1;
+    private org.one.patientmanagement.ui.components.PINField pINField2;
     private org.one.patientmanagement.ui.components.StepProgress stepProgress1;
     private javax.swing.JButton submitButton;
     // End of variables declaration//GEN-END:variables
@@ -216,7 +211,7 @@ public class PatientSignUp extends javax.swing.JPanel implements ControllerBound
     @Override
     public void setController(PatientSignupController controller) {
         this.controller = controller;
-        
+
         controller.attachToStepProgressController(stepProgress1);
     }
 }

@@ -62,6 +62,9 @@ public class QueueListContainer extends javax.swing.JPanel implements Controller
         clearQueue();
         queues.forEach(q -> {
             var row = new DetailedPatientRow();
+            
+            // TODO populate detailed patient row
+            
             row.setClickListener(l -> { clickListener.onClick(q); });
             addQueueRow(row);
         });

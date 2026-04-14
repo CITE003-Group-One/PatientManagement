@@ -6,6 +6,8 @@ package org.one.patientmanagement.ui.components;
 
 import java.awt.Color;
 import java.time.format.DateTimeFormatter;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
+import org.kordamp.ikonli.swing.FontIcon;
 import org.one.patientmanagement.ui.core.dto.ConsultationData;
 
 /**
@@ -19,17 +21,24 @@ public class ConsultationSummaryRow extends javax.swing.JPanel {
      */
     public ConsultationSummaryRow() {
         initComponents();
+        
+        icon.setIcon(FontIcon.of(MaterialDesignC.CLIPBOARD_CLOCK_OUTLINE, 12));
+        
+        jPanel1.putClientProperty("FlatLaf.style", "arc: 30;");
     }
     
     public void setRecordData(ConsultationData consultationData) {
+        titleLabel.setText(consultationData.title());
+        detailedTypeLabel.setText(consultationData.type().toString());
+        
         dateLabel.setText(consultationData.createdAt()
                 .toLocalDate()
                 .format(DateTimeFormatter.ofPattern("MMM dd, yyyy")));
-       doctorLabel.setText(consultationData.description());
+       doctorLabel.setText(consultationData.doctor());
        
        switch(consultationData.type()) {
             case REFERRAL -> setIcon(Color.decode("#C7E7FF"), Color.decode("#226488"));
-            case DIAGNOSIS -> setIcon(Color.decode("##FFDAD6"), Color.decode("#BA1A1A"));
+            case DIAGNOSIS -> setIcon(Color.decode("#FFDAD6"), Color.decode("#BA1A1A"));
             case GENERAL -> setIcon(Color.decode("#FFDBC7"), Color.decode("#7F5539"));
        }
     }

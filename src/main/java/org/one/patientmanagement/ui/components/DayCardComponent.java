@@ -37,9 +37,9 @@ public final class DayCardComponent extends JPanel {
         dateNumLbl = new JLabel(d, SwingConstants.CENTER);
         dayNameLbl = new JLabel(dy, SwingConstants.CENTER);
 
-        monthLbl.setFont(new Font("Manrope Medium", Font.PLAIN, 14));
-        dateNumLbl.setFont(new Font("Manrope Semibold", Font.PLAIN, 16));
-        dayNameLbl.setFont(new Font("Manrope Medium", Font.PLAIN, 14));
+        monthLbl.setFont(new Font("Manrope Medium", Font.PLAIN, 16));
+        dateNumLbl.setFont(new Font("Manrope Semibold", Font.PLAIN, 20));
+        dayNameLbl.setFont(new Font("Manrope Medium", Font.PLAIN, 16));
 
         colorAllLabel(defaultLabelColor);
 
@@ -50,7 +50,7 @@ public final class DayCardComponent extends JPanel {
 
     @Override
     public void setEnabled(boolean enabled) {
-        
+
         // TODO daycardcomponent change color when setenabled
         super.setEnabled(enabled);
 
@@ -59,6 +59,7 @@ public final class DayCardComponent extends JPanel {
                 : Cursor.getDefaultCursor()
         );
 
+        updateTextColors();
         repaint();
     }
 
@@ -71,6 +72,7 @@ public final class DayCardComponent extends JPanel {
         colorAllLabel(isToday ? secondaryColor : defaultLabelColor);
         dateNumLbl.setForeground(isToday ? Color.WHITE : defaultLabelColor);
 
+        updateTextColors();
         repaint();
     }
 
@@ -82,7 +84,27 @@ public final class DayCardComponent extends JPanel {
 
         colorAllLabel(Color.WHITE);
 
+        updateTextColors();
         repaint();
+    }
+
+    private void updateTextColors() {
+        if (!isEnabled()) {
+            Color muted = Color.decode("#CBBCC1");
+
+            colorAllLabel(muted);
+
+            return;
+        }
+
+        if (isToday) {
+            colorAllLabel(secondaryColor);
+            dateNumLbl.setForeground(Color.WHITE);
+        } else if (isSelected) {
+            colorAllLabel(Color.WHITE);
+        } else {
+            colorAllLabel(defaultLabelColor);
+        }
     }
 
     private void colorAllLabel(Color color) {
@@ -100,6 +122,8 @@ public final class DayCardComponent extends JPanel {
             g2.setColor(Color.decode("#F1DEE4"));
         } else if (isSelected) {
             g2.setColor(Color.decode("#7F5539"));
+        } else if (!isEnabled()) {
+            g2.setColor(Color.decode("#F7E8EC"));
         } else {
             g2.setColor(defaultCardLabel);
         }

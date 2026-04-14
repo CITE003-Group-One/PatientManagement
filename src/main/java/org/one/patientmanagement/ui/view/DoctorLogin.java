@@ -10,13 +10,32 @@ package org.one.patientmanagement.ui.view;
  */
 public class DoctorLogin extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ExistingAcctLogin
-     */
+    public interface LoginSubmitListener {
+
+        void onSubmit(String password);
+    }
+
+    private LoginSubmitListener submitListener;
+
     public DoctorLogin() {
         initComponents();
-        
+
         submitButton.putClientProperty("FlatLaf.style", "arc: 999;");
+        submitButton.addActionListener(e -> {
+            submitListener.onSubmit(
+                    new String(jPasswordField1.getPassword())
+            );
+        });
+
+        stepProgress1.removeBack();
+        
+        backdrop2.setImage("/images/doctor_backdrop.png");
+        backdrop2.setBadge("Doctor Panel");
+        backdrop2.setHeading("Welcome back, Doctor");
+    }
+    
+    public void setSubmitListener(LoginSubmitListener submitListener) {
+        this.submitListener = submitListener;
     }
 
     /**
@@ -47,6 +66,7 @@ public class DoctorLogin extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 248, 248));
         setLayout(new java.awt.GridLayout(1, 0));
 
+        jSplitPane1.setDividerSize(0);
         jSplitPane1.setEnabled(false);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -76,7 +96,6 @@ public class DoctorLogin extends javax.swing.JPanel {
         jPasswordField1.setBackground(new java.awt.Color(255, 240, 244));
         jPasswordField1.setFont(new java.awt.Font("Manrope", 0, 16)); // NOI18N
         jPasswordField1.setText("123456");
-        jPasswordField1.addActionListener(this::jPasswordField1ActionPerformed);
         jPanel4.add(jPasswordField1, java.awt.BorderLayout.CENTER);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -94,7 +113,6 @@ public class DoctorLogin extends javax.swing.JPanel {
         submitButton.setForeground(new java.awt.Color(255, 255, 255));
         submitButton.setText("Proceed");
         submitButton.setPreferredSize(new java.awt.Dimension(95, 55));
-        submitButton.addActionListener(this::submitButtonActionPerformed);
         formPanel.add(submitButton, java.awt.BorderLayout.SOUTH);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -110,14 +128,6 @@ public class DoctorLogin extends javax.swing.JPanel {
 
         add(jSplitPane1);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
-
-    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_submitButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,6 +1,8 @@
 package org.one.patientmanagement.service;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
 import java.util.Optional;
@@ -29,11 +31,9 @@ public interface AppointmentManager {
     
     List<Appointment> getAppointmentsToday(long doctorId, AppointmentStatus... status);
     
-    List<Appointment> getAppointments(long doctorId, DayOfWeek day, AppointmentStatus... status);
+    List<Appointment> getAppointments(long doctorId, LocalDate date, AppointmentStatus... status);
 
     Appointment update(@Nonnull Appointment appointment);
 
     void delete(long appointmentId);
-
-    boolean isDoctorAvailable(long doctorId, @Nonnull AppointmentBlock block);
 }

@@ -7,12 +7,13 @@ package org.one.patientmanagement.ui.components;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 /**
  *
  * @author KAROL JOHN
  */
-public class DoctorSelectionRow extends javax.swing.JPanel {
+public class DoctorSelectionRow extends ClickablePanel {
 
     /**
      * Creates new form DoctorSelectionRow
@@ -21,32 +22,14 @@ public class DoctorSelectionRow extends javax.swing.JPanel {
         initComponents();
     }
 
-    private boolean selected = false;
-
     public void setSelected(boolean selected) {
-        this.selected = selected;
-        repaint();
-    }
-
-    public boolean isSelected() {
-        return selected;
+        if (selected) setBackground(Color.decode("#FDD9E7"));
+        else setBackground(Color.decode("#FFF0F4"));
     }
 
     public void setData(String doctorName, String doctorProfession) {
         this.doctorName.setText(doctorName);
         this.doctorProfession.setText(doctorProfession);
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-
-        if (selected) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setColor(new Color(255, 219, 199)); // TODO change highlight color for doctor select
-            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
-            g2.dispose();
-        }
     }
 
     /**
@@ -65,13 +48,16 @@ public class DoctorSelectionRow extends javax.swing.JPanel {
         doctorName = new javax.swing.JLabel();
         doctorProfession = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(255, 240, 244));
         setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(212, 194, 200)));
-        setOpaque(false);
         setLayout(new java.awt.BorderLayout(10, 0));
 
         doctorPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        doctorPanel.setOpaque(false);
+        doctorPanel.setPreferredSize(new java.awt.Dimension(193, 60));
         doctorPanel.setLayout(new java.awt.BorderLayout(10, 0));
 
+        profilePicturePanel2.setOpaque(false);
         profilePicturePanel2.setPreferredSize(new java.awt.Dimension(60, 120));
 
         javax.swing.GroupLayout profilePicturePanel2Layout = new javax.swing.GroupLayout(profilePicturePanel2);
@@ -82,11 +68,12 @@ public class DoctorSelectionRow extends javax.swing.JPanel {
         );
         profilePicturePanel2Layout.setVerticalGroup(
             profilePicturePanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 52, Short.MAX_VALUE)
+            .addGap(0, 55, Short.MAX_VALUE)
         );
 
         doctorPanel.add(profilePicturePanel2, java.awt.BorderLayout.WEST);
 
+        jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.GridBagLayout());
 
         doctorName.setFont(new java.awt.Font("Manrope Medium", 0, 14)); // NOI18N

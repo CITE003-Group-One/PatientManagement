@@ -13,11 +13,7 @@ import org.one.patientmanagement.repository.RepositoryModule;
 import org.one.patientmanagement.service.ServiceModule;
 import org.one.patientmanagement.storage.DatabaseInitializer;
 import org.one.patientmanagement.storage.DatabaseModule;
-import org.one.patientmanagement.ui.PresentationModule;
-import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import java.awt.Font;
-import javax.swing.UIManager;
 import org.one.patientmanagement.ui.core.Theme;
 
 public class PatientManagement {
@@ -35,10 +31,8 @@ public class PatientManagement {
                         new DatabaseModule(),
                         new RepositoryModule(),
                         new ServiceModule()
-//                        new PresentationModule()
                 );
                 
-                // TODO: exception handling for the storage
                 injector.getInstance(DatabaseInitializer.class).init();
                 
                 if (args.length > 0)

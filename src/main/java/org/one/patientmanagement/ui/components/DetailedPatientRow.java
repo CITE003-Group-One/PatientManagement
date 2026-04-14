@@ -27,7 +27,7 @@ public class DetailedPatientRow extends ClickablePanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jLabel1 = new javax.swing.JLabel();
+        name = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -39,8 +39,8 @@ public class DetailedPatientRow extends ClickablePanel {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 15, 15, 15));
         setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setFont(new java.awt.Font("Manrope Medium", 0, 14)); // NOI18N
-        jLabel1.setText("Lorem Ipsum Dolor Sit Amet");
+        name.setFont(new java.awt.Font("Manrope Medium", 0, 14)); // NOI18N
+        name.setText("Lorem Ipsum Dolor Sit Amet");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -48,7 +48,7 @@ public class DetailedPatientRow extends ClickablePanel {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 11, 0);
-        add(jLabel1, gridBagConstraints);
+        add(name, gridBagConstraints);
 
         jLabel2.setFont(new java.awt.Font("Manrope", 0, 13)); // NOI18N
         jLabel2.setText("General Checkup");
@@ -111,12 +111,12 @@ public class DetailedPatientRow extends ClickablePanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel name;
     private javax.swing.JLabel num;
     // End of variables declaration//GEN-END:variables
 }

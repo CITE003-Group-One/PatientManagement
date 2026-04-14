@@ -47,12 +47,12 @@ public class DatabaseInitializer {
             CREATE TABLE IF NOT EXISTS patients (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 account_id INTEGER UNIQUE,
-                name TEXT NOT NULL,
+                first_name TEXT NOT NULL,
+                last_name TEXT NOT NULL,
                 sex TEXT,
                 birthday TEXT,
                 blood_type TEXT,
-                contact_number TEXT,
-                email TEXT,
+                contact TEXT,
                 address TEXT,
                 FOREIGN KEY (account_id) REFERENCES accounts(id)
             );

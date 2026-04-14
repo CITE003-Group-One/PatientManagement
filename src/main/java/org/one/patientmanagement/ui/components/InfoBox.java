@@ -18,13 +18,6 @@ public class InfoBox extends javax.swing.JPanel {
      */
     public InfoBox(String label, String value) {
         initComponents();
-
-        FontMetrics fm = this.value.getFontMetrics(this.value.getFont());
-        int h = fm.getHeight() * 2 + 6;
-
-        this.value.setMaximumSize(new Dimension(200, h));
-        this.value.setMinimumSize(new Dimension(200, h));
-        this.value.setPreferredSize(new Dimension(200, h));
         
         this.label.setText(label);
         this.value.setText("<html>" + value + "</html>");
@@ -42,16 +35,16 @@ public class InfoBox extends javax.swing.JPanel {
         label = new javax.swing.JLabel();
         value = new javax.swing.JLabel();
 
-        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
+        setLayout(new java.awt.BorderLayout());
 
         label.setFont(new java.awt.Font("Manrope SemiBold", 0, 14)); // NOI18N
         label.setText("First Name");
-        add(label);
+        add(label, java.awt.BorderLayout.PAGE_START);
 
         value.setFont(new java.awt.Font("Manrope", 0, 16)); // NOI18N
         value.setText("<html>Karol John</html>");
         value.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        add(value);
+        add(value, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 

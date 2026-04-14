@@ -49,7 +49,7 @@ public class PatientDashboardController extends AbstractController<PatientDashbo
     }
 
     public void loadHistory() {
-        var consultations = consultation.getConsultations(model.getAppointment().patientId(), 0, ConsultationType.GENERAL, ConsultationType.DIAGNOSIS);
+        var consultations = consultation.getConsultations(model.getPatient().id(), 0L, ConsultationType.GENERAL, ConsultationType.DIAGNOSIS);
         var doctorIds = consultations.stream()
                 .map(Consultation::doctorId)
                 .distinct()
@@ -71,23 +71,23 @@ public class PatientDashboardController extends AbstractController<PatientDashbo
 
     private void loadInfoBox() {
         Map<String, String> map = new LinkedHashMap<>();
-        var patientInfo = model.getPatient();
+        var patient = model.getPatient();
 
-        map.put("First Name", patientInfo.firstName());
-        map.put("Last Name", patientInfo.lastName());
-        map.put("Sex", patientInfo.sex());
-        map.put("Age", String.valueOf(patientInfo.getAge()));
-        map.put("Birthday", patientInfo.birthday().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
-        map.put("Address", patientInfo.address());
+        map.put("First Name", patient.firstName());
+        map.put("Last Name", patient.lastName());
+        map.put("Sex", patient.sex());
+        map.put("Age", String.valueOf(patient.getAge()));
+        map.put("Birthday", patient.birthday().format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+        map.put("Address", patient.address());
 
         view.loadInfoBox(map);
     }
 
     private void loadFields() {
         
-        patient.getById(model.getAppointment().patientId()).ifPresent(p -> {
+        patient.getById(model.getPatient().id()).ifPresent(p -> {
             account.getById(p.accountId()).ifPresent(a -> {
-                view.loadFields(a.user(), p.email()); // TODO change this from email to contact field
+                view.loadFields(a.user(), p.contact());
             });
         });
         

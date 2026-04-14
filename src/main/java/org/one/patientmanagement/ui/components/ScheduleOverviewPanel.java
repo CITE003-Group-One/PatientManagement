@@ -44,7 +44,8 @@ public class ScheduleOverviewPanel extends JPanel {
         divider.setBackground(Color.decode("#E0E0E0"));
         divider.setPreferredSize(new Dimension(1, 0));
         gbc.gridx = 1;
-        gbc.weightx = 1; 
+        gbc.weighty = 1;
+        gbc.weightx = 0; 
         add(divider, gbc);
 
         // 4. Add Afternoon Block (Right side)
@@ -55,11 +56,12 @@ public class ScheduleOverviewPanel extends JPanel {
     }
     
     public void setListModel(java.util.List<QueueData> morning, java.util.List<QueueData> afternoon, Schedule schedule) {
-        morningBlock.loadQueue(morning, AppointmentBlock.MORNING, schedule);
-        afternoonBlock.loadQueue(afternoon, AppointmentBlock.MORNING, schedule);
-        
         morningBlock.setRowClickListener(clickListener);
         afternoonBlock.setRowClickListener(clickListener);
+        
+        morningBlock.loadQueue(morning, AppointmentBlock.MORNING, schedule);
+        afternoonBlock.loadQueue(afternoon, AppointmentBlock.AFTERNOON, schedule);
+        
     }
     
     public void setRowClickListener(ClickablePanel.ClickListenerObj<QueueData> clickListener) {

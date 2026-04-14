@@ -4,24 +4,40 @@
  */
 package org.one.patientmanagement.ui.components;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 /**
  *
  * @author KAROL JOHN
  */
-public class DayOfWeekCard extends javax.swing.JPanel {
+public class DayOfWeekCard extends ClickablePanel {
+
+    private float alpha = 1;
 
     /**
      * Creates new form DayOfWeekCard
      */
     public DayOfWeekCard() {
         initComponents();
-    }
-    
-    
-    
-    // TODO also override paintComponent for selection logic
-    
 
+        timeLabel.putClientProperty("FlatLaf.style", "arc: 999;");
+    }
+
+    public void setDayOfWeek(String range, String day) {
+        timeLabel.setText(range);
+        dayLabel.setText(day);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        setVisible(enabled);
+        repaint();
+    }
+
+    // TODO also override paintComponent for selection logic
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,8 +51,8 @@ public class DayOfWeekCard extends javax.swing.JPanel {
         imagePanel1 = new org.one.patientmanagement.ui.components.ImagePanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        timeLabel = new javax.swing.JLabel();
+        dayLabel = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(250, 234, 238));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -61,12 +77,12 @@ public class DayOfWeekCard extends javax.swing.JPanel {
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 219, 199));
-        jPanel1.setLayout(new java.awt.GridLayout());
+        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
-        jLabel2.setFont(new java.awt.Font("Manrope SemiBold", 0, 13)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("7:00 AM - 12:00 PM");
-        jPanel1.add(jLabel2);
+        timeLabel.setFont(new java.awt.Font("Manrope SemiBold", 0, 13)); // NOI18N
+        timeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        timeLabel.setText("7:00 AM - 12:00 PM");
+        jPanel1.add(timeLabel);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -78,27 +94,31 @@ public class DayOfWeekCard extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         jPanel2.add(jPanel1, gridBagConstraints);
 
-        jLabel1.setFont(new java.awt.Font("Manrope SemiBold", 0, 20)); // NOI18N
-        jLabel1.setText("Morning");
+        dayLabel.setFont(new java.awt.Font("Manrope SemiBold", 0, 20)); // NOI18N
+        dayLabel.setText("Morning");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 0);
-        jPanel2.add(jLabel1, gridBagConstraints);
+        jPanel2.add(dayLabel, gridBagConstraints);
 
         add(jPanel2, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel dayLabel;
     private org.one.patientmanagement.ui.components.ImagePanel imagePanel1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel timeLabel;
     // End of variables declaration//GEN-END:variables
 
     public void setSelected(boolean b) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (b) {
+            setBackground(Color.decode("#FDD9E7"));
+        } else {
+            setBackground(Color.decode("#FAEAEE"));
+        }
     }
 }

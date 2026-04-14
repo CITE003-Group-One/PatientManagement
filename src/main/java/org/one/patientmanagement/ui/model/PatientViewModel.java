@@ -8,6 +8,7 @@ import com.google.inject.Singleton;
 import org.one.patientmanagement.ui.core.dto.AppointmentInfo;
 import org.one.patientmanagement.ui.core.dto.PatientInfo;
 import org.one.patientmanagement.domain.models.Account;
+import org.one.patientmanagement.domain.models.Appointment;
 import org.one.patientmanagement.domain.models.Patient;
 
 /**
@@ -43,18 +44,37 @@ public class PatientViewModel {
         NEW
     }
 
-    private ServiceSelection serviceSelection;
+    private ServiceSelection serviceSelection = ServiceSelection.GENERAL;
     private Account account;
-    private AppointmentInfo appointment;
-    private PatientInfo patient;
+    private Patient patient;
+    private Appointment appointment;
+
+    private AppointmentInfo appointmentInfo;
+    private PatientInfo patientInfo;
     private PatientType patientType;
 
     public void restart() {
         this.serviceSelection = null;
         this.account = null;
-        this.appointment = null;
-        this.patient = null;
+        this.appointmentInfo = null;
+        this.patientInfo = null;
         this.patientType = null;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public Appointment getAppointment() {
+        return appointment;
+    }
+
+    public void setAppointment(Appointment appointment) {
+        this.appointment = appointment;
     }
 
     public PatientType getPatientType() {
@@ -81,19 +101,19 @@ public class PatientViewModel {
         this.account = account;
     }
 
-    public AppointmentInfo getAppointment() {
-        return appointment;
+    public AppointmentInfo getAppointmentInfo() {
+        return appointmentInfo;
     }
 
-    public void setAppointment(AppointmentInfo appointment) {
-        this.appointment = appointment;
+    public void setAppointmentInfo(AppointmentInfo appointment) {
+        this.appointmentInfo = appointment;
     }
 
-    public PatientInfo getPatient() {
-        return patient;
+    public PatientInfo getPatientInfo() {
+        return patientInfo;
     }
 
-    public void setPatient(PatientInfo patient) {
-        this.patient = patient;
+    public void setPatientInfo(PatientInfo patient) {
+        this.patientInfo = patient;
     }
 }

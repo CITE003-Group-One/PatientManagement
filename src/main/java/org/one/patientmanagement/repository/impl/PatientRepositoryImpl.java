@@ -22,39 +22,26 @@ public class PatientRepositoryImpl implements PatientRepository {
 
     @Override
     public Patient save(Patient patient) {
-        String sql = "INSERT INTO patients (account_id, name, sex, birthday, blood_type, contact_number, email, address) "
+        String sql = "INSERT INTO patients (account_id, first_name, last_name, sex, birthday, blood_type, contact, address) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setLong(1, patient.accountId());
-//            stmt.setString(2, patient.name()); FIXME: implement first name, last name basis
-            stmt.setString(3, patient.sex());
-            stmt.setString(4, patient.birthday().toString());
-            stmt.setString(5, patient.bloodType());
-            stmt.setString(6, patient.contactNumber());
-            stmt.setString(7, patient.email());
+            stmt.setString(2, patient.firstName());
+            stmt.setString(3, patient.lastName());
+            stmt.setString(4, patient.sex());
+            stmt.setString(5, patient.birthday().toString());
+            stmt.setString(6, patient.bloodType());
+            stmt.setString(7, patient.contact());
             stmt.setString(8, patient.address());
 
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
-                long id = rs.getLong(1);
-
-                return new Patient(
-                        id,
-                        patient.accountId(),
-                        //                    patient.name(), FIXME: implement first name, last name basis
-                        null,
-                        null,
-                        patient.sex(),
-                        patient.birthday(),
-                        patient.bloodType(),
-                        patient.contactNumber(),
-                        patient.email(),
-                        patient.address()
-                );
+                return new Patient(rs.getLong(1), patient.accountId(), patient.firstName(), patient.lastName(),
+                        patient.sex(), patient.birthday(), patient.bloodType(), patient.contact(), patient.address());
             }
 
             throw new RuntimeException("Failed to insert patient");
@@ -80,24 +67,24 @@ public class PatientRepositoryImpl implements PatientRepository {
 
     @Override
     public void update(Patient patient) {
-        String sql = "UPDATE patients SET account_id=?, name=?, sex=?, birthday=?, blood_type=?, contact_number=?, email=?, address=? WHERE id=?";
+        String sql = "UPDATE patients SET account_id=?, first_name=?, last_name=?, sex=?, birthday=?, blood_type=?, contact=?, address=? WHERE id=?";
 
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, patient.accountId());
-//            stmt.setString(2, patient.name()); FIXME: implement first name, last name basis
-            stmt.setString(3, patient.sex());
-            stmt.setString(4, patient.birthday().toString());
-            stmt.setString(5, patient.bloodType());
-            stmt.setString(6, patient.contactNumber());
-            stmt.setString(7, patient.email());
+            stmt.setString(2, patient.firstName());
+            stmt.setString(3, patient.lastName());
+            stmt.setString(4, patient.sex());
+            stmt.setString(5, patient.birthday().toString());
+            stmt.setString(6, patient.bloodType());
+            stmt.setString(7, patient.contact());
             stmt.setString(8, patient.address());
             stmt.setLong(9, patient.id());
 
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error updating patient", e);
         }
     }
 
@@ -143,13 +130,12 @@ public class PatientRepositoryImpl implements PatientRepository {
         return new Patient(
                 rs.getLong("id"),
                 rs.getLong("account_id"),
-                //            rs.getString("name"), FIXME: implement first name, last name basis
-                null, null,
+                rs.getString("first_name"),
+                rs.getString("last_name"),
                 rs.getString("sex"),
-                java.time.LocalDate.parse(rs.getString("birthday")),
+                rs.getObject("birthday", java.time.LocalDate.class),
                 rs.getString("blood_type"),
-                rs.getString("contact_number"),
-                rs.getString("email"),
+                rs.getString("contact"),
                 rs.getString("address")
         );
     }

@@ -13,8 +13,7 @@ public record PatientInfo(
     String sex,
     LocalDate birthday,
     String bloodType,
-    String contactNumber,
-    String alternativeContactNumber,
+    String alternativeContact,
     String address
 ) {
 

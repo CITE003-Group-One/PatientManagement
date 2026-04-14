@@ -17,7 +17,13 @@ public class PatientStartupCard extends javax.swing.JPanel {
      */
     public PatientStartupCard() {
         initComponents();
-        illustration.putClientProperty("FlatLaf.style", "arc: 8;");
+        illustration.putClientProperty("FlatLaf.style", "arc: 20;");
+        
+        jPanel2.putClientProperty("FlatLaf.style", "arc: 30;");
+    }
+    
+    public void setImage(String path ) {
+        imagePanel1.setImage(path);
     }
 
     public void setInfo(String infoText, String buttonTitle) {
@@ -40,6 +46,7 @@ public class PatientStartupCard extends javax.swing.JPanel {
 
         jPanel2 = new javax.swing.JPanel();
         illustration = new javax.swing.JPanel();
+        imagePanel1 = new org.one.patientmanagement.ui.components.ImagePanel();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -54,17 +61,20 @@ public class PatientStartupCard extends javax.swing.JPanel {
         jPanel2.setLayout(new java.awt.BorderLayout(0, 15));
 
         illustration.setBackground(new java.awt.Color(255, 240, 244));
+        illustration.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout illustrationLayout = new javax.swing.GroupLayout(illustration);
-        illustration.setLayout(illustrationLayout);
-        illustrationLayout.setHorizontalGroup(
-            illustrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout imagePanel1Layout = new javax.swing.GroupLayout(imagePanel1);
+        imagePanel1.setLayout(imagePanel1Layout);
+        imagePanel1Layout.setHorizontalGroup(
+            imagePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 350, Short.MAX_VALUE)
         );
-        illustrationLayout.setVerticalGroup(
-            illustrationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        imagePanel1Layout.setVerticalGroup(
+            imagePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 293, Short.MAX_VALUE)
         );
+
+        illustration.add(imagePanel1, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(illustration, java.awt.BorderLayout.CENTER);
 
@@ -101,6 +111,7 @@ public class PatientStartupCard extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel illustration;
+    private org.one.patientmanagement.ui.components.ImagePanel imagePanel1;
     private javax.swing.JLabel infoText;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;

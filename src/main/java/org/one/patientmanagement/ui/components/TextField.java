@@ -4,6 +4,9 @@
  */
 package org.one.patientmanagement.ui.components;
 
+import java.awt.CardLayout;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author KAROL JOHN
@@ -16,14 +19,41 @@ public class TextField extends javax.swing.JPanel {
     public TextField() {
         initComponents();
     }
-    
+
+    public void setCombobox() {
+        ((CardLayout) card.getLayout()).show(card, "combobox");
+    }
+
+    public void setEditable(boolean editable) {
+        jComboBox1.setEditable(editable);
+        jLabel1.setEnabled(editable);
+    }
+
     public void setLabel(String name) {
         jLabel1.setText(name);
     }
-    
-    public String getFieldText() {
-        return jTextField1.getText();
+
+    public void setComboboxModel(DefaultComboBoxModel<String> model) {
+        jComboBox1.setModel(model);
     }
+
+    public String getValue() {
+        if (jTextField1.isShowing()) {
+            return jTextField1.getText();
+        }
+
+        if (jComboBox1.isShowing()) {
+            Object selected = jComboBox1.getSelectedItem();
+            return selected != null ? selected.toString() : "";
+        }
+
+        return "";
+    }
+
+    public void setText(String t) {
+        jTextField1.setText(t);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,25 +64,36 @@ public class TextField extends javax.swing.JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        card = new javax.swing.JPanel();
         jTextField1 = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout(5, 5));
 
         jLabel1.setFont(new java.awt.Font("Manrope SemiBold", 0, 14)); // NOI18N
         jLabel1.setText("Birthday");
         add(jLabel1, java.awt.BorderLayout.PAGE_START);
 
+        card.setLayout(new java.awt.CardLayout());
+
         jTextField1.setBackground(new java.awt.Color(250, 234, 238));
         jTextField1.setFont(new java.awt.Font("Manrope", 0, 16)); // NOI18N
-        jTextField1.setText("jTextField1");
         jTextField1.setMaximumSize(new java.awt.Dimension(2147483647, 30));
         jTextField1.setMinimumSize(new java.awt.Dimension(64, 30));
         jTextField1.setPreferredSize(new java.awt.Dimension(92, 30));
-        add(jTextField1, java.awt.BorderLayout.CENTER);
+        card.add(jTextField1, "text");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        card.add(jComboBox1, "combobox");
+
+        add(card, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel card;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables

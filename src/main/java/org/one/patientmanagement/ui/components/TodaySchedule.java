@@ -21,7 +21,7 @@ public class TodaySchedule extends javax.swing.JPanel {
         initComponents();
         setupLayout();
 
-        this.putClientProperty("FlatLaf.style", "arc: 999;");
+        this.putClientProperty("FlatLaf.style", "arc: 30;");
     }
 
     private void setupLayout() {

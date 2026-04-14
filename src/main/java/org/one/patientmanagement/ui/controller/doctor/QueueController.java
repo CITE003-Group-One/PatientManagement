@@ -42,14 +42,14 @@ import org.one.patientmanagement.ui.view.DoctorPatientQueue;
 public class QueueController extends AbstractController<DoctorPatientQueue, QueueController> {
 
     private final Provider<QueueListController> queueListControllerProvider;
-    private DayOfWeek dayOfWeek; // TODO selection of day of week from the calendar
+    private DayOfWeek dayOfWeek; // selection of day of week from the calendar
     private final DoctorManager doctorManager;
     private final DoctorViewModel model;
     private final AppointmentManager appointmentManager;
     private final PatientManager patientManager;
     private final DoctorPatientDashboardDialogControllerFactory dialogFactory;
 
-    // TODO called using on selection from the calendar
+    // called using on selection from the calendar
     private void loadQueue(Schedule schedule, List<QueueData> queues) {
         Map<AppointmentBlock, QueueData> withDoctor = new EnumMap<>(AppointmentBlock.class);
         Map<AppointmentBlock, List<QueueData>> groupedQueues = new EnumMap<>(AppointmentBlock.class);
@@ -66,7 +66,7 @@ public class QueueController extends AbstractController<DoctorPatientQueue, Queu
         view.loadQueue(AppointmentBlock.AFTERNOON, schedule, withDoctor.get(AppointmentBlock.AFTERNOON), groupedQueues.get(AppointmentBlock.AFTERNOON));
     }
 
-    @Inject // TODO: maybe opt to provider
+    @Inject
     public QueueController(DoctorPatientQueue view, Provider<QueueListController> queueListControllerProvider, DoctorViewModel model,
             PatientManager patientManager, DoctorManager doctorManager, AppointmentManager appointmentManager, DoctorPatientDashboardDialogControllerFactory dialogFactory) {
         this.queueListControllerProvider = queueListControllerProvider;
@@ -81,6 +81,8 @@ public class QueueController extends AbstractController<DoctorPatientQueue, Queu
         view.loadSchedules(doctorManager.getSchedules(model.getDoctor().id()));
         view.setDaySelectListener(l -> onDaySelect(l));
         view.setRowClickListener(l -> onRowClick(l));
+        
+        onDaySelect(LocalDate.now());
     }
 
     public QueueListController attachQueueListController(QueueListContainer view) {
@@ -95,9 +97,10 @@ public class QueueController extends AbstractController<DoctorPatientQueue, Queu
     }
 
     private void onDaySelect(LocalDate l) {
+        dayOfWeek = l.getDayOfWeek();
         doctorManager.getSchedules(model.getDoctor().id()).stream()
                 .filter(s -> s.day() == l.getDayOfWeek()).findFirst().ifPresent(schedule -> {
-            var appointments = appointmentManager.getAppointments(model.getDoctor().id(), l.getDayOfWeek(), AppointmentStatus.values());
+            var appointments = appointmentManager.getAppointments(model.getDoctor().id(), l, AppointmentStatus.values());
 
             var patientIds = appointments.stream().map(Appointment::patientId).toList();
             var patientMap = patientManager.getAllByIds(patientIds).stream()
@@ -107,7 +110,7 @@ public class QueueController extends AbstractController<DoctorPatientQueue, Queu
                 var patient = patientMap.get(q.patientId());
                 return new QueueData(
                         patient.id(),
-                        patient.firstName(), // TODO use full name instead
+                        patient.getFullName(),
                         q.getFormattedQueue(),
                         patient.sex(),
                         patient.getSchemedId(),
@@ -137,15 +140,11 @@ public class QueueController extends AbstractController<DoctorPatientQueue, Queu
         private List<QueueData> queues;
         private AppointmentStatus status;
 
-        @Inject // TODO: maybe opt to provider
+        @Inject
         public QueueListController(DoctorViewModel model, AppointmentManager appointmentManager, PatientManager patientManager) {
             this.appointmentManager = appointmentManager;
             this.patientManager = patientManager;
             this.doctor = model.getDoctor();
-
-            view.setRowClickListener(l -> {
-                clickListener.onClick(l);
-            });
         }
 
         public void setRowClickListener(ClickListenerObj<QueueData> clickListener) {
@@ -170,6 +169,9 @@ public class QueueController extends AbstractController<DoctorPatientQueue, Queu
 
         @Override
         public void onAttached() {
+            view.setRowClickListener(l -> {
+                clickListener.onClick(l);
+            });
         }
 
         public void onSearch(String query) {

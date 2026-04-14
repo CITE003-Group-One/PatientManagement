@@ -5,6 +5,7 @@
 package org.one.patientmanagement.ui.view;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.HashMap;
@@ -32,6 +33,8 @@ public class ServiceSelectionView extends javax.swing.JPanel implements Controll
     public ServiceSelectionView() {
         initComponents();
 
+        selectionPanel.removeAll();
+
         cancelButton.putClientProperty("FlatLaf.style", "arc: 999;");
         continueButton1.putClientProperty("FlatLaf.style", "arc: 999;");
 
@@ -41,6 +44,7 @@ public class ServiceSelectionView extends javax.swing.JPanel implements Controll
             btn.setContentAreaFilled(false);
             btn.setOpaque(false);
             btn.setBorderPainted(false);
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
             btn.setFont(new java.awt.Font("Manrope Medium", 0, 20));
             btn.setForeground(new java.awt.Color(114, 87, 98));
@@ -52,15 +56,19 @@ public class ServiceSelectionView extends javax.swing.JPanel implements Controll
                 public void paint(Graphics g, JComponent c) {
                     Graphics2D g2 = (Graphics2D) g.create();
 
-                    if (c == selectedButton) {
+                    boolean selected = (c == selectedButton);
+
+                    if (selected) {
                         g2.setColor(Color.decode("#725762"));
+                        c.setForeground(Color.WHITE);
                     } else {
-                        g2.setColor(new java.awt.Color(250, 234, 238));
+                        g2.setColor(new Color(250, 234, 238));
+                        c.setForeground(new Color(114, 87, 98));
                     }
 
                     g2.fillRoundRect(0, 0, c.getWidth(), c.getHeight(), 10, 10);
-
                     g2.dispose();
+
                     super.paint(g, c);
                 }
             });
@@ -106,6 +114,7 @@ public class ServiceSelectionView extends javax.swing.JPanel implements Controll
         cancelButton = new javax.swing.JButton();
         continueButton1 = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 51, 51));
         setMinimumSize(new java.awt.Dimension(0, 507));
         setOpaque(false);
         setLayout(new java.awt.GridBagLayout());
@@ -197,13 +206,13 @@ public class ServiceSelectionView extends javax.swing.JPanel implements Controll
         add(jPanel3, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cancelButtonActionPerformed
-
     private void continueButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButton1ActionPerformed
-        // TODO add your handling code here:
+        controller.onContinue();
     }//GEN-LAST:event_continueButton1ActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        controller.onCancel();
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -223,7 +232,7 @@ public class ServiceSelectionView extends javax.swing.JPanel implements Controll
     @Override
     public void setController(PatientServiceSelectionController controller) {
         this.controller = controller;
-        
+
         controller.attachToStepProgressController(stepProgress1);
     }
 }

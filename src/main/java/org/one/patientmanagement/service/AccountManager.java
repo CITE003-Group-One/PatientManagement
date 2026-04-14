@@ -14,11 +14,7 @@ public interface AccountManager {
 
     Optional<Account> getById(long id);
 
-    /**
-     *
-     * @param user phone number or email of patient
-     * @param password hashed password
-     * @return the account
-     */
-    Account authenticate(@Nonnull String user, @Nonnull String password);
+    Optional<Account> authenticate(@Nonnull String user, @Nonnull String password);
+    
+    Optional<Account> authenticate(@Nonnull String password);
 }

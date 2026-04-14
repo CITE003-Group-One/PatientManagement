@@ -20,14 +20,23 @@ public class PatientStartupView extends javax.swing.JPanel implements Controller
      */
     public PatientStartupView() {
         initComponents();
+        
+        backdrop1.setHeading("Let’s setup your appointment");
 
         patientStartupCard1.setInfo("Check in  with your appointment or records.", "Existing Patient");
         patientStartupCard2.setInfo("First time here? Register your details.", "New Patient");
-        
-        patientStartupCard1.setButtonAction(l -> { controller.onExistingPatient(); });
-        patientStartupCard2.setButtonAction(l -> { controller.onNewPatient(); });
-        
-        stepProgress1.remmoveBack();
+
+        patientStartupCard1.setImage("/images/existing.png");
+        patientStartupCard2.setImage("/images/new.png");
+
+        patientStartupCard1.setButtonAction(l -> {
+            controller.onExistingPatient();
+        });
+        patientStartupCard2.setButtonAction(l -> {
+            controller.onNewPatient();
+        });
+
+        stepProgress1.removeBack();
     }
 
     /**
@@ -41,7 +50,6 @@ public class PatientStartupView extends javax.swing.JPanel implements Controller
         java.awt.GridBagConstraints gridBagConstraints;
 
         jSplitPane1 = new javax.swing.JSplitPane();
-        backdrop1 = new org.one.patientmanagement.ui.components.Backdrop();
         jPanel1 = new javax.swing.JPanel();
         stepProgress1 = new org.one.patientmanagement.ui.components.StepProgress();
         jPanel2 = new javax.swing.JPanel();
@@ -50,16 +58,17 @@ public class PatientStartupView extends javax.swing.JPanel implements Controller
         patientStartupCard1 = new org.one.patientmanagement.ui.components.PatientStartupCard();
         patientStartupCard2 = new org.one.patientmanagement.ui.components.PatientStartupCard();
         jLabel2 = new javax.swing.JLabel();
+        backdrop1 = new org.one.patientmanagement.ui.components.Backdrop();
 
         setBackground(new java.awt.Color(255, 248, 248));
         setOpaque(false);
         setLayout(new java.awt.GridLayout(1, 0));
 
+        jSplitPane1.setDividerLocation(500);
         jSplitPane1.setDividerSize(0);
         jSplitPane1.setResizeWeight(0.1);
         jSplitPane1.setEnabled(false);
         jSplitPane1.setOpaque(false);
-        jSplitPane1.setLeftComponent(backdrop1);
 
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -78,6 +87,11 @@ public class PatientStartupView extends javax.swing.JPanel implements Controller
 
         jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.GridLayout(1, 0, 20, 0));
+
+        patientStartupCard1.setMaximumSize(new java.awt.Dimension(270, 400));
+        patientStartupCard1.setMinimumSize(new java.awt.Dimension(270, 400));
+        patientStartupCard1.setName(""); // NOI18N
+        patientStartupCard1.setPreferredSize(new java.awt.Dimension(270, 400));
         jPanel3.add(patientStartupCard1);
         jPanel3.add(patientStartupCard2);
 
@@ -85,9 +99,7 @@ public class PatientStartupView extends javax.swing.JPanel implements Controller
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.ipadx = 119;
-        gridBagConstraints.ipady = 257;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(39, 0, 39, 0);
         jPanel2.add(jPanel3, gridBagConstraints);
 
@@ -101,6 +113,7 @@ public class PatientStartupView extends javax.swing.JPanel implements Controller
         jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jSplitPane1.setRightComponent(jPanel1);
+        jSplitPane1.setLeftComponent(backdrop1);
 
         add(jSplitPane1);
     }// </editor-fold>//GEN-END:initComponents

@@ -38,7 +38,7 @@ public class DashboardController extends AbstractController<DoctorDashboard, Das
     private Map<AppointmentBlock, List<QueueData>> scheduleMap;
     private final DoctorPatientDashboardDialogControllerFactory dialogFactory;
 
-    @Inject // TODO: maybe opt to provider
+    @Inject
     public DashboardController(DoctorViewModel model, DoctorDashboard view, DoctorManager doctorManager, AppointmentManager appointmentManager, PatientManager patientManager,
             DoctorPatientDashboardDialogControllerFactory dialogFactory) {
         this.model = model;
@@ -49,11 +49,12 @@ public class DashboardController extends AbstractController<DoctorDashboard, Das
 
         super(view);
 
+        view.getOverviewPanel().setRowClickListener(e -> onRowClick(e));
+        
         loadListModel();
         loadStats();
         loadSchedules();
 
-        view.getOverviewPanel().setRowClickListener(e -> onRowClick(e));
     }
 
     // Load the schedule map from here
@@ -66,7 +67,7 @@ public class DashboardController extends AbstractController<DoctorDashboard, Das
             return;
         }
 
-        var appointments = appointmentManager.getAppointmentsToday(model.getDoctor().id(), AppointmentStatus.values());
+        var appointments = appointmentManager.getAppointmentsToday(model.getDoctor().id());
         var patientIds = appointments.stream().map(Appointment::patientId).toList();
         var patientMap = patientManager.getAllByIds(patientIds).stream()
                 .collect(Collectors.toMap(Patient::id, p -> p));
@@ -77,7 +78,7 @@ public class DashboardController extends AbstractController<DoctorDashboard, Das
                             var patient = patientMap.get(a.patientId());
                             return new QueueData(
                                     patient.id(),
-                                    patient.firstName(), // TODO provide the full name instead
+                                    patient.getFullName(),
                                     a.getFormattedQueue(),
                                     patient.sex(),
                                     patient.getSchemedId(),

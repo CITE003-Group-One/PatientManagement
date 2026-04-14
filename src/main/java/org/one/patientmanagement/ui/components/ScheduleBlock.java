@@ -65,7 +65,7 @@ public final class ScheduleBlock extends javax.swing.JPanel {
 
     public void loadQueue(java.util.List<QueueData> queues, AppointmentBlock block, Schedule schedule) {
         var available = schedule.blocks().contains(block);
-        setEnabled(available); // TODO set proper enabled
+        setEnabled(available);
         if (!available) {
             return;
         }
@@ -83,6 +83,11 @@ public final class ScheduleBlock extends javax.swing.JPanel {
     
     public void setRowClickListener(ClickablePanel.ClickListenerObj<QueueData> clickListener) {
         this.clickListener = clickListener;
+    }
+    
+    @Override
+    public void setEnabled(boolean enabled) {
+         // TODO set proper enabled to change the UI apperance
     }
 
     @SuppressWarnings("unchecked")

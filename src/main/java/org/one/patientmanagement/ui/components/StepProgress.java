@@ -32,7 +32,7 @@ public final class StepProgress extends javax.swing.JPanel implements Controller
         backBtn1.setButtonListener(l -> { controller.onBack(); });
     }
     
-    public void remmoveBack() {
+    public void removeBack() {
         remove(backPanel);
         revalidate();
         repaint();

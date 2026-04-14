@@ -20,7 +20,8 @@ import org.one.patientmanagement.repository.AppointmentRepository;
 public class AppointmentRepositoryImpl implements AppointmentRepository {
 
     private final DataSource dataSource;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    private final DateTimeFormatter formatter
+            = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Inject
     public AppointmentRepositoryImpl(DataSource dataSource) {
@@ -29,10 +30,36 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
 
     @Override
     public Appointment save(Appointment model) {
+        String queueNumber = model.queueNumber();
+
+        if (queueNumber == null) {
+            String countSql = """
+            SELECT COUNT(*) FROM appointments
+            WHERE datetime(created_at) >= datetime(?) AND datetime(created_at) <= datetime(?)
+        """;
+
+            LocalDate today = model.createdAt().toLocalDate();
+            String start = today.atStartOfDay().format(formatter);
+            String end = today.atTime(23, 59, 59).format(formatter);
+
+            try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(countSql)) {
+
+                stmt.setString(1, start);
+                stmt.setString(2, end);
+
+                try (ResultSet rs = stmt.executeQuery()) {
+                    queueNumber = rs.next() ? String.valueOf(rs.getInt(1) + 1) : "1";
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException("DB Error: Queue number generation failed", e);
+            }
+        }
+
         String sql = """
-            INSERT INTO appointments (block, status, referred, referred_description, doctor_id, patient_id, queue_number, created_at)
-		VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-	""";
+        INSERT INTO appointments (block, status, referred, referred_description, doctor_id, patient_id, queue_number, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """;
+
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, model.block().name());
@@ -41,21 +68,32 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
             stmt.setString(4, model.referredDescription());
             stmt.setLong(5, model.doctorId());
             stmt.setLong(6, model.patientId());
-            stmt.setString(7, model.queueNumber());
+            stmt.setString(7, queueNumber);
+
+            // ✅ FORMAT FIX APPLIED HERE
             stmt.setString(8, model.createdAt().format(formatter));
 
             stmt.executeUpdate();
 
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
-                    return new Appointment(rs.getLong(1), model.block(), model.status(), model.referred(),
-                            model.referredDescription(), model.doctorId(), model.patientId(), model.queueNumber(),
-                            model.createdAt());
+                    return new Appointment(
+                            rs.getLong(1),
+                            model.block(),
+                            model.status(),
+                            model.referred(),
+                            model.referredDescription(),
+                            model.doctorId(),
+                            model.patientId(),
+                            queueNumber,
+                            model.createdAt()
+                    );
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException("DB Error: Save failed", e);
         }
+
         return model;
     }
 
@@ -97,15 +135,16 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
     }
 
     @Override
-    public List<Appointment> findAllDay(long doctorId, DayOfWeek day, AppointmentStatus... status) {
-        LocalDate date = resolvePeriod(day);
+    public List<Appointment> findAllDay(long doctorId, LocalDate date, AppointmentStatus... status) {
+
         String start = date.atStartOfDay().format(formatter);
         String end = date.atTime(23, 59, 59).format(formatter);
 
         StringBuilder sql = new StringBuilder("""
         SELECT * FROM appointments
         WHERE doctor_id = ?
-        AND created_at >= ? AND created_at <= ?
+        AND datetime(created_at) >= datetime(?)
+        AND datetime(created_at) <= datetime(?)
     """);
 
         if (status.length > 0) {
@@ -118,6 +157,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         sql.append(" ORDER BY queue_number ASC");
 
         List<Appointment> list = new ArrayList<>();
+
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 
             stmt.setLong(1, doctorId);
@@ -139,6 +179,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
                             rs.getLong("doctor_id"),
                             rs.getLong("patient_id"),
                             rs.getString("queue_number"),
+                            // ✅ PARSE USING SAME FORMAT
                             LocalDateTime.parse(rs.getString("created_at"), formatter)
                     ));
                 }
@@ -146,6 +187,7 @@ public class AppointmentRepositoryImpl implements AppointmentRepository {
         } catch (SQLException e) {
             throw new RuntimeException("DB Error: findAllDay failed", e);
         }
+
         return list;
     }
 

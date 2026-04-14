@@ -4,6 +4,8 @@
  */
 package org.one.patientmanagement.ui.view;
 
+import java.util.Arrays;
+import javax.swing.JOptionPane;
 import org.one.patientmanagement.ui.controller.ControllerBound;
 import org.one.patientmanagement.ui.controller.patient.PatientLoginController;
 
@@ -24,7 +26,9 @@ public class PatientLogin extends javax.swing.JPanel implements ControllerBound<
         submitButton.putClientProperty("FlatLaf.style", "arc: 999;");
         
         backdrop.setBadge("Welcome Back");
-        backdrop.setHeading("<html><div style='width:400px;'><center>" + "Login your existing account" + "</center></div></html>");
+        backdrop.setHeading("Login your existing account");
+        
+        formPanel.putClientProperty("FlatLaf.style", "arc: 50;");
     }
 
     /**
@@ -47,7 +51,7 @@ public class PatientLogin extends javax.swing.JPanel implements ControllerBound<
         jPanel3 = new javax.swing.JPanel();
         Existing_Email = new javax.swing.JLabel();
         Username_Field = new javax.swing.JTextField();
-        pINField2 = new org.one.patientmanagement.ui.components.PINField();
+        pinField = new org.one.patientmanagement.ui.components.PINField();
         submitButton = new javax.swing.JButton();
         backdrop = new org.one.patientmanagement.ui.components.Backdrop();
 
@@ -56,6 +60,7 @@ public class PatientLogin extends javax.swing.JPanel implements ControllerBound<
         setBackground(new java.awt.Color(255, 248, 248));
         setLayout(new java.awt.GridLayout(1, 0));
 
+        jSplitPane1.setDividerSize(0);
         jSplitPane1.setEnabled(false);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -82,7 +87,6 @@ public class PatientLogin extends javax.swing.JPanel implements ControllerBound<
 
         Username_Field.setBackground(new java.awt.Color(255, 240, 244));
         Username_Field.setFont(new java.awt.Font("Manrope", 0, 16)); // NOI18N
-        Username_Field.setText("Email / Phone Number");
         Username_Field.setMinimumSize(new java.awt.Dimension(64, 30));
         Username_Field.setName(""); // NOI18N
         Username_Field.setPreferredSize(new java.awt.Dimension(177, 30));
@@ -98,12 +102,14 @@ public class PatientLogin extends javax.swing.JPanel implements ControllerBound<
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(25, 0, 25, 0);
         formContainer.add(jPanel3, gridBagConstraints);
+
+        pinField.setMinimumSize(new java.awt.Dimension(150, 70));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.ipady = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_START;
-        formContainer.add(pINField2, gridBagConstraints);
+        formContainer.add(pinField, gridBagConstraints);
 
         formPanel.add(formContainer, java.awt.BorderLayout.CENTER);
 
@@ -130,7 +136,25 @@ public class PatientLogin extends javax.swing.JPanel implements ControllerBound<
     }// </editor-fold>//GEN-END:initComponents
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        // TODO add your handling code here:
+        var username = Username_Field.getText();
+        var password = pinField.getPassword();
+        
+        boolean isUsernameEmpty = (username == null || username.isBlank());
+        boolean isPasswordEmpty = (password == null || password.length == 0);
+
+        if (isUsernameEmpty || isPasswordEmpty) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Username and password must not be empty.",
+                    "Login Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+        
+        controller.onLogin(Username_Field.getText(), new String(password));
+        
+        Arrays.fill(password, '\0');
     }//GEN-LAST:event_submitButtonActionPerformed
 
 
@@ -145,7 +169,7 @@ public class PatientLogin extends javax.swing.JPanel implements ControllerBound<
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSplitPane jSplitPane1;
-    private org.one.patientmanagement.ui.components.PINField pINField2;
+    private org.one.patientmanagement.ui.components.PINField pinField;
     private org.one.patientmanagement.ui.components.StepProgress stepProgress1;
     private javax.swing.JButton submitButton;
     // End of variables declaration//GEN-END:variables

@@ -12,16 +12,30 @@ import javax.swing.JPanel;
 public class ImagePanel extends JPanel {
 
     private Image image;
+    private boolean cover = false;
 
     public ImagePanel() {
-        this.image = new ImageIcon(getClass().getResource("/images/morning.png")).getImage();
+        this.image = new ImageIcon(getClass().getResource("/images/patient_backdrop.png")).getImage();
+    }
+
+    public void setCover(boolean cover) {
+        this.cover = cover;
+        repaint();
+    }
+
+    public void setImage(String path) {
+        this.image = new ImageIcon(getClass().getResource(path)).getImage();
+        repaint();
+        revalidate();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        if (image == null) return;
+        if (image == null) {
+            return;
+        }
 
         int panelW = getWidth();
         int panelH = getHeight();
@@ -29,10 +43,9 @@ public class ImagePanel extends JPanel {
         int imgW = image.getWidth(this);
         int imgH = image.getHeight(this);
 
-        double scale = Math.min(
-                (double) panelW / imgW,
-                (double) panelH / imgH
-        );
+        double scale = cover
+                ? Math.max((double) panelW / imgW, (double) panelH / imgH)
+                : Math.min((double) panelW / imgW, (double) panelH / imgH);
 
         int newW = (int) (imgW * scale);
         int newH = (int) (imgH * scale);

@@ -51,6 +51,7 @@ public class DoctorDashboard extends javax.swing.JPanel implements ControllerBou
 
         jPanel3.setMinimumSize(new java.awt.Dimension(0, 150));
         jPanel3.setName(""); // NOI18N
+        jPanel3.setOpaque(false);
         jPanel3.setPreferredSize(new java.awt.Dimension(100, 150));
         jPanel3.setLayout(new java.awt.GridLayout(1, 0, 25, 0));
         jPanel3.add(statsCard1);
@@ -63,6 +64,7 @@ public class DoctorDashboard extends javax.swing.JPanel implements ControllerBou
         jPanel4.setMaximumSize(new java.awt.Dimension(2147483647, 230));
         jPanel4.setMinimumSize(new java.awt.Dimension(299, 230));
         jPanel4.setName(""); // NOI18N
+        jPanel4.setOpaque(false);
         jPanel4.setPreferredSize(new java.awt.Dimension(100, 230));
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
@@ -78,6 +80,7 @@ public class DoctorDashboard extends javax.swing.JPanel implements ControllerBou
         todaySchedule1.setMaximumSize(new java.awt.Dimension(2147483647, 500));
         todaySchedule1.setMinimumSize(new java.awt.Dimension(299, 500));
         todaySchedule1.setName(""); // NOI18N
+        todaySchedule1.setOpaque(false);
         todaySchedule1.setPreferredSize(new java.awt.Dimension(850, 500));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

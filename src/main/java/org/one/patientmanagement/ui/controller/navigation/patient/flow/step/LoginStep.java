@@ -22,7 +22,7 @@ public class LoginStep implements FlowStep<PatientRoute, PatientViewModel>  {
 
     @Override
     public FlowStep<PatientRoute, PatientViewModel> next(FlowState<PatientViewModel> state) {
-        return new LoginStep();
+        return new DashboardStep();
     }
     
 }

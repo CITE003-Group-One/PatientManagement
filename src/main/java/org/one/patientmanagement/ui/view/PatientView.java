@@ -37,20 +37,16 @@ public class PatientView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
         container = new org.one.patientmanagement.ui.components.FillWidthPanel();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
         container.setLayout(new java.awt.CardLayout());
-        jScrollPane1.setViewportView(container);
-
-        add(jScrollPane1);
+        add(container);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.one.patientmanagement.ui.components.FillWidthPanel container;
-    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
